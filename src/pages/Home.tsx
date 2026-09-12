@@ -1,4 +1,4 @@
-export default function Home() {
+export function Home() {
   return (
     <main className="min-h-svh bg-[#f4efe4] text-[#1a1714] p-8">
       <p className="text-sm tracking-[0.2em] uppercase">Asia · 不含中国大陆</p>

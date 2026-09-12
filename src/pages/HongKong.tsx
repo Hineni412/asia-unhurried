@@ -1,4 +1,4 @@
-export default function HongKong() {
+export function HongKong() {
   return (
     <main className="min-h-svh bg-[#f4efe4] text-[#1a1714] p-8">
       <p className="text-sm tracking-wide">Places / 东亚</p>
