@@ -13,7 +13,7 @@ type Props = {
 
 export function Itinerary({ threeNights, fiveNights }: Props) {
   return (
-    <section id="itinerary" className="mx-auto max-w-5xl scroll-mt-28 px-5 py-16 md:px-8 md:py-20">
+    <section id="itinerary" className="mx-auto max-w-5xl px-5 py-16 md:px-8 md:py-20">
       <h2 className="font-serif text-3xl tracking-tight text-ink md:text-4xl">慢行程</h2>
       <p className="mt-3 text-sm text-ink-faint">示例节奏，按需展开。</p>
 
