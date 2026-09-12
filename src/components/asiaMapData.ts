@@ -51,7 +51,7 @@ export const MAP_CITIES: MapCity[] = [
   { id: 'hoi-an', name: 'Hoi An', nameZh: '会安', x: 262.6, y: 413.0, status: 'soon' },
   { id: 'chiang-mai', name: 'Chiang Mai', nameZh: '清迈', x: 112.3, y: 375.6, status: 'soon' },
   { id: 'bangkok', name: 'Bangkok', nameZh: '曼谷', x: 136.6, y: 440.3, status: 'soon' },
-  { id: 'penang', name: 'Penang', nameZh: '槟城', x: 133.9, y: 547.5, status: 'soon' },
+  { id: 'penang', name: 'Penang', nameZh: '槟城', x: 133.9, y: 547.5, status: 'live', href: '/places/malaysia/penang' },
   { id: 'kuala-lumpur', name: 'Kuala Lumpur', nameZh: '吉隆坡', x: 155.7, y: 576.8, status: 'soon' },
   { id: 'singapore', name: 'Singapore', nameZh: '新加坡', x: 190.0, y: 599.8, status: 'soon' },
 ]

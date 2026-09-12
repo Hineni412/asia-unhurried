@@ -91,7 +91,7 @@ export function AsiaMap() {
         {hovered ? <CityLabel city={hovered} /> : null}
       </svg>
       <p className="mt-3 text-center text-xs text-ink-faint md:text-left">
-        <span className="text-accent">香港已上线</span>
+        <span className="text-accent">香港、槟城已上线</span>
         {' · '}
         其余待写 · 地图不含中国大陆目的地点
       </p>

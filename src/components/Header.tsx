@@ -2,7 +2,8 @@ import { Link, useLocation } from 'react-router-dom'
 
 export function Header() {
   const { pathname } = useLocation()
-  const onCity = pathname.includes('hong-kong')
+  const onHongKong = pathname.includes('hong-kong')
+  const onPenang = pathname.includes('penang') || pathname.includes('malaysia')
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-paper/85 backdrop-blur-md">
@@ -13,7 +14,7 @@ export function Header() {
           </span>
           <span className="mt-0.5 font-serif text-[1.35rem] tracking-[-0.01em]">Unhurried</span>
         </Link>
-        <nav className="flex items-center gap-7 text-[14px] font-medium text-ink-muted">
+        <nav className="flex items-center gap-4 text-[14px] font-medium text-ink-muted md:gap-7">
           <Link
             to="/"
             className={`border-b-2 pb-0.5 transition-colors ${
@@ -27,12 +28,22 @@ export function Header() {
           <Link
             to="/places/hong-kong"
             className={`border-b-2 pb-0.5 transition-colors ${
-              onCity
+              onHongKong
                 ? 'border-ink text-ink'
                 : 'border-transparent hover:border-border hover:text-ink'
             }`}
           >
             香港
+          </Link>
+          <Link
+            to="/places/malaysia/penang"
+            className={`border-b-2 pb-0.5 transition-colors ${
+              onPenang
+                ? 'border-ink text-ink'
+                : 'border-transparent hover:border-border hover:text-ink'
+            }`}
+          >
+            槟城
           </Link>
         </nav>
       </div>

@@ -19,6 +19,12 @@ export function Footer() {
             <Link to="/places/hong-kong" className="block text-ink hover:text-accent">
               香港 · Hong Kong
             </Link>
+            <Link to="/places/malaysia/penang" className="mt-2 block text-ink hover:text-accent">
+              槟城 · Penang
+            </Link>
+            <Link to="/places/malaysia" className="mt-2 block text-ink-muted hover:text-accent">
+              马来西亚 · Malaysia
+            </Link>
           </div>
         </div>
         <p className="mt-12 text-xs text-ink-faint">

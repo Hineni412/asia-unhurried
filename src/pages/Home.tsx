@@ -20,10 +20,16 @@ export function Home() {
             <p className="max-w-md font-serif text-lg leading-relaxed text-ink-muted md:text-[1.25rem]">
               签证、支付、上网、交通，以及值得停下来的城市。
             </p>
-            <div className="pt-2">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">
               <Link to="/places/hong-kong" className="btn-primary">
                 先看香港
                 <span aria-hidden="true">→</span>
+              </Link>
+              <Link
+                to="/places/malaysia/penang"
+                className="text-sm font-medium text-accent underline-offset-4 hover:underline"
+              >
+                槟城 · 乔治市 →
               </Link>
             </div>
           </div>
@@ -36,11 +42,11 @@ export function Home() {
             <p className="text-sm text-ink-faint">值得停下来的地方</p>
           </div>
 
-          <Link
-            to="/places/hong-kong"
-            className="group grid gap-6 rounded-2xl border border-border bg-card p-6 no-underline transition hover:border-sand-deep sm:grid-cols-[1fr_auto] sm:p-8"
-          >
-            <div>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <Link
+              to="/places/hong-kong"
+              className="group flex flex-col rounded-2xl border border-border bg-card p-6 no-underline transition hover:border-sand-deep sm:p-8"
+            >
               <p className="eyebrow">东亚 · Wave 1</p>
               <h3 className="mt-3 font-zh text-2xl text-ink md:text-3xl">
                 香港
@@ -49,11 +55,27 @@ export function Home() {
               <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-muted">
                 选一侧住稳，用步行和渡轮代替追景点。
               </p>
-            </div>
-            <p className="self-end text-sm font-medium text-accent group-hover:underline group-hover:underline-offset-4">
-              打开城市页 →
-            </p>
-          </Link>
+              <p className="mt-6 text-sm font-medium text-accent group-hover:underline group-hover:underline-offset-4">
+                打开城市页 →
+              </p>
+            </Link>
+            <Link
+              to="/places/malaysia/penang"
+              className="group flex flex-col rounded-2xl border border-border bg-card p-6 no-underline transition hover:border-sand-deep sm:p-8"
+            >
+              <p className="eyebrow">东南亚 · Wave 1</p>
+              <h3 className="mt-3 font-zh text-2xl text-ink md:text-3xl">
+                槟城
+                <span className="ml-3 font-serif text-lg text-ink-faint md:text-xl">Penang</span>
+              </h3>
+              <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-muted">
+                住乔治市。吃，店屋巷，不要赶环岛。
+              </p>
+              <p className="mt-6 text-sm font-medium text-accent group-hover:underline group-hover:underline-offset-4">
+                打开城市页 →
+              </p>
+            </Link>
+          </div>
         </section>
       </main>
       <Footer />
