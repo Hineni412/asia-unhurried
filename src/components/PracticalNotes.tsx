@@ -9,7 +9,7 @@ type Props = {
 
 export function PracticalNotes({ blocks, links, localTransit }: Props) {
   return (
-    <section id="practical" className="mx-auto max-w-5xl scroll-mt-28 px-5 py-16 md:px-8 md:py-20">
+    <section id="practical" className="mx-auto max-w-5xl px-5 py-16 md:px-8 md:py-20">
       <h2 className="font-serif text-3xl tracking-tight text-ink md:text-4xl">实用</h2>
       <p className="mt-3 text-sm text-ink-faint">市内交通与注意事项，按需展开。</p>
 

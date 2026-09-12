@@ -23,10 +23,10 @@ npm run preview
 | 路径 | 页面 |
 | --- | --- |
 | `/` | 首页：米色矢量亚洲地图；香港、槟城可点，其余城市为「待写」 |
-| `/places/hong-kong` | 香港城市页（总览、邻里、吃、实用、行程） |
+| `/places/hong-kong` | 香港城市页（`?tab=` 切换总览 / 邻里 / 吃 / 实用 / 行程 / 核验，默认总览） |
 | `/hong-kong` | 重定向到 `/places/hong-kong` |
 | `/places/malaysia` | 马来西亚国家页（槟城可点；吉隆坡待写） |
-| `/places/malaysia/penang` | 槟城城市页（住乔治市） |
+| `/places/malaysia/penang` | 槟城城市页（住乔治市；同样用 `?tab=` 切换主面板） |
 | `/penang` | 重定向到 `/places/malaysia/penang` |
 
 地图来自 `asiaMapData.ts` 的品牌米色 SVG，不是 Leaflet / OSM。图上没有中国大陆钉点。

@@ -4,7 +4,7 @@ type Props = { rows: VerifyRow[] }
 
 export function VerifyTable({ rows }: Props) {
   return (
-    <section className="mx-auto max-w-5xl px-5 py-16 md:px-8 md:py-20">
+    <section id="verify" className="mx-auto max-w-5xl px-5 py-16 md:px-8 md:py-20">
       <h2 className="font-serif text-3xl tracking-tight text-ink md:text-4xl">出门前再核一次</h2>
       <p className="mt-3 text-sm text-ink-faint">政策与营业会变。以下只标该去哪查，不写死规则。</p>
       <div className="mt-10 overflow-x-auto">

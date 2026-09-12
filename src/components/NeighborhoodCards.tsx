@@ -10,7 +10,7 @@ function shortBody(body: string): string {
 
 export function NeighborhoodCards({ neighborhoods }: Props) {
   return (
-    <section id="neighborhoods" className="mx-auto max-w-5xl scroll-mt-28 px-5 py-16 md:px-8 md:py-24">
+    <section id="neighborhoods" className="mx-auto max-w-5xl px-5 py-16 md:px-8 md:py-24">
       <h2 className="font-serif text-3xl tracking-tight text-ink md:text-4xl">Neighborhoods</h2>
       <p className="mt-3 text-sm text-ink-faint">选两三个圈层反复走即可。</p>
       <div className="mt-12 grid gap-8 sm:grid-cols-2">
