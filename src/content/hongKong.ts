@@ -274,7 +274,7 @@ export const hongKong = {
       id: 'cha-chaan-teng',
       title: '茶餐厅 / 常餐',
       image: {
-        src: '/images/eat/ill-chachaanteng.png',
+        src: '/images/eat/ill-chachaanteng.webp',
         alt: '茶餐厅手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -336,7 +336,7 @@ export const hongKong = {
       id: 'dim-sum',
       title: '早茶 / 点心',
       image: {
-        src: '/images/eat/ill-dimsum.png',
+        src: '/images/eat/ill-dimsum.webp',
         alt: '点心手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -395,7 +395,7 @@ export const hongKong = {
       id: 'noodles',
       title: '面条 / 云吞面 / 车仔面',
       image: {
-        src: '/images/eat/ill-noodles.png',
+        src: '/images/eat/ill-noodles.webp',
         alt: '面食手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -451,7 +451,7 @@ export const hongKong = {
       id: 'roast',
       title: '烧腊 / 白切鸡',
       image: {
-        src: '/images/eat/ill-roast.png',
+        src: '/images/eat/ill-roast.webp',
         alt: '烧腊手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -488,7 +488,7 @@ export const hongKong = {
       id: 'dai-pai-dong',
       title: '街头小吃 / 大牌档',
       image: {
-        src: '/images/eat/ill-street.png',
+        src: '/images/eat/ill-street.webp',
         alt: '大牌档手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -519,7 +519,7 @@ export const hongKong = {
       id: 'dessert',
       title: '甜品 / 糖水',
       image: {
-        src: '/images/eat/ill-dessert.png',
+        src: '/images/eat/ill-dessert.webp',
         alt: '糖水手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -559,7 +559,7 @@ export const hongKong = {
       id: 'cantonese',
       title: '值得慢慢坐的一顿（粤菜）',
       image: {
-        src: '/images/eat/ill-cantonese.png',
+        src: '/images/eat/ill-cantonese.webp',
         alt: '粤菜手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -591,7 +591,7 @@ export const hongKong = {
       id: 'vegetarian',
       title: '素食或清淡',
       image: {
-        src: '/images/eat/ill-vegetarian.png',
+        src: '/images/eat/ill-vegetarian.webp',
         alt: '素食手绘',
         credit: '手绘 · 基于真实食物',
       },

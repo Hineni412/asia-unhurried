@@ -217,7 +217,7 @@ export const penang = {
       id: 'char-kuey-teow',
       title: '炒粿条',
       image: {
-        src: '/images/eat/ill-ckt.png',
+        src: '/images/eat/ill-ckt.webp',
         alt: '炒粿条手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -267,7 +267,7 @@ export const penang = {
       id: 'asam-laksa',
       title: '亚参叻沙',
       image: {
-        src: '/images/eat/ill-laksa.png',
+        src: '/images/eat/ill-laksa.webp',
         alt: '亚参叻沙手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -303,7 +303,7 @@ export const penang = {
       id: 'hokkien-mee',
       title: '福建面',
       image: {
-        src: '/images/eat/ill-hokkien.png',
+        src: '/images/eat/ill-hokkien.webp',
         alt: '槟城福建面手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -339,7 +339,7 @@ export const penang = {
       id: 'hawker-snacks',
       title: '街头小食（炒粿角）',
       image: {
-        src: '/images/eat/ill-hawker.png',
+        src: '/images/eat/ill-hawker.webp',
         alt: '街头小食手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -370,7 +370,7 @@ export const penang = {
       id: 'nyonya-sitdown',
       title: '娘惹 / 坐得住的店',
       image: {
-        src: '/images/eat/ill-nyonya.png',
+        src: '/images/eat/ill-nyonya.webp',
         alt: '娘惹菜手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -424,7 +424,7 @@ export const penang = {
       id: 'nasi-kandar',
       title: '扁担饭',
       image: {
-        src: '/images/eat/ill-nasikandar.png',
+        src: '/images/eat/ill-nasikandar.webp',
         alt: '扁担饭手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -459,7 +459,7 @@ export const penang = {
       id: 'chendul',
       title: '煎蕊',
       image: {
-        src: '/images/eat/ill-cendol.png',
+        src: '/images/eat/ill-cendol.webp',
         alt: '煎蕊手绘',
         credit: '手绘 · 基于真实食物',
       },
@@ -489,7 +489,7 @@ export const penang = {
       id: 'curry-mee',
       title: '咖喱面（亚依淡，顺路）',
       image: {
-        src: '/images/eat/ill-laksa.png',
+        src: '/images/eat/ill-laksa.webp',
         alt: '咖喱面手绘',
         credit: '手绘 · 基于真实食物',
       },
