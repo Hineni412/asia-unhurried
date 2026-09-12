@@ -4,6 +4,10 @@
 
 本仓库是站点的 Vite + React 19 + TypeScript + Tailwind CSS v4 前端。
 
+**正式上线走 Cursor Origin → Vercel。** GitHub `Hineni412/asia-unhurried` 只是给 ZCode / GLM 用的工作副本，不是生产源。两边怎么抄作业见 [SYNC_ORIGIN.md](SYNC_ORIGIN.md)（中英对照，给非开发同事）。不要把 Vercel 改接到 GitHub。
+
+Production stays **Origin → Vercel**. The GitHub repo is a ZCode working desk only — see [SYNC_ORIGIN.md](SYNC_ORIGIN.md). Do not reconnect Vercel to GitHub.
+
 ## 本地运行
 
 ```bash
