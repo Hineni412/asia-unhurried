@@ -48,3 +48,7 @@ npm run preview
 ```bash
 npm run dev -- --host --port 43123
 ```
+
+## 公开预览
+
+本仓库尚未连接 Vercel。本地看构建结果：`npm run build && npm run preview`。以后在 Origin 仓库的 Apps 里接入 Vercel 即可得到 `*.vercel.app`（Origin 仓库为私有，按 Vercel 文档不能挂在 Hobby 团队上）。`vercel.json` 已写好 SPA 回退，连接后 `/` 与 `/places/malaysia/penang` 可直接打开。
