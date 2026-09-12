@@ -38,4 +38,10 @@ npm run preview
 
 ## 说明
 
-商店、签证、价格、评分等内容以源码为准，请勿凭空补写。图片放在 `public/images/`（邻里与一日游可用 Wikimedia；港岛海港主视觉与「吃」分类插画为手绘）。
+商店、签证、价格、评分等内容以源码为准，请勿凭空补写。图片放在 `public/images/`（邻里与一日游为 Wikimedia / Pexels；港岛海港主视觉与「吃」分类插画为手绘）。来源见 [CREDITS.md](CREDITS.md)。
+
+开发服务器默认端口 `43123`：
+
+```bash
+npm run dev -- --host --port 43123
+```
