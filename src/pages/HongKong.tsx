@@ -21,7 +21,7 @@ export function HongKong() {
           pinyin="Xiānggǎng"
           breadcrumb="Places / 东亚"
           linger={hk.tagline}
-          imageSrc="/images/hk-hero-harbour.png?v=5"
+          imageSrc="/images/hk-hero-harbour.webp"
           imageAlt="手绘维多利亚港：渡轮、码头与天际线"
           meta={{
             region: '东亚',

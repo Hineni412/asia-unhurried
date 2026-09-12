@@ -41,22 +41,22 @@ Neighbourhood and day-trip photographs are used under the stated Creative Common
 
 | File | Note |
 | --- | --- |
-| `hk-hero-harbour.png` | Victoria Harbour: ferry, pier, skyline. Not a photograph. |
-| `eat/ill-chachaanteng.png` | Cha chaan teng: French toast and milk tea. |
-| `eat/ill-dimsum.png` | Dim sum steamers. |
-| `eat/ill-noodles.png` | Wonton noodle soup. |
-| `eat/ill-roast.png` | Roast goose. |
-| `eat/ill-street.png` | Dai pai dong table. |
-| `eat/ill-dessert.png` | Tong suey / mango sago. |
-| `eat/ill-cantonese.png` | Sit-down Cantonese dinner. |
-| `eat/ill-vegetarian.png` | Tea house vegetarian dumplings. |
-| `pg-hero-georgetown.png` | George Town shophouses and a trishaw. Not a photograph. |
-| `eat/ill-ckt.png` | Char kuey teow. |
-| `eat/ill-laksa.png` | Asam laksa. |
-| `eat/ill-hokkien.png` | Penang Hokkien mee. |
-| `eat/ill-hawker.png` | Char koay kak / hawker plate. |
-| `eat/ill-nyonya.png` | Nyonya sit-down dishes. |
-| `eat/ill-nasikandar.png` | Nasi kandar. |
-| `eat/ill-cendol.png` | Cendol / chendul. |
+| `hk-hero-harbour.webp` | Victoria Harbour: ferry, pier, skyline. Not a photograph. |
+| `eat/ill-chachaanteng.webp` | Cha chaan teng: French toast and milk tea. |
+| `eat/ill-dimsum.webp` | Dim sum steamers. |
+| `eat/ill-noodles.webp` | Wonton noodle soup. |
+| `eat/ill-roast.webp` | Roast goose. |
+| `eat/ill-street.webp` | Dai pai dong table. |
+| `eat/ill-dessert.webp` | Tong suey / mango sago. |
+| `eat/ill-cantonese.webp` | Sit-down Cantonese dinner. |
+| `eat/ill-vegetarian.webp` | Tea house vegetarian dumplings. |
+| `pg-hero-georgetown.webp` | George Town shophouses and a trishaw. Not a photograph. |
+| `eat/ill-ckt.webp` | Char kuey teow. |
+| `eat/ill-laksa.webp` | Asam laksa. |
+| `eat/ill-hokkien.webp` | Penang Hokkien mee. |
+| `eat/ill-hawker.webp` | Char koay kak / hawker plate. |
+| `eat/ill-nyonya.webp` | Nyonya sit-down dishes. |
+| `eat/ill-nasikandar.webp` | Nasi kandar. |
+| `eat/ill-cendol.webp` | Cendol / chendul. |
 
 On-page captions for eat illustrations read「手绘 · 基于真实食物」. Photographs are credited as Wikimedia Commons or Pexels in the city page.

@@ -117,6 +117,7 @@ export function CityHero({
             className="aspect-[5/4] w-full rounded-xl object-cover md:rounded-2xl"
             width={900}
             height={720}
+            fetchPriority="high"
           />
         </div>
       </div>

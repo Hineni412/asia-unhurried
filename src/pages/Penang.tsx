@@ -22,7 +22,7 @@ export function Penang() {
           pinyin="Bīnchéng · George Town"
           breadcrumb="Places / 东南亚 / 马来西亚"
           linger={pg.tagline}
-          imageSrc="/images/pg-hero-georgetown.png"
+          imageSrc="/images/pg-hero-georgetown.webp"
           imageAlt="手绘乔治市：店屋街与三轮车"
           meta={{
             region: '东南亚',
