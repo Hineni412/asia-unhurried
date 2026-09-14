@@ -2,13 +2,13 @@
  * Clone of the Hong Kong content pattern. Do not invent shops, visa days, prices, or ratings.
  */
 
+import { foodImages } from './cities/photoData'
 import type {
   DayTrip,
   EatCategory,
+  Essential,
   MetaField,
   Neighborhood,
-  PracticalBlock,
-  VerifyRow,
 } from './hongKong'
 
 export const penang = {
@@ -17,7 +17,7 @@ export const penang = {
   nameEn: 'Penang',
   tagline:
     '住乔治市。把几天留给炒粿条、叻沙和店屋巷，不要赶着环岛、海滩和山顶各打一次卡。升旗山、极乐寺、浮罗山背，一趟只加一件。',
-  note: '本页写马来西亚槟城岛的乔治市（George Town）。吉隆坡另页待写，不把两城绑成同一趟必须串联。',
+  note: '本页写马来西亚槟城岛的乔治市（George Town）。吉隆坡另有城市页，不把两城绑成同一趟必须串联。',
   verifiedAt: '2026-09-12',
   meta: [
     {
@@ -40,20 +40,23 @@ export const penang = {
   essentials: [
     {
       title: '机场 → 市区',
-      body: 'PEN 在峇六拜（Bayan Lepas）一侧。myPenang 公开页写机场距市中心约 20km。Rapid Penang 有线路连机场与乔治市一带（常见提到 401E、102），班次与票价出行前核 myRapid，不把某次报价当恒定。也可叫车。落地先解决怎么进城，不要在到达层做复杂换乘决定。',
+      body: 'PEN 在峇六拜（Bayan Lepas）一侧。初次抵达、带行李或晚到，可比较 Grab 与酒店接送；公交先核对具体站点、方向和服务时间。“出行指南”内有到乔治市酒店的完整步骤和官方接车指引。',
+      action: { label: '查看抵达步骤', to: '?tab=practical#guide-arrival' },
       links: [
         { label: 'Rapid Penang', url: 'https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/' },
       ],
     },
     {
       title: '建议住哪',
-      body: '住乔治市 UNESCO 店屋区，能走到 Armenian / Acheh、小贩巷和姓氏桥。Komtar 方便转巴士，不一定适合当整段住宿。Batu Ferringhi 是海滩度假带，不适合当这页的慢待基地。',
+      body: '第一次来以老城步行为主，可先比较 Armenian / Acheh 周边与 Kimberley / Cintra 一带。前者方便走店屋巷，后者方便觅食；都要核对夜间噪声、楼梯和实际接车点。海滩住宿意味着往返老城另排交通。',
+      action: { label: '订房前逐项检查', to: '?tab=practical#guide-stay' },
     },
     {
       title: '建议晚数',
-      body: '3–5 晚。3 晚只够乔治市吃饭和走路；想加升旗山或亚依淡或浮罗山背，从余下两天里只挑一件。',
+      body: '3 晚把店屋、姓氏桥和宗教街分两天，中午留休息；5 晚加亚依淡一天，再留一天重走老城。示例不换酒店、不环岛，行程页有完整四天或六天安排。',
+      action: { label: '展开每天安排', to: '?tab=itinerary#plan-three' },
     },
-  ],
+  ] as Essential[],
 
   overview: [
     '槟城岛默认会被写成「环岛清单」：海滩、山顶、寺庙、壁画，一天一个点。不疾不徐的做法是反过来——住进乔治市，把同一条店屋巷走熟，把早餐和一碗面变成重复的事。',
@@ -90,53 +93,98 @@ export const penang = {
   neighborhoods: [
     {
       id: 'armenian-acheh',
+      visit: {
+        "duration": "1.5–2 小时；参观与吃饭另加。",
+        "entry": "从 Lebuh Armenian 与 Lebuh Pantai 一带进入，叫车时用明确路口或店名。",
+        "walk": "Armenian → Acheh 周边巷道；热时进店休息，不为壁画绕远路。",
+        "return": "回酒店按具体地址导航；想接姓氏桥，另按海边路线走，不在正午硬串。",
+        "stay": "适合第一次住乔治市、愿意步行的人；店屋住宿要问楼梯、隔音和接车位置。",
+        "source": {
+          "label": "槟城旅游局街道地图（2026）",
+          "url": "https://mypenang.gov.my/uploads/downloads/PTF-ENG2026-1-.pdf"
+        }
+      },
       title: '店屋核心（Armenian / Acheh 一带）',
       image: {
         src: '/images/places/pg-armenian.jpg',
         alt: '乔治市 Armenian Street 店屋街',
         credit: 'Wikimedia Commons',
       },
-      body: '遗产区最容易被写成打卡清单的几条街。店屋、壁画、咖啡店密度高。早上比较能走路，中午晒、周末更挤。当作住宿走廊和散步区，不要当成必须拍完的景点表。Auntie Gaik Lean 在 Bishop Street，从这一带步行可达。',
-      suited: '第一段住宿；把「到了槟城」落成可以重复的几条巷。',
+      body: "挑几条店屋巷慢走，比追逐所有壁画轻松。Teksen 在西侧 Carnarvon 街，可按订位或用餐时间安排。",
+      suited: "第一次来乔治市，喜欢店屋、街道和走走停停的人。",
     },
     {
       id: 'kimberley-cintra',
+      visit: {
+        "duration": "1–2 小时；晚餐与排队另留。",
+        "entry": "从 Lebuh Kimberley 与 Cintra Street 路口一带进入。",
+        "walk": "Kimberley → Cintra；若去叻沙或煎蕊，再向西到 Penang Road / Keng Kwee，不把白天小吃和晚餐强排同一时段。",
+        "return": "吃完回酒店按地址走；累了在可停车的主路店铺旁确认叫车点。",
+        "stay": "适合想步行吃饭的人；住巷口前问清夜间噪声，客房别只看离摊位近。",
+        "source": {
+          "label": "槟城旅游局街道地图（2026）",
+          "url": "https://mypenang.gov.my/uploads/downloads/PTF-ENG2026-1-.pdf"
+        }
+      },
       title: '小贩巷（Kimberley / Cintra 一带）',
       image: {
         src: '/images/places/pg-kimberley.jpg',
         alt: '乔治市 Kimberley Street 小贩档',
         credit: 'Wikimedia Commons',
       },
-      body: 'Lebuh Kimberley、Cintra Street 一带是夜里仍有烟火气的小贩街，不是精致餐厅区。档口开停快，本页不在这里点名某一摊——走到现做再停。白天这一带相对安静，适合当作傍晚的出口，而不是中午的主轴。',
-      suited: '住店屋区的人傍晚走路吃饭；不当主景点。',
+      body: "这条线既能搭配晚餐，也能向西接白天小吃。先查选中店家的营业时段，再决定先吃还是先走。",
+      suited: "想以小吃和晚餐为主，能按档口时段调整安排的人。",
     },
     {
       id: 'clan-jetties',
+      visit: {
+        "duration": "30–60 分钟；天气热可缩短。",
+        "entry": "地图搜索 Chew Jetty，从 Pengkalan Weld 一侧进入。",
+        "walk": "从姓周桥公共入口走一段再原路返回；不进入住户私人区域。",
+        "return": "回 Pengkalan Weld 主路后导航酒店或确认叫车点，车辆不能驶入木栈桥。",
+        "stay": "适合店屋散步后的海边一段；不必为参观而搬到栈桥附近住。",
+        "source": {
+          "label": "槟城旅游局街道地图（2026）",
+          "url": "https://mypenang.gov.my/uploads/downloads/PTF-ENG2026-1-.pdf"
+        }
+      },
       title: '姓氏桥（以姓周桥为入口）',
       image: {
         src: '/images/places/pg-jetty.jpg',
         alt: '乔治市姓周桥入口',
         credit: 'Wikimedia Commons',
       },
-      body: '木栈桥上的水上聚落，姓周桥最常作为步行入口。仍有人住，不是布景。走一截、看看海，不要把人家门口当摄影棚。热天很晒，半小时到一小时足够；从遗产区步行或短程巴士可到。',
-      suited: '遗产区散步的海边尽头；不必单独换酒店。',
+      body: "以姓周桥为入口，走一截、看看海就可以。这里仍有人生活，尊重现场开放提示与住户空间。",
+      suited: "想在老城散步后看看海、只留一小段户外时间的人。",
     },
     {
       id: 'kapitan-keling',
+      visit: {
+        "duration": "1–1.5 小时；入内参观另留。",
+        "entry": "从 Jalan Masjid Kapitan Keling 与 Lebuh Light 北端一带进入。",
+        "walk": "沿主街向南看宗教建筑；Bishop Street 用餐要另转入支街。是否入内按现场开放和着装要求决定。",
+        "return": "结束后按酒店地址步行或叫车；不必再绕回北端。",
+        "stay": "适合喜欢街道与建筑的人；可从核心区酒店过来，无需单独换住处。",
+        "source": {
+          "label": "槟城旅游局街道地图（2026）",
+          "url": "https://mypenang.gov.my/uploads/downloads/PTF-ENG2026-1-.pdf"
+        }
+      },
       title: '清真寺街一带（Kapitan Keling）',
       image: {
         src: '/images/places/pg-kapitan.jpg',
         alt: '乔治市 Jalan Masjid Kapitan Keling',
         credit: 'Wikimedia Commons',
       },
-      body: 'Jalan Masjid Kapitan Keling 串起清真寺、印度庙和教堂，是乔治市宗教建筑并置的那条轴。中午热、周末游客多。适合当作走去 Lebuh Carnarvon（Teksen）或 Penang Road 一带吃饭的走廊，不必当成巡礼。',
-      suited: '穿遗产区去吃饭的步行轴；不当主住宿。',
+      body: "沿一条街读乔治市不同宗教留下的建筑。以街道散步为主，入内参观按现场安排，不把每座建筑都列成必进点。",
+      suited: "对不同宗教建筑和城市历史感兴趣的人。",
     },
   ] as Neighborhood[],
 
   dayTrips: [
     {
       direction: '升旗山',
+      link: { label: '看实拍、缆车票与上山步骤', to: '/places/malaysia/penang/attractions/penang-hill' },
       image: {
         src: '/images/daytrips/pg-hill.jpg',
         alt: '从升旗山看乔治市',
@@ -216,16 +264,21 @@ export const penang = {
     {
       id: 'char-kuey-teow',
       title: '炒粿条',
-      image: {
-        src: '/images/eat/ill-ckt.webp',
-        alt: '炒粿条手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-penang-char-kuey-teow'],
       intro:
         '扁米粉下锅，虾、芽菜、辣椒，讲锅气。乔治市可以只认真吃一盘。两家都在指南里：一家在槟城路咖啡店里，一家是半日营业的名档、队列长。',
       restaurants: [
         {
           id: 'jin-kor',
+        location: {
+          "address": "Joo Hooi Cafe, 475 Jalan Penang, George Town, Penang, Malaysia",
+          "areaId": "kimberley-cintra",
+          "connection": "在小贩巷西侧的 Penang Road 一带，认准咖啡店内档口。",
+          "source": {
+            "label": "Waze 店址",
+            "url": "https://www.waze.com/live-map/directions/my/pulau-pinang/george-town/penang-road-famous-jin-kor-char-kuey-teow-%E6%AA%B3%E6%A6%94%E5%BE%8B%E9%A9%B0%E5%90%8D%E4%BB%81%E5%93%A5%E7%82%92%E7%B2%BF%E6%A2%9D?to=place.ChIJ4V-V8JbDSjARKFrOJnFPIUE"
+          }
+        },
           name: 'Penang Road Famous Jin Kor Char Kuey Teow',
           nameEn: 'Joo Hooi Cafe 档口',
           neighborhood: 'Joo Hooi Cafe, 475 Jalan Penang, George Town',
@@ -244,6 +297,14 @@ export const penang = {
         },
         {
           id: 'siam-road',
+        location: {
+          "address": "82 Jalan Siam, George Town, Penang, Malaysia",
+          "connection": "在遗产区以西；与仁哥不是同一条小巷，专程去时另留交通和排队时间。",
+          "source": {
+            "label": "槟城旅游局美食地图（2024）",
+            "url": "https://mypenang.gov.my/uploads/downloads/SFA_Penang-Street-Food_V04Sep24-EN.pdf"
+          }
+        },
           name: 'Siam Road Char Koay Teow',
           nameEn: '暹罗路炒粿条',
           neighborhood: '82 Jalan Siam, George Town',
@@ -266,16 +327,21 @@ export const penang = {
     {
       id: 'asam-laksa',
       title: '亚参叻沙',
-      image: {
-        src: '/images/eat/ill-laksa.webp',
-        alt: '亚参叻沙手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-penang-asam-laksa'],
       intro:
         '酸辣鱼汤米粉是槟城的白天那一碗。Penang Road Famous Laksa 从槟城路迁到 Lebuh Keng Kwee，指南仍收录，并写值得排队。',
       restaurants: [
         {
           id: 'penang-road-laksa',
+        location: {
+          "address": "5 Lebuh Keng Kwee, George Town, Penang, Malaysia",
+          "areaId": "kimberley-cintra",
+          "connection": "在 Penang Road 旁的 Keng Kwee 街，和煎蕊可放在同一段。",
+          "source": {
+            "label": "槟城旅游局美食地图（2024）",
+            "url": "https://mypenang.gov.my/uploads/downloads/SFA_Penang-Street-Food_V04Sep24-EN.pdf"
+          }
+        },
           name: 'Penang Road Famous Laksa',
           nameEn: '槟城路亚参叻沙（Keng Kwee）',
           neighborhood: '5 Lebuh Keng Kwee, George Town',
@@ -302,16 +368,20 @@ export const penang = {
     {
       id: 'hokkien-mee',
       title: '福建面',
-      image: {
-        src: '/images/eat/ill-hokkien.webp',
-        alt: '槟城福建面手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-penang-hokkien-mee'],
       intro:
         '槟城福建面是虾汤，黄面拌米粉，不是半岛常见的黑酱炒面。傍晚才出摊的档口，适合当作走路的终点。',
       restaurants: [
         {
           id: '888-hokkien',
+        location: {
+          "address": "67-A Lebuh Presgrave, George Town, Penang, Malaysia",
+          "connection": "在 Komtar 以南的 Presgrave 街，超出遗产区核心散步线。",
+          "source": {
+            "label": "米其林店址",
+            "url": "https://guide.michelin.com/en/pulau-pinang/my-george-town/restaurant/888-hokkien-mee-lebuh-presgrave"
+          }
+        },
           name: '888 Hokkien Mee',
           nameEn: 'Lebuh Presgrave',
           neighborhood: '67-A Lebuh Presgrave, George Town',
@@ -338,16 +408,20 @@ export const penang = {
     {
       id: 'hawker-snacks',
       title: '街头小食（炒粿角）',
-      image: {
-        src: '/images/eat/ill-hawker.webp',
-        alt: '街头小食手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-penang-hawker-snacks'],
       intro:
         '炒粿角是潮州来的煎米糕，配芽菜、蛋、酱。这不是一顿正餐，是上午的一盘。Sister Yao’s 指南写三姐妹继承父亲 1963 年起的摊。',
       restaurants: [
         {
           id: 'sister-yao',
+        location: {
+          "address": "96 Lorong Macalister, George Town, Penang, Malaysia",
+          "connection": "在 Lorong Macalister，需从店屋核心区另走一程，别与 Macalister Road 混淆。",
+          "source": {
+            "label": "米其林店址",
+            "url": "https://guide.michelin.com/my/en/pulau-pinang/my-george-town/restaurant/sister-yao-s-char-koay-kak"
+          }
+        },
           name: "Sister Yao's Char Koay Kak",
           nameEn: '姚氏姐妹炒粿角',
           neighborhood: '96 Lorong Macalister, George Town',
@@ -369,16 +443,21 @@ export const penang = {
     {
       id: 'nyonya-sitdown',
       title: '娘惹 / 坐得住的店',
-      image: {
-        src: '/images/eat/ill-nyonya.webp',
-        alt: '娘惹菜手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-penang-nyonya-sitdown'],
       intro:
         '留一顿给桌子和空调。Auntie Gaik Lean 是指南里的娘惹菜；Teksen 是 Carnarvon 街上从 1965 年开到现在的粤菜馆。两家都不是小吃档。同一周选一种坐店节奏即可。',
       restaurants: [
         {
           id: 'auntie-gaik-lean',
+        location: {
+          "address": "1 Lebuh Bishop, George Town, Penang, Malaysia",
+          "areaId": "kapitan-keling",
+          "connection": "在宗教街轴线北侧的 Bishop Street，需从主街转入，不在 Armenian Street。",
+          "source": {
+            "label": "槟城旅游局娘惹地图",
+            "url": "https://www.mypenang.gov.my/uploads/downloads/Baba-Nyonya-ENG_V01.pdf"
+          }
+        },
           name: "Auntie Gaik Lean's Old School Eatery",
           nameEn: 'Bishop Street',
           neighborhood: '1 Lebuh Bishop, George Town',
@@ -401,6 +480,15 @@ export const penang = {
         },
         {
           id: 'teksen',
+        location: {
+          "address": "18 & 20 Lebuh Carnarvon, George Town, Penang, Malaysia",
+          "areaId": "armenian-acheh",
+          "connection": "在店屋核心西侧的 Carnarvon 街，先安排用餐，再走 Armenian / Acheh。",
+          "source": {
+            "label": "米其林店址",
+            "url": "https://guide.michelin.com/ph/en/pulau-pinang/my-george-town/restaurant/teksen"
+          }
+        },
           name: 'Teksen',
           nameEn: '德成',
           neighborhood: '18 & 20 Lebuh Carnarvon, George Town',
@@ -423,16 +511,21 @@ export const penang = {
     {
       id: 'nasi-kandar',
       title: '扁担饭',
-      image: {
-        src: '/images/eat/ill-nasikandar.webp',
-        alt: '扁担饭手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-penang-nasi-kandar'],
       intro:
         '印度穆斯林的米饭配咖喱和菜。本页所用的米其林公开页未收录 Line Clear。列入是因为它是乔治市还在用的巷子食堂，不是因为奖牌。',
       restaurants: [
         {
           id: 'line-clear',
+        location: {
+          "address": "Beside 161 & 177 Penang Road, George Town, Penang, Malaysia",
+          "areaId": "kimberley-cintra",
+          "connection": "在 Penang Road 旁巷口，位于小贩巷散步范围北侧；看店名再入巷。",
+          "source": {
+            "label": "Foodcrush 店址",
+            "url": "https://foodcrush.com.my/penang/profile/restoran-nasi-kandar-line-clear"
+          }
+        },
           name: 'Restoran Nasi Kandar Line Clear',
           nameEn: 'Penang Road 巷子',
           neighborhood: '巷子 beside 161 & 177 Penang Road, George Town（对开一带有酒店，认巷口）',
@@ -458,16 +551,21 @@ export const penang = {
     {
       id: 'chendul',
       title: '煎蕊',
-      image: {
-        src: '/images/eat/ill-cendol.webp',
-        alt: '煎蕊手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-penang-chendul'],
       intro:
         '走热了再吃冰。Penang Road Famous TeoChew Chendul 从 1936 年的路边摊长成连锁；要吃「那条巷」的，去 Lebuh Keng Kwee 原档，不要专程跑去商场分店。',
       restaurants: [
         {
           id: 'teochew-chendul',
+        location: {
+          "address": "27 & 29 Lebuh Keng Kwee, George Town, Penang, Malaysia",
+          "areaId": "kimberley-cintra",
+          "connection": "本链接选 Keng Kwee 老街店，不是商场分店。",
+          "source": {
+            "label": "商家分店官网",
+            "url": "https://chendul.my/locate-us/"
+          }
+        },
           name: 'Penang Road Famous TeoChew Chendul',
           nameEn: '槟城路潮州煎蕊（原档）',
           neighborhood: '27 & 29 Lebuh Keng Kwee, George Town（官网 Locate Us）',
@@ -488,16 +586,20 @@ export const penang = {
     {
       id: 'curry-mee',
       title: '咖喱面（亚依淡，顺路）',
-      image: {
-        src: '/images/eat/ill-laksa.webp',
-        alt: '咖喱面手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-penang-curry-mee'],
       intro:
         '椰浆辣椒汤面是另一碗，不在乔治市步行圈。只在你已经要去极乐寺或亚依淡时顺路；不要专程当景点。',
       restaurants: [
         {
           id: 'air-itam-sister',
+        location: {
+          "address": "612-T Jalan Air Itam, Pekan Ayer Itam, Penang, Malaysia",
+          "connection": "在亚依淡，离乔治市核心区较远；只搭配亚依淡那一天，不作为老城步行早餐。",
+          "source": {
+            "label": "FunNow 店址",
+            "url": "https://www.myfunnow.com/en/branches/3045274534148"
+          }
+        },
           name: 'Air Itam Sister Curry Mee',
           nameEn: '亚依淡姐妹咖喱面',
           neighborhood: '612 T, Jalan Air Itam Pekan Ayer Itam, George Town（亚依淡市场）',
@@ -518,167 +620,222 @@ export const penang = {
     },
   ] as EatCategory[],
 
-  localTransit: [
-    '乔治市遗产区以步行为主。热、晒、阵雨：上午和傍晚走，中午进店或回酒店。',
-    'Rapid Penang 覆盖岛上更远的点。机场方向常见线路包括 401E、102，以 myRapid 当时公布为准。小贩和部分巴士仍可能要现金；Touch ’n Go 在交通和零售常见，规则以 touchngo.com.my 为准。',
-    'CAT 免费巴士在乔治市内转一圈，适合行李不多、只想少走一段晒路的时候。班次、首末班、周日是否跳站核 myPenang CAT 页。',
-    '叫车用 Grab 等。短距离在店屋区宁可走。不在此写车资。',
-    '升旗山缆车以 penanghill.gov.my 为准；官网写每日开放时段，维修和天气会停。那天改在城里吃饭。',
-  ],
-
-  practical: [
-    {
-      id: 'docs',
-      title: '证件与入境',
-      items: [
-        '外国旅客入境马来西亚，常见要先在官网填 Malaysia Digital Arrival Card（MDAC）。只使用移民局域名：imigresen-online.imi.gov.my 与 imi.gov.my。不要用收费代填站。',
-        '谁要填、谁豁免、停留资格、签证种类，以移民局当时公布为准。本页不写免签天数、费用或「一定能过」。',
-        '护照有效期、空白页、回程票等航司和边境要求各自核，不在此抄成清单。',
-      ],
-    },
-    {
-      id: 'payment',
-      title: '支付',
-      items: [
-        '林吉特现金在小贩档口仍然有用。不要假设每摊都能刷卡。',
-        'Touch ’n Go 卡 / 电子钱包在巴士、便利店、部分零售常见，产品种类和充值规则以 touchngo.com.my 为准，不把某年促销抄进行程。',
-        'Visa / Mastercard 在酒店和较大餐馆常见。街边档口不要赌。',
-        'DCC：ATM 和部分刷卡机不要选「以人民币结算」的动态货币转换。',
-      ],
-    },
-    {
-      id: 'online',
-      title: '上网',
-      items: [
-        '短途可靠漫游或落地 eSIM / 预付卡。机场有柜枱，品牌常换，出行前自己比覆盖，不在此写死套餐。离线下载乔治市地图和一两家店地址。',
-      ],
-    },
-    {
-      id: 'language',
-      title: '语言',
-      items: [
-        '马来语是官方语言。乔治市餐饮区英语常用；华语、闽南话在华人档口常见，不保证每一摊都能用普通话点完。扁担饭指菜比讲复杂句子有效。',
-      ],
-    },
-    {
-      id: 'weather',
-      title: '天气与走路',
-      items: [
-        '全年湿热，阵雨来得快。伞比第四件外套有用。店屋区人行道不宽，鞋底要能走湿砖。极端雷雨时改室内，不要坚持升旗山。',
-      ],
-    },
-    {
-      id: 'kl',
-      title: '吉隆坡',
-      items: [
-        '吉隆坡城市页待写：/places/malaysia。本页不把 KL 写成槟城的必接一站。若你的机票经 KL，把它当转机或另一趟，不要从乔治市的 3–5 晚里硬挤。',
-      ],
-    },
-  ] as PracticalBlock[],
-
-  practicalLinks: [
-    {
-      label: 'MDAC 官方登记',
-      url: 'https://imigresen-online.imi.gov.my/mdac/main',
-    },
-    {
-      label: '马来西亚移民局',
-      url: 'https://www.imi.gov.my/',
-    },
-    {
-      label: 'Touch ’n Go',
-      url: 'https://www.touchngo.com.my/',
-    },
-    {
-      label: 'Penang Hill',
-      url: 'https://www.penanghill.gov.my/',
-    },
-  ],
-
   itinerary: {
-    threeNights: {
-      title: '3 晚（只住乔治市）',
-      note: '住 UNESCO 店屋区。不安排环岛，不住海滩。',
-      days: [
-        { day: 'D1', body: '落地、进城、晚饭近住处。不安排景点。' },
-        {
-          day: 'D2',
-          body: '上午一盘炒粿条或一碗叻沙 → 同一片店屋巷重复走 → 姓氏桥走一截 → 晚上福建面或坐店。',
-        },
-        {
-          day: 'D3',
-          body: '上午小食或扁担饭 → 清真寺街一带走路 → 煎蕊当终点。不塞升旗山。',
-        },
-        { day: 'D4 离开', body: '不塞浮罗山背。' },
-      ],
-    },
-    fiveNights: {
-      title: '5 晚（乔治市 + 一件出口）',
-      note: '前三晚同上。余下两天只加一件事：升旗山，或极乐寺 / 亚依淡（可顺路咖喱面），或浮罗山背。不要三件同一趟。坐店只去 Auntie 或 Teksen 其中一家。炒粿条只认真排一家。',
-      days: [],
-    },
+  "threeNights": {
+    "title": "3 晚 · 乔治市住稳，分两天走老城",
+    "note": "适合第一次来、以步行和吃饭为主的人。住店屋核心周边，全程一家酒店；午间休息，餐厅按营业与食量择一。",
+    "days": [
+      {
+        "day": "D1 抵达",
+        "body": "落地后解决上网、进城和入住，晚饭放在酒店附近。",
+        "time": "按航班安排；入住后只留一段附近散步。",
+        "start": "机场到达大厅，按事先选好的交通方式进城。",
+        "return": "回同一家酒店休息，保存酒店地址。",
+        "links": [
+          {
+            "label": "抵达步骤",
+            "href": "?tab=practical#guide-arrival"
+          },
+          {
+            "label": "入住检查",
+            "href": "?tab=practical#guide-stay"
+          }
+        ]
+      },
+      {
+        "day": "D2 店屋与海边",
+        "body": "上午 Armenian / Acheh 店屋巷 → 午间吃饭休息 → 较凉快时去姓周桥。",
+        "time": "店屋 1.5–2 小时、桥上 30–60 分钟，中间留休息。",
+        "start": "Lebuh Armenian 与 Lebuh Pantai 一带；按酒店位置步行或叫车。",
+        "return": "从姓周桥回 Pengkalan Weld 主路再回酒店，车辆不驶上栈桥。",
+        "links": [
+          {
+            "label": "店屋核心路线",
+            "href": "?tab=places#area-armenian-acheh"
+          },
+          { "label": "附近可选：邱公司", "href": "/places/malaysia/penang/attractions/khoo-kongsi" },
+          {
+            "label": "姓氏桥入口与返回",
+            "href": "?tab=places#area-clan-jetties"
+          },
+          { "label": "姓周桥实拍与参观", "href": "/places/malaysia/penang/attractions/chew-jetty" },
+          {
+            "label": "Teksen 到店资料",
+            "href": "?tab=eat#teksen"
+          }
+        ]
+      },
+      {
+        "day": "D3 宗教街与小吃",
+        "body": "上午走 Kapitan Keling；午间休息。按营业时间安排 Keng Kwee 叻沙或煎蕊，傍晚可选小贩巷。",
+        "time": "宗教街 1–1.5 小时，小吃与巷道另留 1–2 小时；正午不硬走跨区。",
+        "start": "主街北端 Lebuh Light 一带，先查酒店到起点的路线。",
+        "return": "在 Penang Road 一带结束，步行或叫车回酒店。",
+        "links": [
+          {
+            "label": "宗教街路线",
+            "href": "?tab=places#area-kapitan-keling"
+          },
+          { "label": "附近可选：侨生博物馆", "href": "/places/malaysia/penang/attractions/pinang-peranakan-mansion" },
+          {
+            "label": "小贩巷与 Penang Road",
+            "href": "?tab=places#area-kimberley-cintra"
+          },
+          {
+            "label": "Keng Kwee 煎蕊店",
+            "href": "?tab=eat#teochew-chendul"
+          }
+        ]
+      },
+      {
+        "day": "D4 离开",
+        "body": "早餐、退房和前往机场，不加远郊景点。",
+        "time": "按航司要求的到场时间倒推，另留交通和行李缓冲。",
+        "start": "酒店；前一晚确认接车点或公共交通首班。",
+        "return": "到正确航站楼办理手续，抵达机场不等于完成值机。",
+        "links": [
+          {
+            "label": "交通安排",
+            "href": "?tab=practical#guide-transit"
+          },
+          {
+            "label": "证件检查",
+            "href": "?tab=practical#guide-documents"
+          }
+        ]
+      }
+    ]
   },
-
-  verifyTable: [
-    {
-      category: '签证 / 入境',
-      what: 'MDAC 是否仍要填、你是否豁免、签证与停留资格',
-      where: 'imigresen-online.imi.gov.my；imi.gov.my',
-      links: [
-        { label: 'MDAC', url: 'https://imigresen-online.imi.gov.my/mdac/main' },
-        { label: 'imi.gov.my', url: 'https://www.imi.gov.my/' },
-      ],
-    },
-    {
-      category: '支付',
-      what: 'Touch ’n Go 产品规则；小贩是否仍以现金为主',
-      where: 'touchngo.com.my；到档口看',
-      links: [{ label: 'Touch ’n Go', url: 'https://www.touchngo.com.my/' }],
-    },
-    {
-      category: '上网',
-      what: 'eSIM / 预付卡覆盖、机场取卡点',
-      where: '运营商；近 3 个月到过的人',
-    },
-    {
-      category: '交通',
-      what: '机场巴士线路、CAT 是否仍免费、升旗山缆车',
-      where: 'myRapid；myPenang；penanghill.gov.my',
-      links: [
-        {
-          label: 'Rapid Penang',
-          url: 'https://myrapid.com.my/bus-train/rapid-penang/rapid-pg-bus/',
-        },
-        { label: 'Penang Hill', url: 'https://www.penanghill.gov.my/' },
-      ],
-    },
-    {
-      category: '季节',
-      what: '暴雨、极端高温是否砸在你的日期上',
-      where: '马来西亚气象部门；出行当年预报',
-    },
-    {
-      category: '餐厅',
-      what: '仍否营业、休息日、卖完即止、迁址',
-      where: '各店 Michelin 指南页 / 官网；到附近再看门口',
-    },
-    {
-      category: '安全与健康',
-      what: '旅行预警、保险条款',
-      where: '本国外交部门；保险公司',
-    },
-    {
-      category: '法规',
-      what: '现金申报、烟酒药配额',
-      where: '马来西亚海关；MDAC 页上的申报提示',
-    },
-  ] as VerifyRow[],
+  "fiveNights": {
+    "title": "5 晚 · 乔治市，加一天亚依淡",
+    "note": "适合想多休息、少换酒店的人。前三天沿用城市路线，第四天只加一个外出方向，第五天回市区留白；天气或体力不合适就取消远郊安排。",
+    "days": [
+      {
+        "day": "D1 抵达",
+        "body": "落地后解决上网、进城和入住，晚饭放在酒店附近。",
+        "time": "按航班安排；入住后只留一段附近散步。",
+        "start": "机场到达大厅，按事先选好的交通方式进城。",
+        "return": "回同一家酒店休息，保存酒店地址。",
+        "links": [
+          {
+            "label": "抵达步骤",
+            "href": "?tab=practical#guide-arrival"
+          },
+          {
+            "label": "入住检查",
+            "href": "?tab=practical#guide-stay"
+          }
+        ]
+      },
+      {
+        "day": "D2 店屋与海边",
+        "body": "上午 Armenian / Acheh 店屋巷 → 午间吃饭休息 → 较凉快时去姓周桥。",
+        "time": "店屋 1.5–2 小时、桥上 30–60 分钟，中间留休息。",
+        "start": "Lebuh Armenian 与 Lebuh Pantai 一带；按酒店位置步行或叫车。",
+        "return": "从姓周桥回 Pengkalan Weld 主路再回酒店，车辆不驶上栈桥。",
+        "links": [
+          {
+            "label": "店屋核心路线",
+            "href": "?tab=places#area-armenian-acheh"
+          },
+          { "label": "附近可选：邱公司", "href": "/places/malaysia/penang/attractions/khoo-kongsi" },
+          {
+            "label": "姓氏桥入口与返回",
+            "href": "?tab=places#area-clan-jetties"
+          },
+          { "label": "姓周桥实拍与参观", "href": "/places/malaysia/penang/attractions/chew-jetty" },
+          {
+            "label": "Teksen 到店资料",
+            "href": "?tab=eat#teksen"
+          }
+        ]
+      },
+      {
+        "day": "D3 宗教街与小吃",
+        "body": "上午走 Kapitan Keling；午间休息。按营业时间安排 Keng Kwee 叻沙或煎蕊，傍晚可选小贩巷。",
+        "time": "宗教街 1–1.5 小时，小吃与巷道另留 1–2 小时；正午不硬走跨区。",
+        "start": "主街北端 Lebuh Light 一带，先查酒店到起点的路线。",
+        "return": "在 Penang Road 一带结束，步行或叫车回酒店。",
+        "links": [
+          {
+            "label": "宗教街路线",
+            "href": "?tab=places#area-kapitan-keling"
+          },
+          { "label": "附近可选：侨生博物馆", "href": "/places/malaysia/penang/attractions/pinang-peranakan-mansion" },
+          {
+            "label": "小贩巷与 Penang Road",
+            "href": "?tab=places#area-kimberley-cintra"
+          },
+          {
+            "label": "Keng Kwee 煎蕊店",
+            "href": "?tab=eat#teochew-chendul"
+          }
+        ]
+      },
+      {
+        "day": "D4 亚依淡",
+        "body": "先确认咖喱面当天营业再去亚依淡；吃完在这一带慢走。参观极乐寺按现场开放另作安排。",
+        "time": "给亚依淡留半天，交通和排队另算；不承诺下车就能吃到。",
+        "start": "酒店叫车或查好公交到亚依淡，出发前保存店址和回程接车点。",
+        "return": "在可停车的主路确认接车点回乔治市；公交先核末班及方向。",
+        "links": [
+          {
+            "label": "亚依淡姐妹咖喱面",
+            "href": "?tab=eat#air-itam-sister"
+          },
+          {
+            "label": "公交与 Grab 步骤",
+            "href": "?tab=practical#guide-transit"
+          }
+        ]
+      },
+      {
+        "day": "D5 重走巷道",
+        "body": "上午回喜欢的店屋巷，午间休息；晚餐从 Teksen 和 Auntie Gaik Lean 中择一家，提前确认营业和订位。",
+        "time": "街道留 1–2 小时，坐店晚餐另留；其余不排景点。",
+        "start": "酒店附近开始，不为再吃一家往返跨城。",
+        "return": "饭后回酒店，确认次日离境和接车安排。",
+        "links": [
+          {
+            "label": "店屋核心",
+            "href": "?tab=places#area-armenian-acheh"
+          },
+          {
+            "label": "Teksen",
+            "href": "?tab=eat#teksen"
+          },
+          {
+            "label": "Auntie Gaik Lean",
+            "href": "?tab=eat#auntie-gaik-lean"
+          }
+        ]
+      },
+      {
+        "day": "D6 离开",
+        "body": "早餐、退房和前往机场，不加远郊景点。",
+        "time": "按航司要求的到场时间倒推，另留交通和行李缓冲。",
+        "start": "酒店；前一晚确认接车点或公共交通首班。",
+        "return": "到正确航站楼办理手续，抵达机场不等于完成值机。",
+        "links": [
+          {
+            "label": "交通安排",
+            "href": "?tab=practical#guide-transit"
+          },
+          {
+            "label": "证件检查",
+            "href": "?tab=practical#guide-documents"
+          }
+        ]
+      }
+    ]
+  }
+},
 
   relatedGuides: [
-    '马来西亚国家页（槟城已上线，吉隆坡待写）→ /places/malaysia',
+    '马来西亚国家页（槟城、吉隆坡已上线）→ /places/malaysia',
     '槟城：只住乔治市的五日停法（待写）',
     '升旗山缆车：当天如何核班次（待写）',
-    '吉隆坡短页（待写）',
+    '吉隆坡城市页 → /places/malaysia/kuala-lumpur',
   ],
 
   startHere: [

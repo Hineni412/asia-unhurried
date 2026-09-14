@@ -1,0 +1,453 @@
+import type { CityContent } from './types'
+import { EAT_CRITERIA, EAT_EXCLUDE, HELP_PHRASES, consularHotline, consularUse } from './shared'
+import { cityImages } from './photoData'
+import { CONTENT_CITIES } from '../directory'
+
+const city = (slug: string) => {
+  const c = CONTENT_CITIES.find((x) => x.slug === slug)
+  if (!c) throw new Error(`missing directory city: ${slug}`)
+  return c
+}
+
+const tourism = { label: '交通部观光署', url: 'https://www.taiwan.net.tw/' }
+const taipeiTravel = { label: '台北旅游网', url: 'https://www.travel.taipei/' }
+const immigration = { label: '内政部移民署', url: 'https://www.immigration.gov.tw/' }
+
+export const taipei: CityContent = {
+  city: city('taipei'),
+  checkedAt: '2026-09-14',
+  meta: [
+    { label: '最佳季节', value: '秋冬最好（10–2 月）；春夏多雨，台风季 7–9 月留意预警。' },
+    { label: '机场', value: '桃园国际（TPE）为主，机场捷运直达台北车站；松山（TSA）在市区，多为区域航线。' },
+    { label: '建议停留', value: '3–4 晚。城市不大，住稳一处每天一个方向；夜市留到晚上慢慢吃。' },
+    { label: '地区标签', value: '东亚 · 岛屿城市' },
+    { label: '气质', value: '夜市、眷村味、捷运沿线的慢生活' },
+    { label: '核实日期', value: '2026-09-14' },
+  ],
+  essentials: [
+    {
+      title: '机场 → 市区',
+      body: '桃园机场捷运直达台北车站约 35–50 分钟（直达车较快）；国光客运等巴士按片区选线。松山机场就在市区，捷运直接进城。',
+      action: { label: '查看抵达步骤', to: '?tab=practical#guide-arrival' },
+      links: [{ label: '桃园机场', url: 'https://www.taoyuan-airport.com/' }],
+    },
+    {
+      title: '建议住哪',
+      body: '第一次来住台北车站—西门町一带（捷运两线交汇、晚上有吃）或中山／永康街一带（安静、吃得好）。全程一处，台北不大不用换。',
+      action: { label: '订房前逐项检查', to: '?tab=practical#guide-stay' },
+    },
+    {
+      title: '建议晚数',
+      body: '3 晚排故宫半天、龙山寺与剥皮寮半天、夜市一两晚；4 晚加九份／北投或纯留白。每天一个方向加一处夜市。',
+      action: { label: '展开每天安排', to: '?tab=itinerary#plan-three' },
+    },
+  ],
+  overview: [
+    '台北的骨架是捷运：淡水信义线、板南线交汇于台北车站，大部分片区都在两三站范围内。城市不大，慢旅行的答案是把住处定稳，每天一个方向。',
+    '故宫、龙山寺、剥皮寮、大稻埕是历史线；永康街、赤峰街、民生社区是生活线；夜市是每天晚上的收尾。按这三条线分天，不按清单打卡。',
+    '台北的密度低、节奏慢，咖啡馆和豆花店是自带的休息站。走累了坐进一家，比赶下一个景点更像这里的日常。',
+    '别把台北当台北 101 加夜市的两点一线——它的好在巷子里：早餐店、传统市场、旧公寓楼下的咖啡店。',
+  ],
+  gettingThere: {
+    intro: [
+      '桃园机场（TPE）进城：机场捷运直达车到台北车站约 35 分钟；国光客运等巴士按片区选线，深夜有大巴。松山机场（TSA）在市区，捷运文湖线直接接。',
+      '市内靠捷运 + 悠游卡（EasyCard），一卡刷捷运、巴士、YouBike 与便利店。捷运站标识有中文，换乘简单。',
+      '出租车便宜规范、随招随停；深夜与行李多时是合理选项。',
+    ],
+    links: [
+      { label: '台北捷运', url: 'https://www.metro.taipei/' },
+      { label: '悠游卡', url: 'https://www.easycard.com.tw/' },
+    ],
+    verifyReminders: [
+      '机场捷运直达车与普通车的当前票价与发车间隔',
+      '悠游卡购买点与手机加卡方式',
+      '捷运末班时间（各线约午夜）',
+      'YouBike 注册方式（需台湾手机号或按游客流程）',
+    ],
+  },
+  neighborhoods: [
+    {
+      id: 'ximen-taipei-station',
+      title: '西门町与台北车站',
+      suited: '第一次来、要交通与晚上有饭吃的人。',
+      image: cityImages['taipei-ximen'],
+      body: '台北车站是捷运、台铁、高铁、机场捷运的交汇点；西门町是老牌年轻人商圈，白天普通、晚上热闹。住这里，每天的出发与回来都省一段。',
+      visit: {
+        duration: '这一带是住处与枢纽；逛街区另去中山与大稻埕。',
+        entry: '捷运台北车站或西门站。',
+        walk: '台北车站地下街认路 → 西门町主街晚上看。',
+        return: '捷运回；车站地下大，记出口编号。',
+        stay: '首选居住区；酒店密集价位友好，选离捷运出口近的。',
+        source: taipeiTravel,
+      },
+    },
+    {
+      id: 'dadaocheng',
+      title: '大稻埕与龙山寺',
+      suited: '想看老台北、传统市场与庙宇的人。',
+      image: cityImages['taipei-dadaocheng'],
+      body: '大稻埕的迪化街是南北货与中药老街区，霞海城隍庙在街内；往南接龙山寺与剥皮寮老街。上午走迪化街，下午走万华，是最老台北的一天。',
+      visit: {
+        duration: '半天到一天。',
+        entry: '捷运大桥头站／北门站（大稻埕）或龙山寺站（万华）。',
+        walk: '迪化街 → 霞海城隍庙 → 大稻埕码头河边；或龙山寺 → 剥皮寮。',
+        return: '就近捷运站回；龙山寺一带晚上夜市继续。',
+        stay: '不建议住万华深处；住台北车站一站距离内。',
+        source: taipeiTravel,
+      },
+    },
+    {
+      id: 'zhongshan-yongkang',
+      title: '中山与永康街',
+      suited: '想吃好、逛小店、住得安静一点的人。',
+      image: cityImages['taipei-zhongshan'],
+      body: '中山站周边是百货与赤峰街老巷小店；永康街以牛肉面、芒果冰与小馆子闻名，巷子安静。把「逛街＋吃」的一天放这里。',
+      visit: {
+        duration: '半天到一天。',
+        entry: '捷运中山站或东门站。',
+        walk: '赤峰街 → 中山地下书街 → 永康街巷子。',
+        return: '东门站或中山站回；晚餐就在永康街解决。',
+        stay: '想住得舒服选这里；酒店比车站区贵但环境好。',
+        source: taipeiTravel,
+      },
+    },
+    {
+      id: 'minsheng-songshan',
+      title: '民生社区与松山',
+      suited: '多住几晚、想看台北日常街区的人。',
+      image: cityImages['taipei-songshan'],
+      body: '民生社区是老规划住宅区，咖啡馆与小餐馆密度高；松山有饶河街夜市与松山文创园。节奏最慢，适合第二三天以后。',
+      visit: {
+        duration: '半天到一天。',
+        entry: '捷运松山站或南京三民站。',
+        walk: '民生社区巷子 → 松山文创 → 饶河街夜市（晚上）。',
+        return: '松山站回；饶河街人多，看紧随身物。',
+        stay: '不必为此换住处；从市中心捷运可达。',
+        source: taipeiTravel,
+      },
+    },
+  ],
+  dayTrips: [
+    { direction: '九份与金瓜石', how: '捷运到瑞芳／忠孝复兴转巴士，约一个半小时', worth: '山城茶馆与旧矿区；白天人多，住一晚看夜景或清晨。' },
+    { direction: '北投温泉', how: '捷运淡水信义线转新北投支线，约 40 分钟', worth: '温泉博物馆、地热谷与公共汤屋；半天到一天，冬天尤其值。' },
+    { direction: '野柳', how: '台北转运站巴士约一个半小时', worth: '海蚀奇岩地质公园；看天气，风大时体验打折。' },
+  ],
+  dayTripNote: '九份看天气选平日；北投半天最顺；野柳风大时体验打折。',
+  eatIntro:
+    '台北的吃以夜市与小馆为骨架：早餐店（豆浆油条蛋饼）开始一天，午餐小馆，晚上夜市慢慢吃。一个人也完全吃得开。',
+  eatCriteria: EAT_CRITERIA,
+  eatExclude: EAT_EXCLUDE,
+  categories: [
+    {
+      id: 'breakfast', title: '台式早餐',
+      intro: '豆浆、烧饼油条、蛋饼是台北的早餐骨架——一早排队的是街坊，不是游客。早上去，中午很多店就收。',
+      restaurants: [
+        {
+          id: 'fuhang', name: '阜杭豆浆', nameEn: 'Fu Hang Dou Jiang', neighborhood: '善导寺／华山市场',
+          location: { address: '台北市中正区忠孝东路一段108号2楼（华山市场）', areaId: 'ximen-taipei-station', connection: '捷运善导寺站5号口步行约2分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=阜杭豆漿' } },
+          order: ['咸豆浆', '厚烧饼夹油条', '蛋饼'],
+          whyLinger: '台北最有名的豆浆店——多年米其林必比登推介。厚烧饼现烤，队伍本身就是体验的一部分。',
+          practical: '市场二楼，从一楼就开始排队；只收现金。卖完提前收。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=阜杭豆漿' }],
+          queueNote: '常年排 20–60 分钟；开门（05:30 前后）时段最短，周一公休以现场为准。',
+        },
+        {
+          id: 'jianhong', name: '建宏牛肉面', nameEn: 'Jian Hong Beef Noodles', neighborhood: '西门町／台北车站',
+          location: { address: '台北市万华区西宁南路附近', areaId: 'ximen-taipei-station', connection: '捷运西门站步行约8分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=建宏牛肉麵+西門' } },
+          order: ['红烧牛肉面（小碗先试）', '自取小菜按盘计'],
+          whyLinger: '西门町边缘的 24 小时牛肉面老店——深夜到达或早班机前都接得上，街坊价。',
+          practical: '现金为主；24 小时营业以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=建宏牛肉麵+西門' }],
+        },
+      ],
+    },
+    {
+      id: 'beef-noodle', title: '牛肉面与小馆',
+      intro: '牛肉面分红烧与清炖两派；永康街一带密度高。小馆子看本地人排队的进。',
+      restaurants: [
+        {
+          id: 'yongkang-beef', name: '永康牛肉面', nameEn: 'Yongkang Beef Noodles', neighborhood: '永康街',
+          location: { address: '台北市大安区金山南路二段31巷17号', areaId: 'zhongshan-yongkang', connection: '捷运东门站步行约5分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=永康牛肉麵' } },
+          order: ['红烧牛肉面', '粉蒸排骨或粉蒸肥肠'],
+          whyLinger: '永康街的老牌牛肉面，1963 年起家——红烧汤头浓，粉蒸类小菜是另一半招牌。',
+          practical: '店外排队等位；现金与刷卡以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=永康牛肉麵' }],
+          queueNote: '饭点排 30 分钟起；开门（11 点前）与下午时段最松。',
+        },
+        {
+          id: 'wangtea', name: '有记名茶', nameEn: 'Wangtea', neighborhood: '大稻埕',
+          location: { address: '台北市大同区重庆北路二段64巷26号', areaId: 'dadaocheng', connection: '捷运大桥头站步行约10分钟', source: { label: '官网', url: 'https://www.wangtea.com.tw/' } },
+          order: ['文山包种茶', '铁观音（炭焙）'],
+          whyLinger: '大稻埕的百年茶行——老厂房里焙茶，可买茶也可坐下喝。迪化街散步的配套一站。',
+          practical: '茶行门市可试喝；按两／按罐买。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '官网', url: 'https://www.wangtea.com.tw/' }],
+        },
+        {
+          id: 'jin-feng', name: '金峰鲁肉饭', nameEn: 'Jin Feng Lu Rou Fan', neighborhood: '中正纪念堂',
+          location: { address: '台北市中正区罗斯福路一段10号', connection: '捷运中正纪念堂站2号口步行约2分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=金峰魯肉飯' } },
+          order: ['鲁肉饭', '控肉饭', '排骨汤或苦瓜汤'],
+          whyLinger: '中正纪念堂旁的老牌鲁肉饭——鲁肉胶质感浓，翻台快。看完纪念馆或晨曦广场后的本地一餐。',
+          practical: '店外排队点餐；翻台快不必久等。现金为主。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=金峰魯肉飯' }],
+          queueNote: '饭点店外排队；翻台快，等位时间通常不长。',
+        },
+        {
+          id: 'din-tai-fung', name: '鼎泰丰（信义本店）', nameEn: 'Din Tai Fung Xinyi', neighborhood: '永康街口／信义路',
+          location: { address: '台北市大安区信义路二段194号', areaId: 'zhongshan-yongkang', connection: '捷运东门站步行约3分钟', source: { label: '官网', url: 'https://www.dintaifung.com.tw/' } },
+          order: ['小笼包', '红油抄手', '蛋炒饭'],
+          whyLinger: '小笼包的本店——在永康街口，透明厨房看擀皮。标准答案式的店，但品质对得起名气。',
+          practical: '取号等位，等位单有时段预估；可先看号再去永康街转。以官网为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '官网', url: 'https://www.dintaifung.com.tw/' }],
+          queueNote: '饭点取号等 30–60 分钟常见；非饭点或直接外带更快。',
+        },
+      ],
+    },
+    {
+      id: 'night-market', title: '夜市',
+      intro: '夜市是台北晚餐的正确打开方式：饶河街、宁夏各有性格。一次只去一个，慢慢走慢慢吃。',
+      restaurants: [
+        {
+          id: 'fuzhou-pepper', name: '福州世祖胡椒饼', nameEn: 'Fuzhou Pepper Bun', neighborhood: '饶河街夜市入口',
+          location: { address: '台北市松山区饶河街（庙口入口）', areaId: 'minsheng-songshan', connection: '捷运松山站5号口步行即到', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=福州世祖胡椒餅' } },
+          order: ['胡椒饼（现烤）'],
+          whyLinger: '饶河街庙口的定番——炭炉贴烤的胡椒饼，多年必比登推介。进夜市前先排队拿一个。',
+          practical: '摊位现烤现卖，现金为主。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=福州世祖胡椒餅' }],
+          queueNote: '队伍看着长但烤炉翻台快，通常 10–20 分钟。',
+        },
+        {
+          id: 'liuyuzi', name: '刘芋仔蛋黄芋饼', nameEn: 'Liu Yu Zi', neighborhood: '宁夏夜市',
+          location: { address: '台北市大同区宁夏路（宁夏夜市中段）', areaId: 'dadaocheng', connection: '捷运双连站或中山站步行约8分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=劉芋仔+寧夏夜市' } },
+          order: ['蛋黄芋饼', '香酥芋丸'],
+          whyLinger: '宁夏夜市排队最长的摊之一——现炸芋泥球包咸蛋黄肉松，两颗一组刚好。',
+          practical: '摊位现金；两颗起卖常见，按现场规则。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=劉芋仔+寧夏夜市' }],
+          queueNote: '晚上排队 20 分钟起；接近收摊时段可能卖完。',
+        },
+      ],
+    },
+    {
+      id: 'dessert', title: '豆花与冰品',
+      intro: '豆花、芒果冰是台北的下午歇脚——店多有座位，走累了坐一碗。',
+      restaurants: [
+        {
+          id: 'ice-monster', name: 'Ice Monster', nameEn: '冰馆', neighborhood: '永康街',
+          location: { address: '台北市大安区永康街（以门店现址为准）', areaId: 'zhongshan-yongkang', connection: '捷运东门站步行约5分钟', source: { label: '官网', url: 'https://www.ice-monster.com/' } },
+          order: ['新鲜芒果冰（季节限定）', '珍珠奶茶雪花冰'],
+          whyLinger: '永康街芒果冰的元祖店之一——「芒果冰」这个品类就是从这条街传出去的。',
+          practical: '有座位可久坐；芒果季（夏）与非芒果季菜单不同。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '官网', url: 'https://www.ice-monster.com/' }],
+        },
+        {
+          id: 'shuanglian-tangyuan', name: '双连圆仔汤', nameEn: 'Shuanglian Tangyuan', neighborhood: '双连',
+          location: { address: '台北市大同区民生西路136号', areaId: 'zhongshan-yongkang', connection: '捷运双连站步行约3分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=雙連圓仔湯' } },
+          order: ['红豆汤圆仔', '烧麻糬'],
+          whyLinger: '老台北的甜汤店——冬天一碗热圆仔汤，夏天挫冰。比冰店便宜也更日常。',
+          practical: '现金小馆；营业时间以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=雙連圓仔湯' }],
+        },
+      ],
+    },
+    {
+      id: 'teahouse', title: '茶与老茶馆',
+      intro: '老茶行与茶馆并存——下午留一次给茶，比再排一个景点更像台北。',
+      restaurants: [
+        {
+          id: 'wistaria', name: '紫藤庐', nameEn: 'Wistaria Tea House', neighborhood: '新生南路',
+          location: { address: '台北市大安区新生南路三段16巷1号', areaId: 'zhongshan-yongkang', connection: '捷运台电大楼站步行约10分钟', source: { label: '官网', url: 'https://www.wistariateahouse.com/' } },
+          order: ['按人计的茶席（选一款台湾茶）', '茶点'],
+          whyLinger: '日治时期老宅改的茶馆——台湾现代茶文化的发源地之一，院子和木地板本身就是内容。',
+          practical: '按人计茶位；可先问当日茶单。营业以官网为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '官网', url: 'https://www.wistariateahouse.com/' }],
+        },
+      ],
+    },
+  ],
+  howToOrder: [
+    '早餐店口头点单或画单；豆浆分甜咸，蛋饼加不加酱油膏。',
+    '夜市摊位指着想吃的点；一份通常小份可多家吃。',
+    '小馆子看墙上菜单或问店员；小菜自取自结账。',
+    '冰店先选底（挫冰／豆花）再选配料。',
+  ],
+  avoid: [
+    '夜市排最夸张的队不一定最好——旁边的摊常常一样好。',
+    '士林夜市地下美食街与路面摊是两种体验，别只在游客动线上吃。',
+    '「伴手礼店」的试吃轰炸按需要买，不为凑单。',
+  ],
+  eatRhythm:
+    '早餐在住处附近早餐店；午餐走哪吃哪的小馆；下午茶留一次给豆花或茶；晚上一天一个夜市。不用订位，不用追名店。',
+  allergies: [
+    '酱油与酱料普遍含麸质与黄豆。',
+    '花生粉常用作甜点与面线配料，坚果过敏留意。',
+    '素食找「素食」招牌，台北素食密度高。',
+  ],
+  guide: {
+    city: '台北',
+    checkedAt: '2026-09-14',
+    scope: '以公共交通为主的首次台北行程；入台证件按本人证件另核官方要求',
+    intro: '台北的骨架是捷运与台北车站。以下按 3–4 晚、住车站或中山一带写。',
+    topics: [
+      {
+        id: 'documents', title: '证件与入台', summary: '入台证／签注按户籍与证件核对，规则与港澳不同。', stage: 'before',
+        recommendation: '大陆居民赴台需办「大陆居民往来台湾通行证」与签注，并按规定办理入台许可；港澳及其他护照按移民署规定核对。两岸政策可能调整，以签发机关与移民署当前公告为准。',
+        steps: [
+          { title: '先按户籍与证件查路径', body: '大陆户籍在公安出入境办通行证与签注；入台许可的办理渠道与开放状态按当前规定核对，不套旧攻略。' },
+          { title: '核验证件覆盖行程', body: '通行证、签注与入台许可的有效期都要覆盖行程首尾；复印与照片备份。' },
+          { title: '材料放一起', body: '返程订单、首晚住宿信息、同行人联系方式离线保存。' },
+        ],
+        done: '通行证、签注与入台许可齐备，订单离线可查。',
+        fallback: '证件问题找签发机关咨询；政策以官方公告为准，不以论坛为准。',
+        sources: [immigration, { label: '国家移民管理局', url: 'https://www.nia.gov.cn/' }],
+      },
+      {
+        id: 'mobile', title: '上网与手机', summary: '漫游或落地 SIM 都方便，机场到达厅可办。', stage: 'before',
+        recommendation: '国内运营商台湾漫游包最省事；落地在桃园机场到达厅买游客 SIM（中华电信、台湾大哥大等柜台并排比价）。中文环境，沟通零障碍。',
+        steps: [
+          { title: '比一次漫游与落地卡', body: '漫游按天计费适合短行程；落地 SIM 含通话与流量，机场柜台即办即用。' },
+          { title: '落地先测再离开柜台', body: '开地图、发消息、存酒店地址；柜台人员可帮忙装卡。' },
+          { title: '留一个能打电话的方案', body: '订民宿与叫计程车可能需要本地号码；纯流量方案留备选。' },
+        ],
+        done: '离开 Wi-Fi 能开地图发消息；知道套餐有效期。',
+        fallback: '机场柜台即办；市区电信门市与便利店也可办。',
+        sources: [tourism],
+      },
+      {
+        id: 'payment', title: '支付与悠游卡', summary: '现金仍是王道，悠游卡管交通与小额。', stage: 'before',
+        recommendation: '台湾小店与夜市以现金为主；悠游卡（EasyCard）刷捷运、巴士、YouBike 与便利店。银行卡在大店与百货可用，但别把支付全压在刷卡上。',
+        steps: [
+          { title: '备足新台币现金', body: '夜市、小馆、传统市场多数收现金；机场与市区 ATM 支持境外卡取现。' },
+          { title: '落地买悠游卡', body: '机场捷运站或便利店可买可充；一人一卡，退卡规则看官网。' },
+          { title: '刷卡时看币种', body: '提示转人民币计价时选 TWD；保存大额收据。' },
+        ],
+        done: '现金够两天、悠游卡可用、银行卡确认能取现。',
+        fallback: '现金不够找邮局或便利店 ATM；悠游卡余额便利店可退（按规则）。',
+        sources: [{ label: '悠游卡', url: 'https://www.easycard.com.tw/' }, tourism],
+      },
+      {
+        id: 'stay', title: '住宿与入住', summary: '台北车站或中山一带住稳，中文沟通无障碍。', stage: 'before',
+        recommendation: '住台北车站—西门町（交通最顺）或中山／永康街（安静好吃）。台北住宿从青旅到酒店选择多；民宿要查合法登记。',
+        steps: [
+          { title: '按晚间活动圈选片区', body: '把酒店放在夜市或晚饭区一程捷运内；台北不大，不用为中心性焦虑。' },
+          { title: '民宿查合法登记', body: '订民宿前查是否有合法旅馆／民宿登记；大厦内的「日租」有消防与纠纷风险。' },
+          { title: '确认入住与寄存', body: '入住时间多为下午；早到先寄存行李。订前看取消规则与是否含早。' },
+          { title: '晚到直接打电话', body: '中文环境直接电话确认；保存地址给计程车司机看。' },
+        ],
+        done: '入住时间、寄存与晚到方案确认；民宿合法性已查。',
+        fallback: '民宿有问题改订挂牌酒店；现场纠纷联系订房平台。',
+        sources: [taipeiTravel],
+      },
+      {
+        id: 'arrival', title: '机场 → 酒店', summary: '机场捷运到台北车站，再按住处接捷运或计程车。', stage: 'arrival',
+        recommendation: '桃园机场落地：机场捷运直达车到台北车站约 35 分钟，再换乘市区捷运；行李多或深夜到选国光客运等巴士或计程车。松山机场落地直接捷运进城。',
+        steps: [
+          { title: '落地前存好路线', body: '记下车站、换乘与末班；机场捷运直达车与普通车站台不同。' },
+          { title: '到达厅一次办完', body: '买 SIM 与悠游卡、取现都在到达层办完再走。' },
+          { title: '到台北车站找出口', body: '台北车站三层交汇，按出口编号对照地图；找不到就出站后叫计程车补最后一段。' },
+          { title: '最后一段别硬扛', body: '行李多直接计程车到酒店；台北计程车便宜规范。' },
+        ],
+        done: '到酒店，回程知道去台北车站坐机场捷运。',
+        fallback: '深夜到有大巴与计程车；松山抵达直接捷运或计程车。',
+        sources: [{ label: '桃园机场', url: 'https://www.taoyuan-airport.com/' }, { label: '台北捷运', url: 'https://www.metro.taipei/' }],
+      },
+      {
+        id: 'transit', title: '市内交通', summary: '捷运加悠游卡覆盖全城，中文标识零门槛。', stage: 'during',
+        recommendation: '捷运五条线覆盖主要片区；巴士与 YouBike 补充。捷运内禁食饮（罚款），车厢博爱座留意。计程车便宜，深夜与雨天是好选项。',
+        steps: [
+          { title: '认线色与方向', body: '按线色与终点站名找方向；出口编号对照地图。' },
+          { title: '悠游卡上下都刷', body: '巴士上下车各刷一次；YouBike 注册需手机号，游客流程看官网。' },
+          { title: '记住末班约午夜', body: '各线末班不同；深夜计程车随处可拦。' },
+          { title: '捷运内不吃不喝', body: '车厢与站内禁食饮含口香糖；遵守排队与博爱座规则。' },
+        ],
+        done: '会用悠游卡坐捷运巴士、查末班、知道住处出口。',
+        fallback: '迷路问站务员（中文）；计程车扬招或 55688 叫车。',
+        sources: [{ label: '台北捷运', url: 'https://www.metro.taipei/' }],
+      },
+    ],
+    checklist: [
+      { id: 'c-docs', text: '通行证、签注与入台许可齐备且在有效期', topic: '证件与入台' },
+      { id: 'c-orders', text: '返程与首晚住宿订单离线保存', topic: '证件与入台' },
+      { id: 'c-net', text: '上网方案选定（漫游或落地 SIM）', topic: '上网与手机' },
+      { id: 'c-cash', text: '备足新台币现金；银行卡境外取现开通', topic: '支付与悠游卡' },
+      { id: 'c-easy', text: '悠游卡购买方式已确认', topic: '支付与悠游卡' },
+      { id: 'c-stay', text: '入住时间、寄存与晚到方案确认；民宿合法性已查', topic: '住宿与入住' },
+      { id: 'c-arrival', text: '机场捷运或巴士路线已截图', topic: '机场 → 酒店' },
+      { id: 'c-last', text: '已查住处附近捷运末班', topic: '市内交通' },
+    ],
+  },
+  itinerary: {
+    threeNights: {
+      title: '3 晚：故宫半天，老城半天',
+      note: '住台北车站或中山。每天一个方向，晚上留给夜市。',
+      days: [
+        { day: '第一天', body: '抵达入住，晚上就近夜市（宁夏或饶河街）慢慢吃。', time: '按落地安排', start: 'TPE → 酒店', return: '夜市后回住处', links: [{ label: '抵达步骤', href: '?tab=practical#guide-arrival' }] },
+        { day: '第二天', body: '上午故宫（择展厅深看），下午士林或北投方向；晚上回市区。', time: '上午馆、下午散步', start: '住处 → 故宫', return: '捷运回市区', links: [{ label: '看点', href: '?tab=places' }] },
+        { day: '第三天', body: '上午大稻埕迪化街 → 龙山寺与剥皮寮；按航班收尾。', time: '上午老街、午后收尾', start: '大桥头／北门', return: '酒店 → 机场', links: [{ label: '大稻埕与龙山寺', href: '?tab=places#area-dadaocheng' }] },
+      ],
+    },
+    fiveNights: {
+      title: '5 晚：加九份或北投',
+      note: '3 晚骨架上加一日近郊与一天留白；夜市每晚换一个。',
+      days: [
+        { day: '第一天', body: '抵达入住，就近夜市。', time: '按落地安排', start: 'TPE → 酒店', return: '住处附近', links: [{ label: '抵达步骤', href: '?tab=practical#guide-arrival' }] },
+        { day: '第二天', body: '故宫 + 士林方向一天；晚宁夏夜市。', time: '全天', start: '故宫', return: '市区', links: [{ label: '看点', href: '?tab=places' }] },
+        { day: '第三天', body: '大稻埕 → 龙山寺 → 剥皮寮；晚艋舺夜市方向。', time: '全天', start: '大桥头', return: '万华／市区', links: [{ label: '大稻埕与龙山寺', href: '?tab=places#area-dadaocheng' }] },
+        { day: '第四天', body: '九份／北投二选一日，或民生社区慢走留白。', time: '近郊一天', start: '按所选方向', return: '回市区', links: [{ label: '民生社区与松山', href: '?tab=places#area-minsheng-songshan' }] },
+        { day: '第五天', body: '中山／永康街逛吃补买，按航班去机场。', time: '上午慢走、午后收尾', start: '中山站', return: '酒店 → 机场', links: [{ label: '中山与永康街', href: '?tab=places#area-zhongshan-yongkang' }] },
+      ],
+    },
+  },
+  safety: {
+    city: '台北',
+    checkedAt: '2026-09-14',
+    emergencyNote: '台北治安好、中文无障碍；主要准备台风与地震应对。夜市人挤时看紧随身物。',
+    contacts: [
+      { name: '报警', number: '110', dial: '110', use: '盗窃、遗失、纠纷', source: { label: '内政部警政署', url: 'https://www.npa.gov.tw/' }, urgent: true },
+      { name: '急救 / 火灾', number: '119', dial: '119', use: '急救车与火警', source: tourism, urgent: true },
+      { name: '旅游咨询', number: '0800-011-765', dial: '0800011765', use: '观光署旅游服务热线', source: tourism },
+      { name: '领事保护', number: '+86-10-12308', dial: '+861012308', use: consularUse, source: consularHotline },
+    ],
+    phrases: HELP_PHRASES,
+    preparation: [
+      '通行证、签注与入台许可截图离线保存。',
+      '保存酒店地址与电话（中文环境直接给人看）。',
+      '境外医疗保险与救援电话另存。',
+      '台风季（7–9 月）行程留弹性，关注气象预警。',
+      '记熟 110／119；地震时先护头再撤离。',
+      '夜市与车站人多处看好随身物。',
+    ],
+    alerts: [
+      { title: '台风', body: '夏秋台风可能停班停课、捷运减速、航班取消。台风天不安排户外与山区行程，按官方停班信息调整。', source: { label: '中央气象署', url: 'https://www.cwa.gov.tw/' } },
+      { title: '地震', body: '台湾地震多发。地震时先就地掩护（桌下、远离玻璃），晃动停后再移动；酒店留意逃生指示。', source: { label: '中央气象署', url: 'https://www.cwa.gov.tw/' } },
+      { title: '机车与路口', body: '机车流量大，路口注意右转车与巷道冲出的机车；走斑马线不闯灯。', source: tourism },
+      { title: '山区步道', body: '阳明山、猫空等步道雨后湿滑；按体力选线，带好水与雨具。', source: tourism },
+    ],
+    scenarios: [
+      { id: 'safety-documents', title: '证件丢了', steps: ['到最近派出所报失拿证明。', '联系签发机关咨询补办路径（大陆证件与港澳证件渠道不同）。', '保留报失证明用于保险理赔。', '确认新证件出入境可用再改签。'], sources: [immigration] },
+      { id: 'safety-medical', title: '需要就医', steps: ['紧急拨 119。', '非紧急请酒店推荐诊所；大医院挂号方便。', '保留收据与诊断证明走保险。'], sources: [tourism] },
+      { id: 'safety-typhoon', title: '台风来袭', steps: ['关注中央气象署预警与停班停课信息。', '台风天不安排山区、海边与户外活动；储备饮水食物。', '航班可能取消，联系航空公司改签；行程留缓冲。'], sources: [{ label: '中央气象署', url: 'https://www.cwa.gov.tw/' }, tourism] },
+      { id: 'safety-fraud', title: '消费纠纷', steps: ['账单争议先拍照留证再交涉。', '出租车坚持打表；议价先讲清。', '纠纷拨 110 或向观光署热线求助。'], sources: [tourism] },
+      { id: 'safety-transport', title: '错过末班或迷路', steps: ['台北计程车便宜随处可拦，深夜不是难题。', '迷路找捷运站务员或便利店。', '手机没电找车站服务台。'], sources: [{ label: '台北捷运', url: 'https://www.metro.taipei/' }] },
+    ],
+  },
+  relatedGuides: [
+    '台湾国家页 → /places/taiwan',
+    '东京城市页 → /places/japan/tokyo',
+    '香港城市页 → /places/hong-kong',
+  ],
+  sourcesNote: [
+    '街区、看点与交通信息来自官方公开资料与通用旅行常识，核对日期见上。',
+    '店单按「可核实」标准收录：每家店留核实日期与来源；营业与排队信息以现场和官网为准。',
+    `官方入口：${city('taipei').officialLinks.map((l) => l.label).join('、')}。`,
+  ],
+}

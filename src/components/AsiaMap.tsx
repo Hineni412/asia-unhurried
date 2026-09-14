@@ -19,7 +19,7 @@ export function AsiaMap() {
         className="asia-map-svg block h-auto w-full"
         viewBox={MAP_VIEWBOX}
         role="img"
-        aria-label="东亚与东南亚：已上线与待写的地点地图"
+        aria-label="东亚与东南亚：已上线地点地图"
       >
         <title>Asia Unhurried — destinations</title>
         <path d={LAND_PATH} fill="var(--color-sand)" />
@@ -45,6 +45,7 @@ export function AsiaMap() {
         />
         {MAP_CITIES.map((c) => {
           const live = c.status === 'live'
+          const linked = Boolean(c.href)
           const isActive = active === c.id
           const r = live ? 5.5 : 3.2
           return (
@@ -57,18 +58,18 @@ export function AsiaMap() {
               onFocus={() => setActive(c.id)}
               onBlur={() => setActive((id) => (id === c.id ? null : id))}
               onClick={() => {
-                if (live && c.href) navigate(c.href)
+                if (c.href) navigate(c.href)
               }}
               onKeyDown={(e) => {
-                if ((e.key === 'Enter' || e.key === ' ') && live && c.href) {
+                if ((e.key === 'Enter' || e.key === ' ') && c.href) {
                   e.preventDefault()
                   navigate(c.href)
                 }
               }}
               tabIndex={0}
-              role={live ? 'link' : 'img'}
+              role={linked ? 'link' : 'img'}
               aria-label={`${c.nameZh} ${c.name}${live ? '' : ' · 待写'}`}
-              style={{ cursor: live ? 'pointer' : 'default' }}
+              style={{ cursor: linked ? 'pointer' : 'default' }}
             >
               {live ? (
                 <circle
@@ -90,10 +91,10 @@ export function AsiaMap() {
         })}
         {hovered ? <CityLabel city={hovered} /> : null}
       </svg>
-      <p className="mt-3 text-center text-xs text-ink-faint md:text-left">
-        <span className="text-accent">香港、槟城已上线</span>
+      <p className="mt-3 text-center text-note text-ink-faint md:text-left">
+        <span className="text-accent">{MAP_CITIES.filter((c) => c.status === 'live').length} 城已上线，点开看城市页</span>
         {' · '}
-        其余待写 · 地图不含中国大陆目的地点
+        地图不含中国大陆目的地点
       </p>
     </div>
   )
@@ -118,11 +119,11 @@ function CityLabel({ city: c }: { city: MapCity }) {
       />
       <text
         x={lx}
-        y={c.y - 28}
+        y={c.y - 34}
         textAnchor={anchor}
         className="asia-map-label-zh"
         fill="var(--color-ink)"
-        fontSize={15}
+        fontSize={18}
         fontFamily="var(--font-zh), var(--font-serif)"
         fontWeight={500}
       >
@@ -133,7 +134,7 @@ function CityLabel({ city: c }: { city: MapCity }) {
         y={c.y - 12}
         textAnchor={anchor}
         fill={live ? 'var(--color-accent)' : 'var(--color-ink-faint)'}
-        fontSize={11}
+        fontSize={14}
         fontFamily="var(--font-serif), Georgia, serif"
         letterSpacing="0.04em"
       >

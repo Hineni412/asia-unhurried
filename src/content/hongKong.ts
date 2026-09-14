@@ -2,6 +2,8 @@
  * Clone this pattern for other cities. Do not invent shops, prices, or ratings.
  */
 
+import { foodImages } from './cities/photoData'
+
 export type SourceLink = { label: string; url: string }
 
 export type Restaurant = {
@@ -9,6 +11,7 @@ export type Restaurant = {
   name: string
   nameEn?: string
   neighborhood: string
+  location?: { address: string; areaId?: string; connection: string; source: SourceLink }
   order: string[]
   whyLinger: string
   practical: string
@@ -36,6 +39,7 @@ export type Neighborhood = {
   title: string
   body: string
   suited: string
+  visit?: { duration: string; entry: string; walk: string; return: string; stay: string; source: SourceLink }
   image?: CategoryImage
 }
 
@@ -44,21 +48,17 @@ export type DayTrip = {
   how: string
   worth: string
   image?: CategoryImage
+  /** Optional internal link rendered under the direction title. */
+  link?: { label: string; to: string }
 }
 
 export type MetaField = { label: string; value: string }
 
-export type VerifyRow = {
-  category: string
-  what: string
-  where: string
-  links?: SourceLink[]
-}
-
-export type PracticalBlock = {
-  id: string
+export type Essential = {
   title: string
-  items: string[]
+  body: string
+  action?: { label: string; to: string }
+  links?: SourceLink[]
 }
 
 export const hongKong = {
@@ -90,18 +90,21 @@ export const hongKong = {
   essentials: [
     {
       title: '机场 → 市区',
-      body: '机场快线到香港站 / 九龙站最快；也可坐机场巴士或港铁。票价与班次出行前核 MTR 与机场快线说明，不把某次报价当恒定。',
+      body: '先确定酒店在港岛还是九龙，再比较机场快线加接驳、机场巴士或的士。不能只看列车时间，还要算车站到酒店的一段；晚到、带行李时先确认酒店接待和末班。',
+      action: { label: '查看抵达步骤', to: '?tab=practical#guide-arrival' },
       links: [{ label: 'MTR', url: 'https://www.mtr.com.hk/' }],
     },
     {
       title: '建议住哪',
-      body: '港岛选上环 / 西营盘 / 坚尼地城（可走、有日常食肆）；九龙选油麻地 / 佐敦（比尖沙咀商场区和旺角更适合重复走）。尖沙咀适合黄昏海港，不一定适合当整段住宿。',
+      body: '第一次来想走旧城、饮茶，可先看上环；重视九龙日常餐食，可先看油麻地–佐敦。全程住一侧即可。港岛特别看坡度，旧楼特别问电梯；在邻里页比较进出路线后再订房。',
+      action: { label: '订房前逐项检查', to: '?tab=practical#guide-stay' },
     },
     {
       title: '建议晚数',
-      body: '4–5 晚。想加西贡或离岛，别从核心区天数里硬挤。',
+      body: '3 晚安排抵达、港岛一天、九龙一天和离开；5 晚再加西贡一天、一次市区留白。示例全程一家酒店，每天只定一个主要方向，行程页可展开查看。',
+      action: { label: '展开每天安排', to: '?tab=itinerary#plan-three' },
     },
-  ],
+  ] as Essential[],
 
   overview: [
     '香港的节奏默认是快的。不疾不徐的做法不是「走完」，而是挑一条走廊住进去：同一条坡、同一间早餐、同一班天星。',
@@ -112,7 +115,7 @@ export const hongKong = {
 
   gettingThere: {
     intro: [
-      '落地第一小时：先解决八达通（手机旅游版或实体卡，种类与退款规则以八达通官网为准），再决定机场快线还是巴士。不要在到达层做复杂换乘决定。',
+      '出发前先选好机场到酒店的整段路线。落地后连网、取行李，再按已确认的快线、巴士或出租车方案进城；八达通卡种和充值步骤见“出行指南”。',
       '市内以港铁 + 步行 + 巴士为主。港岛有坡，下午热的时候少安排「连续爬楼梯」。天星小轮中环—尖沙咀是换岸最快的海路，八达通可拍。离岛看当天船期，台风或大风会停航。',
       '叫车：出租车遍布；也有本地网约选项。高峰过海隧道会堵，短距离宁可地铁。',
     ],
@@ -128,58 +131,113 @@ export const hongKong = {
   neighborhoods: [
     {
       id: 'central-sheung-wan',
+      visit: {
+        "duration": "2–3 小时；饮茶或参观另加。",
+        "entry": "从上环站出发；出站前看街道图确认电梯及出口。",
+        "walk": "德辅道中 → 荷李活道 → 大馆。坡道和楼梯较多，可缩成上环平路一段。",
+        "return": "大馆之后往中环站返回；疲累时不要再走回上环。",
+        "stay": "适合常在港岛活动的人。订房核对酒店所在坡度、电梯及实际入口。",
+        "source": {
+          "label": "香港旅发局旧城步行地图",
+          "url": "https://www.discoverhongkong.com/content/dam/dhk/market-site/in/e-guidebook/pdf/Old%20Town%20Central.pdf"
+        }
+      },
       title: '中环–上环（含大馆）',
     image: {
       src: '/images/places/nb-central.jpg',
       alt: '中环大馆（旧中区警署）',
       credit: 'Wikimedia Commons',
     },
-      body: '港岛这一侧的日常走廊。早上可以饮茶，白天走楼梯街和街市，下午进大馆坐院子。陆羽、莲香楼、胜香园都在步行范围内。中环办公楼区中午会挤，错过午高峰更好走。',
-      suited: '第一段住宿；把「到了香港」落成可以重复的几条街。',
+      body: "上环街市与中环旧建筑可以串成一程。先挑一间茶楼，再决定是否走到大馆，避免用餐与参观都排满。",
+      suited: "第一次来、喜欢饮茶和旧建筑，能接受坡道的人。",
     },
     {
       id: 'yau-ma-tei-jordan',
+      visit: {
+        "duration": "1.5–2.5 小时；不含排队。",
+        "entry": "从油麻地站进入，先在街道图找庙街。",
+        "walk": "庙街 → 佐敦道一带 → 白加士街。美都与澳牛、麦文记分处两段。",
+        "return": "在佐敦站返回；想看尖沙咀海港可另搭港铁，不必强行往返步行。",
+        "stay": "适合重视日常餐食、以九龙为基地的人；核对临街噪声和客房大小。",
+        "source": {
+          "label": "港铁车站及街道图",
+          "url": "https://www.mtr.com.hk/en/customer/services/system_map.html"
+        }
+      },
       title: '油麻地–佐敦',
     image: {
       src: '/images/places/nb-temple.jpg',
       alt: '庙街夜市牌楼',
       credit: 'Wikimedia Commons',
     },
-      body: '比尖沙咀少商场，比旺角少推搡。庙街、玉器市场、旧冰室、云吞面店可以同一条街解决。美都、澳牛、麦文记都在这一带。晚上可以走到尖沙咀看海，走回去睡觉。',
-      suited: '九龙一侧的住稳选择；早餐和宵夜都近。',
+      body: "庙街和白加士街分开走，中间留一次休息。早餐与云吞面不必同一顿完成。",
+      suited: "想以九龙为基地、把早餐和街坊餐食放在前面的人。",
     },
     {
       id: 'sai-ying-pun-kennedy',
+      visit: {
+        "duration": "1.5–2 小时；只选一端。",
+        "entry": "西营盘站或坚尼地城站二选一，不必贯穿整个港岛西。",
+        "walk": "选定一站后走附近街道和海旁，再回同一站；西营盘往山坡方向会遇到上坡。",
+        "return": "回所选港铁站；两区之间想换位置可搭港铁。",
+        "stay": "适合愿意在同一区重复走的人；先看酒店离车站的坡度和距离。",
+        "source": {
+          "label": "港铁车站及街道图",
+          "url": "https://www.mtr.com.hk/en/customer/services/system_map.html"
+        }
+      },
       title: '西营盘–坚尼地城',
     image: {
       src: '/images/places/nb-saiyingpun.jpg',
       alt: '西营盘高街',
       credit: 'Wikimedia Commons',
     },
-      body: '港岛西的慢一点的尽头。海旁可以走，食肆偏街坊和较新的小店混杂。适合已经在上环住过、还想把同一条港铁线再往西推一站的人。不必当成打卡区，当成散步区。',
-      suited: '想少游客、多重复走海旁的停留。',
+      body: "这两个区域适合分别慢走。第一次来先选一端，留下一端给下一天，不把它们当作连续必走的海滨线。",
+      suited: "愿意在同一区反复散步，不追求密集景点的人。",
     },
     {
       id: 'wan-chai',
+      visit: {
+        "duration": "1.5–2 小时；吃饭另留。",
+        "entry": "从湾仔站进入，查看站外街道图。",
+        "walk": "轩尼诗道 → 庄士敦道一带，按用餐地点选择起点；过街走正式通道。",
+        "return": "回湾仔站，不必为了串中环而继续长距离步行。",
+        "stay": "若主要活动在港岛可考虑；本行程无需为一顿烧鹅换酒店。",
+        "source": {
+          "label": "港铁车站及街道图",
+          "url": "https://www.mtr.com.hk/en/customer/services/system_map.html"
+        }
+      },
       title: '湾仔（走廊，不必单住）',
     image: {
       src: '/images/places/nb-wanchai.jpg',
       alt: '湾仔海旁天际线',
       credit: 'Wikimedia Commons',
     },
-      body: '轩尼诗道一带密，但甘牌、C Dessert 都在可走范围内。适合从中环或铜锣湾步行串一天，不必单独换酒店。修顿球场、庄士敦道晚上仍有人，早收工比深夜闲逛更舒服。',
-      suited: '烧鹅或一碗糖水的半日；不当主住宿。',
+      body: "以一顿饭为中心安排附近街道。甘牌与糖水店不是同一店面，吃不下时选一家就够。",
+      suited: "想围绕一顿烧鹅或糖水安排半天的人。",
     },
     {
       id: 'sai-kung',
+      visit: {
+        "duration": "镇上 3–4 小时；往返市区另留。",
+        "entry": "先在出行指南确认巴士或小巴路线，到西贡市中心公共交通站点下车。",
+        "walk": "镇中心 → 海旁 → 公众码头附近；本路线只走镇上，不自动包含出海。",
+        "return": "到海旁交通总站核对回程方向及末班；去程先记下回程站名。",
+        "stay": "适合五晚行程中抽一天换环境；以香港市区为基地，不需要搬酒店。",
+        "source": {
+          "label": "香港旅发局西贡海旁与交通",
+          "url": "https://www.discoverhongkong.com/eng/place-to-go/travel.guide-sharp-island.html"
+        }
+      },
       title: '西贡（慢半日到一日）',
     image: {
       src: '/images/places/nb-saikung.jpg',
       alt: '西贡海旁',
       credit: 'Wikimedia Commons',
     },
-      body: '出城换空气。海鲜街是场景，不是必须点名某家。可以走海旁、坐一趟小船或只在镇上吃饭。交通以巴士 / 小巴为主，班次和排队以当天为准。',
-      suited: '城市太密时的出口；热天选有遮阴的时段。',
+      body: "先把镇上和海旁走舒服。坐船是额外行程，需要另核天气、船班与回程，不能临时当作必选项目。",
+      suited: "在香港住五晚左右，想抽一天看海、放慢节奏的人。",
     },
   ] as Neighborhood[],
 
@@ -273,16 +331,21 @@ export const hongKong = {
     {
       id: 'cha-chaan-teng',
       title: '茶餐厅 / 常餐',
-      image: {
-        src: '/images/eat/ill-chachaanteng.webp',
-        alt: '茶餐厅手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-hong-kong-cha-chaan-teng'],
       intro:
         '茶餐厅是香港的日常桌。菜单中西混杂：奶茶、炒蛋、焗饭、通粉。有的店让你坐住，有的店要你吃完就走——两种都是本地节奏。',
       restaurants: [
         {
           id: 'mido',
+        location: {
+          "address": "香港油麻地庙街63号地下",
+          "areaId": "yau-ma-tei-jordan",
+          "connection": "在油麻地庙街一端；与佐敦白加士街不是同一条街。",
+          "source": {
+            "label": "OpenRice 地址",
+            "url": "https://www.openrice.com/zh/hongkong/r-美都餐室-油麻地-港式-r2310"
+          }
+        },
           name: '美都餐室',
           nameEn: 'Mido Cafe',
           neighborhood: '油麻地庙街 63 号地铺 · 油麻地站 C 出口步行约 4 分钟',
@@ -305,6 +368,15 @@ export const hongKong = {
         },
         {
           id: 'australia-dairy',
+        location: {
+          "address": "香港佐敦白加士街47–49号地下",
+          "areaId": "yau-ma-tei-jordan",
+          "connection": "与麦文记同在白加士街，可二选一，不必连吃两顿。",
+          "source": {
+            "label": "OpenRice 地址",
+            "url": "https://www.openrice.com/en/hongkong/r-australia-dairy-company-jordan-hong-kong-style-dessert-r90"
+          }
+        },
           name: '澳洲牛奶公司',
           nameEn: 'Australia Dairy Company',
           neighborhood: '佐敦白加士街 · 佐敦站',
@@ -335,15 +407,20 @@ export const hongKong = {
     {
       id: 'dim-sum',
       title: '早茶 / 点心',
-      image: {
-        src: '/images/eat/ill-dimsum.webp',
-        alt: '点心手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-hong-kong-dim-sum'],
       intro: '饮茶是坐下来的时段。早去比午市舒服。推车茶楼和老派茶室是两种节奏，各去一家就够。',
       restaurants: [
         {
           id: 'lin-heung',
+        location: {
+          "address": "香港上环德辅道中249–253号东宁大厦地下9及10号、1–2楼",
+          "areaId": "central-sheung-wan",
+          "connection": "这里使用上环现址，请勿导航到旧威灵顿街店址。",
+          "source": {
+            "label": "OpenRice 现址",
+            "url": "https://www.openrice.com/en/hongkong/r-lin-heung-lau-sheung-wan-guangdong-dim-sum-r1128979"
+          }
+        },
           name: '莲香楼',
           nameEn: 'Lin Heung Lau · 上环东宁大厦',
           neighborhood: '上环德辅道中 249–253 号东宁大厦 · 上环站 B 出口步行约 2 分钟',
@@ -366,6 +443,15 @@ export const hongKong = {
         },
         {
           id: 'luk-yu',
+        location: {
+          "address": "香港中环士丹利街24号",
+          "areaId": "central-sheung-wan",
+          "connection": "可搭配中环散步，与上环莲香楼择一饮茶。",
+          "source": {
+            "label": "陆羽官网",
+            "url": "https://www.lukyuteahouse.com/contactus/"
+          }
+        },
           name: '陆羽茶室',
           nameEn: 'Luk Yu Tea House',
           neighborhood: '中环士丹利街 24 号 · 中环站 D2 出口步行约 3 分钟',
@@ -394,17 +480,22 @@ export const hongKong = {
     {
       id: 'noodles',
       title: '面条 / 云吞面 / 车仔面',
-      image: {
-        src: '/images/eat/ill-noodles.webp',
-        alt: '面食手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-hong-kong-noodles'],
       intro: '一碗面是香港最省事的一餐。云吞面讲汤、皮、面；车仔面讲自己配。各去一种即可，不必同天两家。',
       restaurants: [
         {
           id: 'maks',
+        location: {
+          "address": "香港九龙佐敦白加士街51号地下",
+          "areaId": "yau-ma-tei-jordan",
+          "connection": "认准麦文记，别与英文名称相似的麦奀记混淆。",
+          "source": {
+            "label": "麦文记官网",
+            "url": "https://www.mmk.hk/"
+          }
+        },
           name: '麦文记面家',
-          nameEn: "Mak's Noodle / 麦文记",
+          nameEn: "Mak Man Kee Noodle Shop",
           neighborhood: '佐敦白加士街 51 号 · 佐敦站 C2 出口步行约 2 分钟',
           order: ['鲜虾云吞面（或捞面）', '想加一点就猪手或菜心，以店内所供为准'],
           whyLinger:
@@ -426,6 +517,14 @@ export const hongKong = {
         },
         {
           id: 'man-kee',
+        location: {
+          "address": "香港深水埗福荣街121号",
+          "connection": "在深水埗，超出本页油麻地–佐敦散步线；另留一程交通。",
+          "source": {
+            "label": "文记官网",
+            "url": "https://www.mankeecartnoodles.com/"
+          }
+        },
           name: '文记车仔面',
           nameEn: 'Man Kee Cart Noodles · 深水埗',
           neighborhood: '深水埗福荣街一带（官网列福荣街 121 号）· 深水埗站',
@@ -450,16 +549,21 @@ export const hongKong = {
     {
       id: 'roast',
       title: '烧腊 / 白切鸡',
-      image: {
-        src: '/images/eat/ill-roast.webp',
-        alt: '烧腊手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-hong-kong-roast'],
       intro:
         '烧鹅、叉烧、油鸡是橱窗里的日常。一人不要点整只。白切鸡 / 油鸡在烧腊店比另找「鸡专门店」省事。',
       restaurants: [
         {
           id: 'kams',
+        location: {
+          "address": "香港湾仔轩尼诗道226号宝华商业中心地下",
+          "areaId": "wan-chai",
+          "connection": "搭配湾仔半天散步，排队时间另留。",
+          "source": {
+            "label": "甘牌官网",
+            "url": "https://www.krg.com.hk/contact/contact.html"
+          }
+        },
           name: '甘牌烧鹅',
           nameEn: "Kam's Roast Goose",
           neighborhood: '湾仔轩尼诗道 226 号宝华商业中心地下 · 湾仔站',
@@ -487,16 +591,21 @@ export const hongKong = {
     {
       id: 'dai-pai-dong',
       title: '街头小吃 / 大牌档',
-      image: {
-        src: '/images/eat/ill-street.webp',
-        alt: '大牌档手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-hong-kong-dai-pai-dong'],
       intro:
         '鸡蛋仔、鱼蛋、碗仔翅是走路上的东西，档口开停快，本页不指定一家鸡蛋仔——邻里不同，遇到现做再停。大牌档能坐下来的，比边走边拍有用。',
       restaurants: [
         {
           id: 'sing-heung-yuen',
+        location: {
+          "address": "香港中环美轮街2号地下排档",
+          "areaId": "central-sheung-wan",
+          "connection": "适合放在中环–上环一程中；先在地图确认巷口。",
+          "source": {
+            "label": "香港旅发局",
+            "url": "https://www.discoverhongkong.com/uk/place-to-go/sing-heung-yuen.html"
+          }
+        },
           name: '胜香园',
           nameEn: 'Sing Heung Yuen',
           neighborhood: '中环美轮街 2 号排档 · 上环站 A2 出口步行约 5 分钟（也可从中环走过来）',
@@ -518,16 +627,21 @@ export const hongKong = {
     {
       id: 'dessert',
       title: '甜品 / 糖水',
-      image: {
-        src: '/images/eat/ill-dessert.webp',
-        alt: '糖水手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-hong-kong-dessert'],
       intro:
         '走热了再吃甜。传统街坊糖水铺近年水准波动大，有近况争议的不列入。下面这家能坐，也常排队——如实看。',
       restaurants: [
         {
           id: 'c-dessert',
+        location: {
+          "address": "香港湾仔庄士敦道35–45号利文楼地下1D号铺",
+          "areaId": "wan-chai",
+          "connection": "庄士敦道这家店可与湾仔散步搭配。",
+          "source": {
+            "label": "OpenRice 地址",
+            "url": "https://www.openrice.com/en/hongkong/r-c-dessert-wan-chai-hong-kong-style-dessert-r819128"
+          }
+        },
           name: '聪。C Dessert',
           nameEn: 'C Dessert · 原聪嫂班底',
           neighborhood: '湾仔庄士敦道 35–45 号利文楼地下 1D · 湾仔站 B2 出口步行约 4 分钟',
@@ -558,16 +672,21 @@ export const hongKong = {
     {
       id: 'cantonese',
       title: '值得慢慢坐的一顿（粤菜）',
-      image: {
-        src: '/images/eat/ill-cantonese.webp',
-        alt: '粤菜手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-hong-kong-cantonese'],
       intro:
         '留一晚给坐得住的桌子。贵一些，说清楚：这是正餐，不是小吃打卡。西贡海鲜当场景，不在此点名店铺。',
       restaurants: [
         {
           id: 'yung-kee',
+        location: {
+          "address": "香港中环威灵顿街32–40号",
+          "areaId": "central-sheung-wan",
+          "connection": "在中环一侧，先安排订位再决定散步结束时间。",
+          "source": {
+            "label": "镛记官网",
+            "url": "https://yungkee.com.hk/en/contact-us/"
+          }
+        },
           name: '镛记酒家',
           nameEn: 'Yung Kee Restaurant',
           neighborhood: '中环威灵顿街 32–40 号 · 中环站',
@@ -590,15 +709,19 @@ export const hongKong = {
     {
       id: 'vegetarian',
       title: '素食或清淡',
-      image: {
-        src: '/images/eat/ill-vegetarian.webp',
-        alt: '素食手绘',
-        credit: '手绘 · 基于真实食物',
-      },
+      image: foodImages['eat-hong-kong-vegetarian'],
       intro: '普通茶餐厅「不要肉」并不可靠。要清淡或素，去茶馆比去改菜单安全。',
       restaurants: [
         {
           id: 'lockcha',
+        location: {
+          "address": "香港金钟红棉路10号香港公园罗桂祥茶艺馆地下",
+          "connection": "本链接指向香港公园店；大馆是另一分店。公园另排一段，不把两店混在同一地址。",
+          "source": {
+            "label": "乐茶轩公园店官网",
+            "url": "https://www.lockcha.com/locations/hong-kong-park/"
+          }
+        },
           name: '乐茶轩',
           nameEn: 'LockCha · 香港公园店优先',
           neighborhood:
@@ -635,143 +758,215 @@ export const hongKong = {
     },
   ] as EatCategory[],
 
-  localTransit: [
-    '港铁覆盖主城区。过海坐地铁或天星，看你想不想吹风。巴士补地铁到不了的坡和西贡、南区。',
-    '八达通几乎是默认：地铁、巴士、部分渡轮、便利店。老茶餐厅和大牌档仍可能只收现金——当天口袋里留几张纸币。',
-    '港岛中部有电梯和自动扶梯系统（中环至半山），能少爬一段；不要把它当成必须完成的项目。热天下午改室内或茶馆。',
-    '台风、暴雨会停渡轮、关登山缆车。那天改茶楼、博物馆或睡觉，不要坚持离岛。',
-  ],
-
-  practical: [
-    {
-      id: 'payment',
-      title: '支付',
-      items: [
-        '八达通：交通和大量零售。手机旅游版（iPhone / 部分安卓与华为渠道）和实体旅游卡、租借卡并存，规则不同。种类、押金、退款以 octopus.com.hk 为准，不把某年售价抄进行程当恒定。',
-        '卡：Visa / Mastercard 在酒店、商场、多数酒家常见。街边、冰室、大牌档不要赌。',
-        '移动支付：支付宝、微信支付、AlipayHK、PayMe 覆盖在增加，仍非全境。主卡 + 八达通 + 少量港币现金。',
-        '小费：坐店常见加一（10%）。茶餐厅、面店、大牌档通常不加；找零可以不留。',
-        'DCC：ATM 和部分刷卡机不要选「以人民币结算」的动态货币转换，费率通常差。',
-      ],
-    },
-    {
-      id: 'online',
-      title: '上网',
-      items: [
-        '短途可靠漫游或落地 eSIM。机场有柜枱和自助，品牌常换，出行前比覆盖与热点，不在此写死套餐。港铁和商场 Wi‑Fi 能救急，不要当唯一方案。离线下载港铁图和一两家店地址。',
-      ],
-    },
-    {
-      id: 'language',
-      title: '语言',
-      items: [
-        '日常粤语。书面中文足够点餐。普通话在游客区和年轻店员处常见，老店不保证。中环、尖沙咀英语通行。不会粤语不怕，怕的是点单时犹豫——先看餐牌指。',
-      ],
-    },
-    {
-      id: 'docs',
-      title: '证件与范围',
-      items: [
-        '持中国护照赴港，常见路径是往来港澳通行证 + 有效赴港签注，或其他当时仍开放的政策。本页不写停留天数和费用。回乡证是港澳居民出入内地用的证件，不要和赴港签注混为一谈。本项目不含中国大陆行程。',
-      ],
-    },
-    {
-      id: 'macau',
-      title: '澳门联游',
-      items: [
-        '上环港澳码头或九龙出发的客轮，到澳门外港或氹仔，视你要历史城区还是路氹。一日够走城区 + 一顿饭；想坐下来吃一顿葡亚太或只是不想当晚赶船，就过夜。船期、证件、码头以船公司及澳门入境页为准。赌场不是本站重点。澳门短页待写：/places/macau。',
-      ],
-    },
-    {
-      id: 'weather',
-      title: '天气与坡道',
-      items: [
-        '夏天湿热，暴雨来得快。带一把伞比带第四件外套有用。港岛多坡，鞋底要有抓地。台风信号生效时，改室内，不要坚持山顶或离岛。',
-      ],
-    },
-  ] as PracticalBlock[],
-
-  practicalLinks: [
-    {
-      label: '八达通旅游选项',
-      url: 'https://www.octopus.com.hk/en/consumer/tourist/choices/index.html',
-    },
-  ],
-
   itinerary: {
-    threeNights: {
-      title: '3 晚（只住一侧）',
-      note: '住上环或油麻地，不要两边各一半。',
-      days: [
-        { day: 'D1', body: '落地、八达通、晚饭近住处。不安排景点。' },
-        {
-          day: 'D2',
-          body: '早茶（莲香或陆羽）→ 同一侧步行 → 黄昏天星过海走一圈 → 回来。',
-        },
-        {
-          day: 'D3',
-          body: '一碗面或茶餐厅 → 大馆或香港公园乐茶轩坐下午 → 晚上可排镛记或干脆再回茶餐厅。',
-        },
-        { day: 'D4 离开', body: '不塞离岛。' },
-      ],
-    },
-    fiveNights: {
-      title: '5 晚（一侧 + 一次出口）',
-      note: '前三晚同上。余下两天只加一件事：西贡，或一个离岛，或澳门过夜。不要西贡和澳门同一趟。烧鹅只去甘牌或镛记其中一家。',
-      days: [],
-    },
+  "threeNights": {
+    "title": "3 晚 · 一家酒店，港岛与九龙各一天",
+    "note": "适合第一次来、看城市日常的人。住上环或油麻地–佐敦一侧，全程不换酒店；D2、D3 可按住宿位置互换。",
+    "days": [
+      {
+        "day": "D1 抵达",
+        "body": "落地后解决上网、进城和入住，晚饭放在酒店附近。",
+        "time": "按航班安排；入住后只留一段附近散步。",
+        "start": "机场到达大厅，按事先选好的交通方式进城。",
+        "return": "回同一家酒店休息，保存酒店地址。",
+        "links": [
+          {
+            "label": "抵达步骤",
+            "href": "?tab=practical#guide-arrival"
+          },
+          {
+            "label": "入住检查",
+            "href": "?tab=practical#guide-stay"
+          }
+        ]
+      },
+      {
+        "day": "D2 港岛旧城",
+        "body": "上环饮茶 → 荷李活道一带 → 大馆；下午累了就回酒店。",
+        "time": "街区预留 2–3 小时，饮茶与参观另留。",
+        "start": "上环站。住九龙的人先搭港铁过来，也可先在住处吃早餐。",
+        "return": "从中环站搭港铁回住宿区域。",
+        "links": [
+          {
+            "label": "中环–上环路线",
+            "href": "?tab=places#area-central-sheung-wan"
+          },
+          { "label": "大馆参观与预约", "href": "/places/hong-kong/attractions/tai-kwun" },
+          {
+            "label": "莲香楼现址",
+            "href": "?tab=eat#lin-heung"
+          },
+          {
+            "label": "港铁步骤",
+            "href": "?tab=practical#guide-transit"
+          }
+        ]
+      },
+      {
+        "day": "D3 九龙街道",
+        "body": "油麻地庙街 → 佐敦白加士街，茶餐厅或云吞面二选一；海港作为额外选择。",
+        "time": "街区预留 1.5–2.5 小时；海港另留时间。",
+        "start": "油麻地站；住佐敦也可反方向走。",
+        "return": "在佐敦或油麻地站搭港铁回酒店，不强求海港往返步行。",
+        "links": [
+          {
+            "label": "油麻地–佐敦路线",
+            "href": "?tab=places#area-yau-ma-tei-jordan"
+          },
+          {
+            "label": "麦文记地址和点单",
+            "href": "?tab=eat#maks"
+          },
+          {
+            "label": "过海交通",
+            "href": "?tab=practical#guide-transit"
+          }
+        ]
+      },
+      {
+        "day": "D4 离开",
+        "body": "早餐、退房和前往机场，不加远郊景点。",
+        "time": "按航司要求的到场时间倒推，另留交通和行李缓冲。",
+        "start": "酒店；前一晚确认接车点或公共交通首班。",
+        "return": "到正确航站楼办理手续，抵达机场不等于完成值机。",
+        "links": [
+          {
+            "label": "交通安排",
+            "href": "?tab=practical#guide-transit"
+          },
+          {
+            "label": "证件检查",
+            "href": "?tab=practical#guide-documents"
+          }
+        ]
+      }
+    ]
   },
-
-  verifyTable: [
-    {
-      category: '签证 / 证件',
-      what: '往来港澳通行证与赴港签注是否仍有效、停留资格、入境卡是否电子化',
-      where: '中国内地签发机关；香港入境事务处；航司提示',
-    },
-    {
-      category: '支付',
-      what: '八达通旅游版 / 手机版规则；ATM 是否仍拒某卡组织',
-      where: 'octopus.com.hk；发卡行出境说明',
-      links: [{ label: 'octopus.com.hk', url: 'https://www.octopus.com.hk/' }],
-    },
-    {
-      category: '上网',
-      what: 'eSIM 频段、实名、机场取卡点',
-      where: '运营商 / eSIM 商家；近 3 个月到过的人',
-    },
-    {
-      category: '交通',
-      what: '机场快线、港铁检修、离岛及港澳船期',
-      where: 'MTR；天星；TurboJET 等船公司',
-      links: [{ label: 'MTR', url: 'https://www.mtr.com.hk/' }],
-    },
-    {
-      category: '季节',
-      what: '台风、暴雨、极端高温是否砸在你的日期上',
-      where: '香港天文台；渡轮网站公告',
-    },
-    {
-      category: '餐厅',
-      what: '仍否营业、休息日、只收现金、迁址（莲香已迁过一次）',
-      where: '各店官网 / OpenRice；到附近再看门口',
-    },
-    {
-      category: '安全与健康',
-      what: '旅行预警、保险条款',
-      where: '本国外交部门；保险公司',
-    },
-    {
-      category: '法规',
-      what: '烟酒药配额、无人机',
-      where: '香港海关',
-    },
-  ] as VerifyRow[],
+  "fiveNights": {
+    "title": "5 晚 · 城市慢走，加一天西贡",
+    "note": "适合想多休息、少换酒店的人。前三天沿用城市路线，第四天只加一个外出方向，第五天回市区留白；天气或体力不合适就取消远郊安排。",
+    "days": [
+      {
+        "day": "D1 抵达",
+        "body": "落地后解决上网、进城和入住，晚饭放在酒店附近。",
+        "time": "按航班安排；入住后只留一段附近散步。",
+        "start": "机场到达大厅，按事先选好的交通方式进城。",
+        "return": "回同一家酒店休息，保存酒店地址。",
+        "links": [
+          {
+            "label": "抵达步骤",
+            "href": "?tab=practical#guide-arrival"
+          },
+          {
+            "label": "入住检查",
+            "href": "?tab=practical#guide-stay"
+          }
+        ]
+      },
+      {
+        "day": "D2 港岛旧城",
+        "body": "上环饮茶 → 荷李活道一带 → 大馆；下午累了就回酒店。",
+        "time": "街区预留 2–3 小时，饮茶与参观另留。",
+        "start": "上环站。住九龙的人先搭港铁过来，也可先在住处吃早餐。",
+        "return": "从中环站搭港铁回住宿区域。",
+        "links": [
+          {
+            "label": "中环–上环路线",
+            "href": "?tab=places#area-central-sheung-wan"
+          },
+          { "label": "大馆参观与预约", "href": "/places/hong-kong/attractions/tai-kwun" },
+          {
+            "label": "莲香楼现址",
+            "href": "?tab=eat#lin-heung"
+          },
+          {
+            "label": "港铁步骤",
+            "href": "?tab=practical#guide-transit"
+          }
+        ]
+      },
+      {
+        "day": "D3 九龙街道",
+        "body": "油麻地庙街 → 佐敦白加士街，茶餐厅或云吞面二选一；海港作为额外选择。",
+        "time": "街区预留 1.5–2.5 小时；海港另留时间。",
+        "start": "油麻地站；住佐敦也可反方向走。",
+        "return": "在佐敦或油麻地站搭港铁回酒店，不强求海港往返步行。",
+        "links": [
+          {
+            "label": "油麻地–佐敦路线",
+            "href": "?tab=places#area-yau-ma-tei-jordan"
+          },
+          {
+            "label": "麦文记地址和点单",
+            "href": "?tab=eat#maks"
+          },
+          {
+            "label": "过海交通",
+            "href": "?tab=practical#guide-transit"
+          }
+        ]
+      },
+      {
+        "day": "D4 西贡",
+        "body": "只安排西贡镇中心和海旁，不附加出海或徒步。天气不适合时改成市内休息。",
+        "time": "镇上 3–4 小时；往返交通另留，出发前核对回程。",
+        "start": "酒店出发，先查到西贡镇的巴士／小巴及换乘。",
+        "return": "从西贡交通总站按已确认的线路回酒店，不等到末班才出发。",
+        "links": [
+          {
+            "label": "西贡半日路线",
+            "href": "?tab=places#area-sai-kung"
+          },
+          {
+            "label": "查路线与回程",
+            "href": "?tab=practical#guide-transit"
+          }
+        ]
+      },
+      {
+        "day": "D5 港岛留白",
+        "body": "西营盘或坚尼地城选一端走海旁；更想坐茶，可改去香港公园乐茶轩，两者择一。",
+        "time": "海旁预留 1.5–2 小时，或给茶馆与公园留半天；其余时间休息。",
+        "start": "所选港铁站；去乐茶轩认准香港公园店地址。",
+        "return": "回原酒店，确认次日机场交通。",
+        "links": [
+          {
+            "label": "港岛西怎么选",
+            "href": "?tab=places#area-sai-ying-pun-kennedy"
+          },
+          {
+            "label": "乐茶轩公园店",
+            "href": "?tab=eat#lockcha"
+          },
+          { "label": "香港公园怎么逛", "href": "/places/hong-kong/attractions/hong-kong-park" }
+        ]
+      },
+      {
+        "day": "D6 离开",
+        "body": "早餐、退房和前往机场，不加远郊景点。",
+        "time": "按航司要求的到场时间倒推，另留交通和行李缓冲。",
+        "start": "酒店；前一晚确认接车点或公共交通首班。",
+        "return": "到正确航站楼办理手续，抵达机场不等于完成值机。",
+        "links": [
+          {
+            "label": "交通安排",
+            "href": "?tab=practical#guide-transit"
+          },
+          {
+            "label": "证件检查",
+            "href": "?tab=practical#guide-documents"
+          }
+        ]
+      }
+    ]
+  }
+},
 
   relatedGuides: [
     '香港：住稳一侧的四日停法（待写）',
     '渡轮与离岛：当城市太密时的出口（待写）',
     '香港 → 澳门一日或过夜：怎么走、怎么不赶（待写）',
-    '澳门短页（待写）→ /places/macau',
+    '澳门城市页 → /places/macau',
   ],
 
   startHere: [
@@ -786,7 +981,7 @@ export const hongKong = {
   ],
 
   sourcesNote: [
-    '页面核实日期：2026-09-11',
+    '餐饮与邻里原内容核实日期：2026-09-11；出行指南与安全资料：2026-09-12，各项附来源',
     '餐厅近况主要来自 OpenRice、店方官网、Michelin Guide、Time Out Hong Kong、Vogue HK（2025–2026 仍在更新的条目）',
     '交通与八达通来自 MTR、Octopus 官网公开页',
     '不引用已过时的「必吃榜」当营业证据',

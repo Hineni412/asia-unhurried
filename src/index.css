@@ -6,7 +6,7 @@
   --color-sand-deep: #dccfb8;
   --color-ink: #1c1a17;
   --color-ink-muted: #4a453e;
-  --color-ink-faint: #7a7368;
+  --color-ink-faint: #696257;
   --color-accent: #c23a2b;
   --color-accent-deep: #a33321;
   --color-accent-soft: #f6e3de;
@@ -17,6 +17,17 @@
   --font-serif: "Newsreader", "Noto Serif SC", "Songti SC", Georgia, serif;
   --font-zh: "Noto Serif SC", "Songti SC", "SimSun", serif;
   --font-sans: "Public Sans", "Noto Sans SC", "PingFang SC", system-ui, sans-serif;
+  --text-base: 1.125rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.25rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.625rem;
+  --text-body: 1.1875rem;
+  --text-body--line-height: 1.8;
+  --text-small: 1.0625rem;
+  --text-small--line-height: 1.7;
+  --text-note: 1rem;
+  --text-note--line-height: 1.65;
 }
 
 html { scroll-behavior: smooth; }
@@ -24,6 +35,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: var(--font-sans);
+  font-size: var(--text-base);
   background: var(--color-paper);
   color: var(--color-ink);
   line-height: 1.65;
@@ -37,7 +49,7 @@ h1, h2, h3, h4 {
   font-family: var(--font-serif);
   font-weight: 500;
   letter-spacing: -0.02em;
-  line-height: 1.15;
+  line-height: 1.35;
 }
 
 .font-zh { font-family: var(--font-zh); }
@@ -61,9 +73,9 @@ h1, h2, h3, h4 {
 
 .eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-ink-faint);
 }
@@ -77,7 +89,7 @@ h1, h2, h3, h4 {
   background: var(--color-accent);
   color: #faf7f2;
   padding: 0.75rem 1.5rem;
-  font-size: 0.9375rem;
+  font-size: var(--text-base);
   font-weight: 500;
   text-decoration: none;
   transition: background 0.15s ease;
@@ -87,6 +99,101 @@ h1, h2, h3, h4 {
 ::selection { background: var(--color-accent-soft); color: var(--color-ink); }
 details > summary { list-style: none; cursor: pointer; }
 details > summary::-webkit-details-marker { display: none; }
+
+.guide-page h2, .guide-page h3 { line-height: 1.35; text-wrap: balance; }
+.guide-page :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+:where(a, button, summary, input):focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+
+.food-category-heading {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  grid-template-areas: "picture title" "intro intro";
+  align-items: start;
+  gap: 1rem 1.25rem;
+}
+.food-category-picture { grid-area: picture; }
+.food-category-title { grid-area: title; align-self: center; text-wrap: balance; }
+.food-category-intro { grid-area: intro; max-width: 40em; }
+.food-category-heading--text { grid-template-columns: 1fr; grid-template-areas: "title" "intro"; }
+.restaurant-entry { overflow-wrap: anywhere; }
+.food-categories { --food-chrome-height: 8.5rem; --food-nav-height: 5.75rem; }
+.food-floating-slot { position: sticky; top: var(--food-chrome-height); z-index: 35; height: 0; pointer-events: none; }
+.food-floating-nav { visibility: hidden; opacity: 0; transform: translateY(-0.4rem); border-bottom: 1px solid var(--color-sand-deep); background: var(--color-paper); box-shadow: 0 5px 8px #1c1a1708; transition: opacity 180ms ease, transform 180ms ease, visibility 180ms; }
+.food-floating-nav[data-visible="true"] { visibility: visible; opacity: 1; transform: translateY(0); pointer-events: auto; }
+.food-floating-content { display: flex; align-items: center; gap: 1rem; min-height: 5.75rem; padding: 0.75rem 0; text-decoration: none; animation: food-category-enter 200ms ease-out; }
+.food-floating-image { width: 6rem; height: 4rem; flex: none; border-radius: 0.5rem; object-fit: cover; }
+.food-floating-copy { display: block; flex: 1; min-width: 0; }
+.food-floating-title { display: block; line-height: 1.35; }
+.food-floating-intro { display: block; margin-top: 0.2rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.food-floating-meta { display: flex; flex: none; flex-direction: column; align-items: flex-end; }
+.food-categories :is(.food-category, .restaurant-entry) { scroll-margin-top: calc(var(--food-chrome-height) + var(--food-nav-height) + 1rem); }
+@keyframes food-category-enter { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 47.999rem) {
+  .food-floating-content { gap: 0.75rem; min-height: 5.25rem; padding: 0.65rem 0; }
+  .food-floating-image { width: 3.75rem; height: 3rem; }
+  .food-floating-intro { display: none; }
+  .food-floating-meta > :first-child { display: none; }
+}
+
+.guide-with-directory { --guide-chrome-height: 7rem; }
+.guide-topic-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.guide-topic-card { position: relative; display: flex; flex-direction: column; align-self: stretch; min-height: 14rem; padding: 1.25rem 1.5rem; border: 1px solid #d8d0c0; border-radius: 1.1rem; background: #faf7f0; color: var(--color-ink-muted); text-decoration: none; box-shadow: 0 2px 3px #1c1a1705; transition: border-color 150ms ease, box-shadow 150ms ease; }
+.guide-topic-card:hover, .guide-topic-card[aria-expanded="true"] { border-color: var(--color-accent); box-shadow: 0 3px 10px #1c1a1710; }
+.guide-topic-card-mark { display: flex; height: 2rem; align-items: center; margin-bottom: 0.8rem; color: #817055; }
+.guide-topic-card-mark svg { width: 2rem; height: 2rem; }
+.guide-topic-card-title { position: relative; display: block; line-height: 1.35; }
+.guide-topic-card-description { display: block; margin-top: 0.65rem; }
+.guide-topic-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1.1rem; margin-top: auto; color: var(--color-accent); }
+.guide-topic-card--documents { background: #faf7f0; }
+.guide-topic-card--documents .guide-topic-card-mark { border-bottom: 1px solid #c23a2b55; height: 2.5rem; padding-bottom: 0.5rem; color: var(--color-accent); }
+.guide-topic-card--payment { background: #f2e7cf; }
+.guide-topic-card--payment .guide-topic-card-mark { color: #957324; }
+.guide-topic-card--mobile { background: #e8eee7; border-top-right-radius: 2.25rem; }
+.guide-topic-card--mobile .guide-topic-card-mark { color: #51705c; }
+.guide-topic-card--stay { background: #efe5df; }
+.guide-topic-card--packing { background: #ede9df; }
+.guide-topic-card--arrival, .guide-topic-card--transit { background: #e7eaf0; }
+.guide-topic-card--arrival .guide-topic-card-mark, .guide-topic-card--transit .guide-topic-card-mark { color: #5e6c83; }
+.guide-topic-card--daily { background: #f3e9db; }
+.guide-topic-card--weather { background: #e4ece9; }
+.guide-topic-card--departure { background: #eee5e5; }
+.guide-topic-detail { grid-column: 1 / -1; min-width: 0; order: var(--detail-order); border-top: 2px solid var(--color-accent); margin: 0.25rem 0 1rem; }
+.guide-topic-detail:not([open]) { display: none; }
+@media (min-width: 40rem) {
+  .guide-topic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .guide-topic-card { min-height: 15rem; }
+  .guide-topic-detail { order: var(--detail-pair-order); }
+}
+.guide-directory { position: sticky; top: var(--guide-chrome-height); align-self: start; z-index: 30; }
+.guide-directory-items { position: absolute; top: 100%; left: 0; right: 0; max-height: calc(100dvh - var(--guide-chrome-height) - 5rem); overflow-y: auto; overscroll-behavior: contain; padding: 1rem; border: 1px solid var(--color-border); background: var(--color-paper); box-shadow: 0 12px 18px #1c1a1710; }
+.guide-directory-items { scrollbar-width: none; }
+.guide-directory-items::-webkit-scrollbar { display: none; }
+.guide-directory-items a { white-space: nowrap; }
+.guide-with-directory :is(details[id], section[id]) { scroll-margin-top: calc(var(--guide-chrome-height) + 5rem); }
+@media (min-width: 64rem) {
+  .guide-layout { display: grid; grid-template-columns: 16rem minmax(0, 1fr); gap: 2.5rem; margin-left: 0; }
+  .guide-directory { top: calc(var(--guide-chrome-height) + 1.5rem); }
+  .guide-directory-items { position: static; max-height: calc(100dvh - var(--guide-chrome-height) - 3rem); padding: 0; border: 0; box-shadow: none; }
+  .guide-with-directory :is(details[id], section[id]) { scroll-margin-top: calc(var(--guide-chrome-height) + 1.5rem); }
+}
+
+@media (min-width: 48rem) {
+  :root { --text-body: 1.25rem; --text-small: 1.125rem; }
+  .food-category-heading {
+    grid-template-columns: 15rem minmax(0, 1fr);
+    grid-template-areas: "picture title" "picture intro";
+    grid-template-rows: auto 1fr;
+    column-gap: 2.25rem;
+    row-gap: 0.75rem;
+  }
+  .food-category-title { align-self: end; padding-top: 0.25rem; }
+  .food-category-heading--text { grid-template-columns: 1fr; grid-template-areas: "title" "intro"; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .food-floating-nav { transition: none; }
+  .food-floating-content { animation: none; }
+}
 
 .asia-map-shell { background: transparent; }
 .asia-map-svg { overflow: visible; }

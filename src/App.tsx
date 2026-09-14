@@ -2,7 +2,11 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { Home } from './pages/Home'
 import { HongKong } from './pages/HongKong'
 import { Penang } from './pages/Penang'
-import { Malaysia } from './pages/Malaysia'
+import { CountryPage } from './pages/CountryPage'
+import { DirectoryCityPage } from './pages/DirectoryCityPage'
+import { AttractionPage } from './pages/AttractionPage'
+import { COUNTRIES, CONTENT_CITIES } from './content/directory'
+import { CITY_CONTENT } from './content/cities'
 
 function PreserveSearchRedirect({ to }: { to: string }) {
   const { search, hash } = useLocation()
@@ -15,10 +19,27 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/places/hong-kong" element={<HongKong />} />
+        <Route path="/places/hong-kong/attractions/:attractionId" element={<AttractionPage city="hong-kong" />} />
         <Route path="/hong-kong" element={<PreserveSearchRedirect to="/places/hong-kong" />} />
-        <Route path="/places/malaysia" element={<Malaysia />} />
         <Route path="/places/malaysia/penang" element={<Penang />} />
+        <Route path="/places/malaysia/penang/attractions/:attractionId" element={<AttractionPage city="penang" />} />
         <Route path="/penang" element={<PreserveSearchRedirect to="/places/malaysia/penang" />} />
+        {COUNTRIES.map((c) => (
+          <Route key={c.slug} path={c.href} element={<CountryPage country={c} />} />
+        ))}
+        {CONTENT_CITIES.map((c) => {
+          const content = CITY_CONTENT[c.slug]
+          return content ? (
+            <Route key={c.slug} path={c.href} element={<DirectoryCityPage content={content} />} />
+          ) : null
+        })}
+        {CONTENT_CITIES.map((c) => (
+          <Route
+            key={`${c.slug}-attractions`}
+            path={`${c.href}/attractions/:attractionId`}
+            element={<AttractionPage city={c.slug} />}
+          />
+        ))}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

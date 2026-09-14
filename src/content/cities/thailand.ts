@@ -1,0 +1,861 @@
+import type { CityContent } from './types'
+import { EAT_CRITERIA, EAT_EXCLUDE, HELP_PHRASES, consularHotline, consularUse } from './shared'
+import { cityImages } from './photoData'
+import { CONTENT_CITIES } from '../directory'
+
+const city = (slug: string) => {
+  const c = CONTENT_CITIES.find((x) => x.slug === slug)
+  if (!c) throw new Error(`missing directory city: ${slug}`)
+  return c
+}
+
+const tat = { label: '泰国国家旅游局 TAT', url: 'https://www.tourismthailand.org/' }
+const tdac = { label: 'TDAC 入境卡', url: 'https://tdac.immigration.go.th/' }
+const thaiImm = { label: '泰国移民局', url: 'https://www.immigration.go.th/' }
+const consular = { label: '中国领事服务网', url: 'https://cs.mfa.gov.cn/' }
+const touristPolice = { label: '泰国旅游警察 1155', url: 'https://www.tourismthailand.org/' }
+
+const thDocuments = {
+  id: 'documents',
+  title: '证件与入境',
+  summary: '免签不等于免手续：先查免签资格与 TDAC 入境卡。',
+  stage: 'before' as const,
+  recommendation:
+    '泰国对中国大陆护照有免签安排（天数以当前公告为准），但仍需在线填 TDAC 入境卡；其他护照按规定核对签证。免签资格、停留期与口岸规则可能调整，以移民局当前公告为准。',
+  steps: [
+    {
+      title: '先按护照核免签资格',
+      body: '免签不是对所有人开放：按本人护照在移民局页面核对资格与可停留天数；需要签证的提前办，别到边境再处理。',
+    },
+    {
+      title: '提前填 TDAC',
+      body: '泰国数字入境卡（TDAC）在官方系统填写，生成确认码；截图离线保存。官网免费，注意辨别收费代填网站。',
+    },
+    {
+      title: '材料放一起',
+      body: '返程机票订单、首晚酒店名称地址、足额现金（抽查用）离线保存；入境可能被询问。',
+    },
+    {
+      title: '入境后核对停留章',
+      body: '护照上的入境章标有须离境日期，核对与行程一致；逾期停留有罚款与记录。',
+    },
+  ],
+  done: '免签资格已核实、TDAC 已填、返程与酒店订单离线可查。',
+  fallback: '入境材料有疑问先联系移民局或使领馆；不要到口岸再处理签证。',
+  sources: [thaiImm, tdac, consular],
+}
+
+const thMobile = (airportName: string) => ({
+  id: 'mobile',
+  title: '上网与手机',
+  summary: '落地 SIM 便宜，Grab 与导航靠它。',
+  stage: 'before' as const,
+  recommendation:
+    `泰国落地游客 SIM 便宜好用（AIS、True 等${airportName}有柜台），或出发前买 eSIM。国内漫游也行但通常更贵。Grab 叫车与地图都靠网络，落地先联网。`,
+  steps: [
+    { title: 'eSIM 或落地 SIM 二选一', body: 'eSIM 出发前装好落地即用（先查手机支持）；落地 SIM 在机场柜台买游客套餐，柜台帮装帮测。' },
+    { title: '装好 Grab 与翻译应用', body: '叫车查价用 Grab；翻译应用装好泰文包，砍价与问路都用得上。' },
+    { title: '保留能收短信的号', body: '部分注册与银行卡验证要短信；双卡手机留国内卡收短信、关数据漫游。' },
+  ],
+  done: '离 Wi-Fi 能开地图、Grab 能叫车。',
+  fallback: '柜台人多先连机场 Wi-Fi 叫车进城，市区营业厅再办。',
+  sources: [tat],
+})
+
+const thPayment = {
+  id: 'payment',
+  title: '支付与现金',
+  summary: '现金为主，找零与砍价是日常。',
+  stage: 'before' as const,
+  recommendation:
+    '泰国小店、夜市、双条车以现金为主；百货、连锁与 Grab 可刷卡。换汇去市区挂牌换汇所（汇率常好于银行），机场只换零头。',
+  steps: [
+    { title: '机场只换零头', body: '机场汇率差，换够进城即可；市区换汇所（如商场内挂牌的）汇率更好。' },
+    { title: '备小额纸币', body: '20/50/100 铢最常用；双条车、夜市摊找不开大票。' },
+    { title: '刷卡留意币种', body: '提示转人民币计价选 THB；ATM 取现有固定手续费，一次多取比多次省。' },
+    { title: '砍价看场合', body: '夜市与市集可议价（微笑着说，七折左右试探）；明码标价店、商场与餐馆不砍。' },
+  ],
+  done: '现金够两天、知道市区换汇点、银行卡取现确认。',
+  fallback: '现金不够找银行 ATM；换汇所多比较两家。',
+  sources: [tat],
+}
+
+const thStay = (areas: string) => ({
+  id: 'stay',
+  title: '住宿与入住',
+  summary: '住交通方便的片区，民宿看清巷内环境。',
+  stage: 'before' as const,
+  recommendation: `住${areas}一带。泰国住宿性价比高，但巷子（soi）环境差异大：订前看街景图与近期评价，确认巷道夜间照明与步行体验。`,
+  steps: [
+    { title: '按晚间动线选片区', body: '把住处放在晚饭后能走回或一程车回的范围；深巷民宿便宜但夜里进出要评估。' },
+    { title: '看评价的硬条件', body: '隔音、热水、空调、电梯（老公寓常没有）在评价里比星级真实。' },
+    { title: '确认接送与晚到', body: '很多酒店可约付费接机；晚到发消息确认前台或取钥匙方式。' },
+    { title: '保存地址泰英双语', body: '给司机看泰文地址比英文靠谱；截图存好。' },
+  ],
+  done: '巷道环境、电梯、晚到与接机方案已确认。',
+  fallback: '到店不符先找平台协调；深夜纠纷先住下次日处理。',
+  sources: [tat],
+})
+
+export const chiangMai: CityContent = {
+  city: city('chiang-mai'),
+  checkedAt: '2026-09-14',
+  meta: [
+    { label: '最佳季节', value: '11–2 月凉季最好；2–4 月烧山季空气差（AQI 高），能避则避。' },
+    { label: '机场', value: '清迈国际（CNX）离古城近，Grab 15–20 分钟进城。' },
+    { label: '建议停留', value: '3–4 晚。古城走寺一天、集市与手作村一天、近郊（素贴山或大象营）一天。' },
+    { label: '地区标签', value: '东南亚 · 泰北' },
+    { label: '气质', value: '古城寺墙、夜市、山脚下的咖啡与手工艺' },
+    { label: '核实日期', value: '2026-09-14' },
+  ],
+  essentials: [
+    {
+      title: '机场 → 古城',
+      body: '清迈机场离城近：Grab 15–20 分钟到古城，机场出租与双条车也有。落地基本不用规划——这是这程里最轻松的一段。',
+      action: { label: '查看抵达步骤', to: '?tab=practical#guide-arrival' },
+      links: [{ label: '清迈机场', url: 'https://chiangmaiairportthai.com/' }],
+    },
+    {
+      title: '建议住哪',
+      body: '住古城内或紧挨古城的巷子里：走寺、夜市、咖啡馆都在步行圈。尼曼路是咖啡馆集中区但更商业化，作半天散步不当住处。',
+      action: { label: '订房前逐项检查', to: '?tab=practical#guide-stay' },
+    },
+    {
+      title: '建议晚数',
+      body: '3 晚排古城一天、集市／手作一天、素贴山半天加留白；4 晚加大象营或厨艺课。清迈的正确用法是慢——日程别排满。',
+      action: { label: '展开每天安排', to: '?tab=itinerary#plan-three' },
+    },
+  ],
+  overview: [
+    '清迈的骨架是正方形古城：护城河圈里是寺与民宿，圈外东是夜市、西是尼曼、北接山。慢旅行住古城，每天一个方向。',
+    '古城的寺（契迪龙、帕邢、清曼）挨得近但别连排——选两三处细看，其余路过。清晨布施与傍晚僧课比白天的游客时段更像清迈。',
+    '城外两个方向：素贴山（双龙寺）看全景，手作村（Baantawai 方向）与大象营看体验。大象营只选不骑象、不表演的庇护所。',
+    '别把清迈当「小曼谷」——它的价值在慢：咖啡馆坐一下午、夜市走一晚、寺里听一节晚课。',
+  ],
+  gettingThere: {
+    intro: [
+      '清迈机场（CNX）离古城 15–20 分钟车程：Grab 最方便，机场出租按柜计价，双条车便宜但看行李。',
+      '市内：古城内步行；圈外靠双条车（红色 songthaew 随招随停、议价制）与 Grab。自行车可用但注意右侧来车。',
+      '去素贴山：双条车上山（凑人或包车），或 Grab 到山脚步行／接驳。山路弯多，易晕车备药。',
+    ],
+    links: [
+      { label: 'Grab 泰国', url: 'https://www.grab.com/th/' },
+      { label: 'TAT 清迈', url: 'https://www.tourismthailand.org/' },
+    ],
+    verifyReminders: [
+      '烧山季月份与当年空气状况（2–4 月）',
+      '双龙寺当前门票与索道状态',
+      '大象庇护所的「不骑象」资质核实方式',
+      '周日夜市与周六夜市的当前位置与规模',
+    ],
+  },
+  neighborhoods: [
+    {
+      id: 'old-city',
+      title: '古城（护城河内）',
+      suited: '所有第一次来的人；寺与民宿都在圈里。',
+      image: cityImages['chiangmai-old-city'],
+      body: '护城河围出的正方形街区：契迪龙寺、帕邢寺在中轴，巷子里是民宿与咖啡馆。住圈里，走寺与夜市都近。',
+      visit: {
+        duration: '一天慢走。',
+        entry: '步行；塔佩门是东侧地标入口。',
+        walk: '契迪龙寺 → 帕邢寺 → 巷子乱走；清晨看布施，傍晚听晚课。',
+        return: '步行回住处；夜里巷内安静，走主巷。',
+        stay: '首选居住区；选巷内民宿先看街景与夜间照明。',
+        source: tat,
+      },
+    },
+    {
+      id: 'nimman',
+      title: '尼曼路',
+      suited: '想看咖啡馆与小店、或需要好网络办公的人。',
+      image: cityImages['chiangmai-nimman'],
+      body: '古城西侧的年轻化街区：咖啡馆密度高、共享办公多。商业化但舒服，半天逛咖啡与小店的量。',
+      visit: {
+        duration: '半天。',
+        entry: 'Grab 或双条车从古城 10 分钟。',
+        walk: '尼曼路主街拐进 soi（巷）；小店在巷内不在主街。',
+        return: 'Grab 回；晚高峰尼曼路堵车。',
+        stay: '长住与数字游民可选；第一次来住古城更有味道。',
+        source: tat,
+      },
+    },
+    {
+      id: 'riverside-night',
+      title: '河东与夜市带',
+      suited: '想晚上有地方走、看河边的人。',
+      image: cityImages['chiangmai-riverside'],
+      body: '屏河（Ping River）东岸是夜市与老木楼餐厅带；长康路夜市每晚开，周六与周日夜市分别在古城南与塔佩路。晚上按星期几选夜市。',
+      visit: {
+        duration: '每晚 2–3 小时。',
+        entry: '古城步行或短程 Grab。',
+        walk: '长康路夜市为主街；河边餐厅背街更安静。',
+        return: 'Grab 或步行回；夜市人多看紧随身物。',
+        stay: '夜市旁酒店方便但吵；住古城安静。',
+        source: tat,
+      },
+    },
+    {
+      id: 'doi-suthep',
+      title: '素贴山方向',
+      suited: '想看全景与山寺的人。',
+      image: cityImages['chiangmai-doi-suthep'],
+      body: '双龙寺（Wat Phra That Doi Suthep）在山上俯瞰全城；山腰还有悟孟寺（隧道寺）更安静。半天够，山路弯多。',
+      visit: {
+        duration: '半天。',
+        entry: '双条车（凑人议价）或 Grab 到山脚＋接驳。',
+        walk: '双龙寺台阶爬上去或索道；悟孟寺在山脚方向。',
+        return: '双条车下山凑人；傍晚前下山。',
+        stay: '不住山上；半天行程。',
+        source: tat,
+      },
+    },
+  ],
+  dayTrips: [
+    { direction: '清莱（白庙／黑屋）', how: '巴士或包车约 3 小时', worth: '白庙值得看但路程长；一日往返很赶，想细看住一晚。' },
+    { direction: '拜县', how: '山巴士约 3 小时（700+ 弯）', worth: '山谷小镇两晚起；山路极弯，易晕车者慎重。' },
+    { direction: '茵他侬山', how: '包车／跟团约 1.5 小时', worth: '泰国最高峰与双塔瀑布，一天往返；凉季山上冷带外套。' },
+  ],
+  dayTripNote: '清莱一日往返很赶；拜县七百弯山路易晕车；茵他侬凉季带外套。',
+  eatIntro:
+    '清迈的吃是北泰菜：咖喱面（Khao soi）是第一名片，烤肠、酸辣汤与夜市小吃跟上。比曼谷温和，量小可多试。',
+  eatCriteria: EAT_CRITERIA,
+  eatExclude: EAT_EXCLUDE,
+  categories: [
+    {
+      id: 'khao-soi', title: 'Khao soi 咖喱面',
+      intro: '北泰第一名片：咖喱汤底、软面加脆面、鸡腿或牛肉。午餐吃，很多名摊下午就收。',
+      restaurants: [
+        {
+          id: 'khao-soi-khun-yai', name: 'Khao Soi Khun Yai', nameEn: 'ข้าวซอยคุณย่าย', neighborhood: '古城北 Sri Poom',
+          location: { address: 'Sri Poom 路一带（古城北门外）', areaId: 'old-city', connection: '古城北门步行约5分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Khao+Soi+Khun+Yai' } },
+          order: ['Khao soi gai（鸡腿咖喱面）', 'Sai ua 烤肠'],
+          whyLinger: '清迈最有名的 Khao soi 小棚之一——只开午餐几小时，卖完收。咖喱浓、脆面脆，是标准答案。',
+          practical: '周一–周六午餐时段开，下午早收；现金。营业以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Khao+Soi+Khun+Yai' }],
+          queueNote: '午餐开门即坐满；开门时段（约10点）最稳。',
+        },
+        {
+          id: 'khao-soi-mae-sai', name: 'Khao Soi Mae Sai', nameEn: 'ข้าวซอยแม่สาย', neighborhood: '古城西侧',
+          location: { address: 'Phra Sing 方向巷内（古城西）', areaId: 'old-city', connection: '古城步行或短程双条车', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Khao+Soi+Mae+Sai' } },
+          order: ['Khao soi（鸡肉或牛肉）'],
+          whyLinger: '本地人排的 Khao soi 食堂——比 Khun Yai 更市井，汤头香料更猛。两家各吃一碗自己判。',
+          practical: '午餐时段；现金。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Khao+Soi+Mae+Sai' }],
+        },
+      ],
+    },
+    {
+      id: 'northern', title: '北泰正餐',
+      intro: 'Sai ua 烤肠、酸辣蘸酱（nam prik）配蔬菜、烤鸡是北泰正餐的逻辑——坐下来慢慢吃的那种。',
+      restaurants: [
+        {
+          id: 'huen-phen', name: 'Huen Phen', nameEn: 'Huen Phen', neighborhood: '古城中心',
+          location: { address: '112 Ratchamanka Rd（古城内）', areaId: 'old-city', connection: '古城内步行可达', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Huen+Phen+Chiang+Mai' } },
+          order: ['北泰拼盘（烤肠＋蘸酱＋炸猪皮）', 'Khao soi', '菠萝蜜沙拉'],
+          whyLinger: '古城里的北泰菜老店——中午是食堂、晚上是木雕古董店氛围。北泰菜式一次认全的地方。',
+          practical: '午市像快餐店翻台，晚市氛围完全不同；现金与卡以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Huen+Phen+Chiang+Mai' }],
+        },
+        {
+          id: 'tong-tem-toh', name: 'Tong Tem Toh', nameEn: 'ต๋องเต็มโต๊ะ', neighborhood: '尼曼路',
+          location: { address: 'Nimmanahaeminda Soi 13 一带', areaId: 'nimman', connection: '尼曼巷内步行', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Tong+Tem+Toh' } },
+          order: ['烤猪颈肉', 'Nam prik ong 肉酱拼盘', '辣拌菜'],
+          whyLinger: '尼曼最红的北泰餐吧——院子里的长桌与烤炉，本地人游客混坐。晚市排队是常态。',
+          practical: '取号等位；辣度偏高，mai pet 说在前。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Tong+Tem+Toh' }],
+          queueNote: '晚市等位 30 分钟起；开门时段或午市最松。',
+        },
+        {
+          id: 'sp-chicken', name: 'SP Chicken', nameEn: 'SP Chicken', neighborhood: '古城内',
+          location: { address: 'Samlan Rd（帕邢寺附近）', areaId: 'old-city', connection: '古城内步行可达', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=SP+Chicken+Chiang+Mai' } },
+          order: ['烤鸡半只', '青木瓜沙拉＋糯米饭'],
+          whyLinger: '古城烤鸡名店——整鸡竖在炭炉上烤是标志。配木瓜沙拉与糯米饭就是完整一餐。',
+          practical: '现金小馆；烤鸡按半只／整只卖，卖完收。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=SP+Chicken+Chiang+Mai' }],
+        },
+      ],
+    },
+    {
+      id: 'night-market', title: '夜市与摊头',
+      intro: '周日与长康路夜市是小吃密度场；古城北门的摊头有全城最出名的一碗猪脚饭。',
+      restaurants: [
+        {
+          id: 'cowboy-hat', name: '凤飞飞猪脚饭', nameEn: 'Khao Kha Moo Chang Phueak', neighborhood: '古城北门（昌普门）',
+          location: { address: 'Chang Phueak 门外摊区', areaId: 'old-city', connection: '古城北门步行即到', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=凤飞飞猪脚饭+清迈' } },
+          order: ['猪脚饭（ข้าวขาหมู）', '加卤蛋'],
+          whyLinger: '戴牛仔帽的老板娘是标志——清迈最出名的猪脚饭摊，北门摊区的排队王。',
+          practical: '傍晚开摊；现金。一份饭不大，可加料。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=凤飞飞猪脚饭+清迈' }],
+          queueNote: '晚餐时段排队；摊区还有别家可搭着吃。',
+        },
+      ],
+    },
+    {
+      id: 'cafe', title: '咖啡与泰北豆',
+      intro: '清迈是泰国咖啡产地，精品馆密度高。下午留一次给手冲，本地豆值得买伴手。',
+      restaurants: [
+        {
+          id: 'ristr8to', name: 'Ristr8to', nameEn: 'Ristr8to', neighborhood: '尼曼路',
+          location: { address: 'Nimmanahaeminda Soi 3', areaId: 'nimman', connection: '尼曼巷内', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Ristr8to' } },
+          order: ['手冲单品', '拉花拿铁（骷髅杯）'],
+          whyLinger: '世界拉花冠军的店——清迈精品咖啡的旗手，菜单像实验单。尼曼散步的锚点。',
+          practical: '座位不多；单品豆菜单常换。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Ristr8to' }],
+        },
+        {
+          id: 'akha-ama', name: 'Akha Ama Coffee', nameEn: 'Akha Ama', neighborhood: 'Santitham（尼曼北）',
+          location: { address: 'Santitham 区（以门店为准）', areaId: 'nimman', connection: '古城西北方向 Grab 或步行', source: { label: '官网', url: 'https://www.akhaama.com/' } },
+          order: ['阿卡豆手冲', '意式'],
+          whyLinger: '从阿卡族山村做起的社会企业——豆子从村里到店里全程自控。买一包豆是最实在的伴手。',
+          practical: '以门店现址为准；豆子可带走。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '官网', url: 'https://www.akhaama.com/' }],
+        },
+      ],
+    },
+    {
+      id: 'cooking', title: '厨艺课',
+      intro: '半天厨艺课从市场买菜开始，学会三四道泰菜——是带走技能而不是带走照片的玩法。',
+      restaurants: [
+        {
+          id: 'asia-scenic', name: 'Asia Scenic 厨艺学校', nameEn: 'Asia Scenic Thai Cooking', neighborhood: '古城',
+          location: { address: '古城内（报名后按确认接送）', areaId: 'old-city', connection: '多含住处接送，报名时确认', source: { label: '官网', url: 'https://www.asiascenic.com/' } },
+          order: ['半日课：市场行＋三四道菜', '全日课含更多菜与农场'],
+          whyLinger: '清迈老牌厨艺学校之一——从市场认香料开始，到做完吃掉。比多吃一顿更值。',
+          practical: '需提前报名；素食与忌口订时注明。以官网为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '官网', url: 'https://www.asiascenic.com/' }],
+        },
+      ],
+    },
+  ],
+  howToOrder: [
+    '咖喱面直接说 Khao soi gai（鸡）/nuea（牛）；辣度说 mai pet（不辣）。',
+    '夜市摊指着点；芒果糯米饭按份。',
+    '双条车司机常兼导游，吃饭推荐礼貌听但自己定。',
+    '咖啡馆英文通用；本地豆手冲值得试。',
+  ],
+  avoid: [
+    '「骑象＋表演」式大象营不参加——选观察式庇护所。',
+    '夜市入口处的游客价摊位偏贵，往里走一段再买。',
+    '双条车司机推荐的「宝石店／丝绸店」是佣金套路，不进。',
+  ],
+  eatRhythm:
+    '早餐市场粥或粉；午餐 Khao soi；下午咖啡馆；晚上按星期几选夜市。清迈的量小，一天多试几摊。',
+  allergies: [
+    '虾酱与鱼露普遍；花生常撒在咖喱面与凉拌菜上。',
+    '辣度高，「不辣」用 mai pet 说清。',
+    '肠胃敏感者吃现煮摊、喝瓶装水。',
+  ],
+  guide: {
+    city: '清迈',
+    checkedAt: '2026-09-14',
+    scope: '以步行与双条车为主的首次清迈行程；签证按本人证件另核官方要求',
+    intro: '清迈住古城、白天走寺、晚上夜市。以下按 3–4 晚写。',
+    topics: [
+      thDocuments,
+      thMobile('清迈机场'),
+      thPayment,
+      thStay('古城或紧挨古城'),
+      {
+        id: 'arrival',
+        title: '清迈机场 → 古城',
+        summary: '最近的一段进旅程：Grab 15–20 分钟。',
+        stage: 'arrival',
+        recommendation: '落地后叫 Grab 到住处最省心；机场出租车柜台按计价；双条车便宜但行李多不推荐。',
+        steps: [
+          { title: '到达厅办完 SIM 再走', body: '柜台装好测好；Grab 在机场外指定地点上车。' },
+          { title: '古城内住处让车停巷口', body: '窄巷车进不去的走最后几十米；给司机看泰文地址。' },
+          { title: '深夜到达', body: 'Grab 仍可用；机场出租柜台营运到末班。' },
+        ],
+        done: '到住处，知道回程去机场多久。',
+        fallback: 'Grab 叫不到用机场出租柜台；议价参照 App 价。',
+        sources: [{ label: '清迈机场', url: 'https://chiangmaiairportthai.com/' }, { label: 'Grab', url: 'https://www.grab.com/th/' }],
+      },
+      {
+        id: 'transit',
+        title: '市内交通',
+        summary: '古城步行、圈外双条车、远郊包车。',
+        stage: 'during',
+        recommendation: '古城内全靠走；圈外红色双条车随招随停、按人头议价（先讲价再上）；Grab 全城可用。上山去双龙寺在塔佩门或古城北门找双条车凑人。',
+        steps: [
+          { title: '双条车先讲价', body: '上车前说目的地问价，市区内一趟有常态价；不按表，按约定价付。' },
+          { title: 'Grab 作参照', body: '不知道合理价时先查 Grab 价；双条车高于 Grab 就砍价或换 Grab。' },
+          { title: '租机车的风险', body: '无泰国驾照骑机车出事保险可能拒赔；不熟悉右行交通就别骑。' },
+          { title: '步行看右侧来车', body: '泰国靠左行——过马路先看右再看左，与国内相反。' },
+        ],
+        done: '会坐双条车、会用 Grab、知道泰国靠左行。',
+        fallback: '双条车讲不拢价换 Grab；迷路回古城门或主路定向。',
+        sources: [tat],
+      },
+    ],
+    checklist: [
+      { id: 'c-visa', text: '免签资格／签证已核实；TDAC 已填', topic: '证件与入境' },
+      { id: 'c-passport', text: '护照有效期覆盖行程；订单离线保存', topic: '证件与入境' },
+      { id: 'c-net', text: 'SIM／eSIM 方案明确；Grab 已装', topic: '上网与手机' },
+      { id: 'c-cash', text: '备小额泰铢；知道市区换汇点', topic: '支付与现金' },
+      { id: 'c-stay', text: '巷内环境、电梯与晚到方案已确认', topic: '住宿与入住' },
+      { id: 'c-burn', text: '2–4 月行程已查烧山季空气状况', topic: '市内交通' },
+      { id: 'c-elephant', text: '大象体验只订「不骑象」庇护所', topic: '市内交通' },
+    ],
+  },
+  itinerary: {
+    threeNights: {
+      title: '3 晚：古城走寺加夜市',
+      note: '住古城。每天一个方向，下午热时回住处。',
+      days: [
+        { day: '第一天', body: '抵达入住，古城慢走认路，晚上就近夜市。', time: '按落地安排', start: 'CNX → 住处', return: '古城', links: [{ label: '抵达步骤', href: '?tab=practical#guide-arrival' }] },
+        { day: '第二天', body: '清晨塔佩门一带 → 上午契迪龙寺与帕邢寺 → 下午咖啡馆 → 晚上周日夜市（逢周日）。', time: '早晚出门、午后歇', start: '古城', return: '住处', links: [{ label: '古城', href: '?tab=places#area-old-city' }] },
+        { day: '第三天', body: '上午素贴山双龙寺半天，午后返程。', time: '半天上山、午后收尾', start: '双条车上山', return: '住处 → 机场', links: [{ label: '素贴山', href: '?tab=places#area-doi-suthep' }] },
+      ],
+    },
+    fiveNights: {
+      title: '5 晚：加近郊与手艺',
+      note: '3 晚骨架加大象庇护所或厨艺课一天、尼曼半天与留白。',
+      days: [
+        { day: '第一天', body: '抵达入住，古城慢走夜市。', time: '按落地安排', start: 'CNX → 住处', return: '古城', links: [{ label: '抵达步骤', href: '?tab=practical#guide-arrival' }] },
+        { day: '第二天', body: '古城寺与巷子一天，晚上按星期选夜市。', time: '早晚出门', start: '古城', return: '住处', links: [{ label: '古城', href: '?tab=places#area-old-city' }] },
+        { day: '第三天', body: '素贴山半天 + 悟孟寺；下午尼曼咖啡。', time: '上山半天、下午歇', start: '素贴山', return: '尼曼／住处', links: [{ label: '尼曼路', href: '?tab=places#area-nimman' }] },
+        { day: '第四天', body: '大象庇护所或厨艺课一天。', time: '全天', start: '接送点', return: '住处', links: [{ label: '看点', href: '?tab=places' }] },
+        { day: '第五天', body: '古城补漏、买手作伴手，返程。', time: '上午慢走、午后收尾', start: '古城', return: '住处 → 机场', links: [{ label: '河东夜市带', href: '?tab=places#area-riverside-night' }] },
+      ],
+    },
+  },
+  safety: {
+    city: '清迈',
+    checkedAt: '2026-09-14',
+    emergencyNote: '清迈治安好，主要留意烧山季空气、山路与动物体验选择。靠左行，过马路先看右。',
+    contacts: [
+      { name: '报警', number: '191', dial: '191', use: '盗窃、纠纷、交通事故', source: tat, urgent: true },
+      { name: '急救', number: '1669', dial: '1669', use: '医疗急救', source: tat, urgent: true },
+      { name: '旅游警察', number: '1155', dial: '1155', use: '游客纠纷与求助（有外语）', source: touristPolice },
+      { name: '领事保护', number: '+86-10-12308', dial: '+861012308', use: consularUse, source: consularHotline },
+    ],
+    phrases: HELP_PHRASES,
+    preparation: [
+      '免签资格与 TDAC 确认截图离线保存。',
+      '2–4 月烧山季查 AQI，敏感人群改期或备 N95。',
+      '泰国靠左行——过马路先看右。',
+      '境外医疗保险另存；不租无照机车。',
+      '记住 191／1669／1155。',
+      '雨季（5–10 月）备雨具与防滑鞋。',
+    ],
+    alerts: [
+      { title: '烧山季空气', body: '每年约 2–4 月北部烧山，AQI 可到危险级。行程在此时段的查当年状况，敏感人群考虑改期。', source: tat },
+      { title: '租机车风险', body: '无泰国驾照骑机车出事，保险与责任都成问题；右行国家事故多发，不熟别骑。', source: tat },
+      { title: '动物体验选择', body: '只选不骑象、不表演的庇护所；虎园与骑象营不参与。', source: tat },
+      { title: '山路', body: '素贴山与拜县方向弯多坡陡；易晕车备药，夜间少走山路。', source: tat },
+    ],
+    scenarios: [
+      { id: 'safety-documents', title: '护照丢了', steps: ['到警局报失拿证明。', '联系中国驻清迈总领馆补办旅行证件。', '保留报失证明理赔。', '出境手续留足时间。'], sources: [consular, { label: '中国驻清迈总领馆', url: 'http://chiangmai.china-consulate.gov.cn/' }] },
+      { id: 'safety-medical', title: '需要就医', steps: ['紧急拨 1669。', '清迈有多家国际医院；请酒店协助叫车与翻译。', '保留收据走保险。'], sources: [tat] },
+      { id: 'safety-scam', title: '被带去购物点或纠纷', steps: ['双条车／突突车司机推荐的店坚持不进。', '被带到佣金店不强买，叫车离开。', '纠纷拨 1155 旅游警察（有中文服务时段）。'], sources: [touristPolice] },
+      { id: 'safety-animal', title: '动物体验出问题', steps: ['现场要求骑象或接触的表演项目可拒绝并离场。', '受伤先就医留证；向预订平台与 TAT 投诉。'], sources: [tat] },
+      { id: 'safety-transport', title: '山路晕车或坐过站', steps: ['上车前吃晕车药；坐前排看远处。', '双条车坐过站按铃下车换向；Grab 显示路线更直观。', '天黑后山路别走，回城再说。'], sources: [tat] },
+    ],
+  },
+  relatedGuides: [
+    '曼谷城市页 → /places/thailand/bangkok',
+    '泰国国家页 → /places/thailand',
+    '槟城城市页 → /places/malaysia/penang',
+  ],
+  sourcesNote: [
+    '街区、看点与交通信息来自官方公开资料与通用旅行常识，核对日期见上。',
+    '店单按「可核实」标准收录：每家店留核实日期与来源；营业与排队信息以现场和官网为准。',
+    `官方入口：${city('chiang-mai').officialLinks.map((l) => l.label).join('、')}。`,
+  ],
+}
+
+export const bangkok: CityContent = {
+  city: city('bangkok'),
+  checkedAt: '2026-09-14',
+  meta: [
+    { label: '最佳季节', value: '11–2 月凉季最好；3–5 月酷热，6–10 月雨季多急雨。' },
+    { label: '机场', value: '素万那普（BKK）为主，机场快线接市区；廊曼（DMK）多为廉航。' },
+    { label: '建议停留', value: '3–4 晚。轨道交通沿线住稳；大皇宫一线、市场、商场各一天。' },
+    { label: '地区标签', value: '东南亚 · 泰国首都' },
+    { label: '气质', value: '河与高架之间：寺庙、市场、商场与天台' },
+    { label: '核实日期', value: '2026-09-14' },
+  ],
+  essentials: [
+    {
+      title: '机场 → 市区',
+      body: '素万那普（BKK）机场快线到帕亚泰（Phaya Thai）接 BTS 约 30 分钟，出租车打表加高速费；廊曼（DMK）靠机场巴士、火车或出租车。高峰进城堵车严重，能轨道就轨道。',
+      action: { label: '查看抵达步骤', to: '?tab=practical#guide-arrival' },
+      links: [{ label: '素万那普机场', url: 'https://suvarnabhumi.airportthai.co.th/' }],
+    },
+    {
+      title: '建议住哪',
+      body: '住 BTS／MRT 沿线：素坤逸（Asok—Phrom Phong）吃饭购物都顺，或河畔区（Sathorn 方向）安静些、接船去老城。别为「离景点近」住离轨道远的巷深处。',
+      action: { label: '订房前逐项检查', to: '?tab=practical#guide-stay' },
+    },
+    {
+      title: '建议晚数',
+      body: '3 晚排大皇宫—卧佛寺一天、市场与商场一天、留白；4 晚加恰图恰周末市场或河畔。曼谷的热会吃掉体力，每天只排一个主方向。',
+      action: { label: '展开每天安排', to: '?tab=itinerary#plan-three' },
+    },
+  ],
+  overview: [
+    '曼谷的骨架是河与高架轨道：昭披耶河串起老城寺庙，BTS 与 MRT 串起现代区。慢旅行的做法：住轨道沿线，每天一个方向——寺庙日、市场日、商场日。',
+    '大皇宫、卧佛寺、郑王庙在河边一线，早上赶早去，中午热时就撤。下午的答案永远是室内：商场、博物馆或回住处。',
+    '恰图恰周末市场、火车夜市是集市内容；素坤逸与暹罗是商场内容。曼谷的商场不是「逛街」，是这座城的公共客厅。',
+    '别把曼谷当中转站硬撑两天——热、堵、大是它的真实面。住对位置、一天一个方向，它就顺了。',
+  ],
+  gettingThere: {
+    intro: [
+      '素万那普（BKK）：机场快线到 Phaya Thai 接 BTS 约 30 分钟最便宜稳当；出租车按表加高速费与机场附加费。廊曼（DMK）：机场巴士或 SRT 火车进城，出租车为主力。',
+      '市内：BTS 高架与 MRT 地铁是骨架，按图坐。突突车（tuk-tuk）是体验不是代步——先讲好价再上；出租车坚持打表（by meter）。',
+      '昭披耶河船是实用交通工具：去大皇宫一线坐橙色旗船比路上快。高峰全城堵，跨区尽量轨道。',
+    ],
+    links: [
+      { label: 'BTS 高架', url: 'https://www.bts.co.th/' },
+      { label: '机场快线', url: 'https://www.srtet.co.th/' },
+    ],
+    verifyReminders: [
+      '机场快线当前票价与末班',
+      'BTS／MRT 票价与互通情况（两家系统不互通）',
+      '昭披耶河船当前航线与票价',
+      '大皇宫与卧佛寺门票及着装要求',
+    ],
+  },
+  neighborhoods: [
+    {
+      id: 'sukhumvit',
+      title: '素坤逸（Asok—Phrom Phong）',
+      suited: '多数第一次来的人；轨道、吃饭、商场都顺。',
+      image: cityImages['bangkok-sukhumvit'],
+      body: 'BTS 素坤逸线中段：Terminal 21、EmQuartier 等商场连着站，巷子里是小馆与按摩店。住这里，每天的进出都靠轨道，不用赌路况。',
+      visit: {
+        duration: '住处不是景点；商场当雨天与热天的退路。',
+        entry: 'BTS Asok／Phrom Phong 站。',
+        walk: '站内连商场；soi（巷）里找小馆。',
+        return: 'BTS 回；高峰 Asok 换乘人多。',
+        stay: '首选居住区；选离 BTS 步行五分钟内。',
+        source: tat,
+      },
+    },
+    {
+      id: 'old-city-river',
+      title: '老城与河畔',
+      suited: '要看大皇宫一线、能接受早出的人。',
+      image: cityImages['bangkok-riverside'],
+      body: '昭披耶河西岸的老城：大皇宫、卧佛寺、郑王庙沿河排开。清晨坐船去，中午前看完撤——下午的热与人群都不值得。',
+      visit: {
+        duration: '半天到一天（早出）。',
+        entry: '昭披耶河船到 Tha Chang／Tha Tian 码头，或 MRT Sanam Chai。',
+        walk: '大皇宫 → 卧佛寺 → 轮渡到郑王庙；顺河一条线。',
+        return: '河船或 MRT 回；下午回住处躲热。',
+        stay: '河畔酒店安静景好但离轨道远；第一次来住轨道线更顺。',
+        source: tat,
+      },
+    },
+    {
+      id: 'siam-chinatown',
+      title: '暹罗与唐人街',
+      suited: '想要商场日加一顿老城晚饭的人。',
+      image: cityImages['bangkok-chinatown'],
+      body: '暹罗是商场群（Siam Paragon、CentralWorld 方向）；唐人街（耀华力）晚上是最热闹的海鲜与排档区。两个内容可分两天，也可商场白天加唐人街晚饭。',
+      visit: {
+        duration: '各半天。',
+        entry: 'BTS Siam 站（暹罗）；MRT Wat Mangkon 站（唐人街）。',
+        walk: '暹罗商场连廊互通；唐人街主街晚上走，巷里摊更本地。',
+        return: 'BTS／MRT 回；唐人街晚高峰打车难，优先 MRT。',
+        stay: '不建议住唐人街深巷；暹罗酒店贵但位置最中。',
+        source: tat,
+      },
+    },
+    {
+      id: 'chatuchak-ari',
+      title: '恰图恰与阿里',
+      suited: '赶上周末市场、或想看本地人住区的人。',
+      image: cityImages['bangkok-chatuchak'],
+      body: '恰图恰周末市场是全亚洲最大的集市之一（周末白天）；旁边的阿里（Ari）是本地中产街区，咖啡馆与食堂密度高。市场日排在周末。',
+      visit: {
+        duration: '市场半天；阿里半天。',
+        entry: 'BTS Mo Chit 或 MRT Chatuchak Park 站。',
+        walk: '市场按区号逛，别指望走完；阿里在市场南几站。',
+        return: 'BTS／MRT 回；市场内人挤人看紧包。',
+        stay: '不住这一带；当半天目的地。',
+        source: tat,
+      },
+    },
+  ],
+  dayTrips: [
+    { direction: '大城', how: '火车或包车约 1.5 小时', worth: '古都遗址骑车看一天；比曼谷松，值得给一天。' },
+    { direction: '美功铁道市场＋安帕瓦', how: '巴士／包车约 1.5 小时', worth: '火车穿市场与水上市场；半日团最省事，别自己赶点。' },
+    { direction: '北碧', how: '巴士约 2.5–3 小时', worth: '桂河桥与二战史；一天往返偏紧，两晚更从容。' },
+  ],
+  dayTripNote: '大城最值得一天；美功半日团省事；北碧两晚更从容。',
+  eatIntro:
+    '曼谷的吃从街头开始：路边摊、市场食阁、商场地下美食层各占一层。唐人街晚上是高潮；白天热，食阁与商场层最舒服。',
+  eatCriteria: EAT_CRITERIA,
+  eatExclude: EAT_EXCLUDE,
+  categories: [
+    {
+      id: 'street', title: '街头摊与名店',
+      intro: '曼谷街头摊是日常厨房；两家最出名的老店在老城一线，值得专程去。',
+      restaurants: [
+        {
+          id: 'thipsamai', name: 'Thipsamai Pad Thai', nameEn: 'ทิพย์สมัย', neighborhood: '老城 Maha Chai 路',
+          location: { address: '313-315 Maha Chai Rd, Bangkok', areaId: 'old-city-river', connection: 'MRT Sam Yot 站步行约5分钟', source: { label: '官网', url: 'https://www.thipsamai.com/' } },
+          order: ['招牌 Pad Thai（蛋皮包）', '橙汁（大块果肉）'],
+          whyLinger: '曼谷最著名的 Pad Thai 老店——炭火大锅现炒，傍晚开门就排队。当晚餐主项，不当路过小吃。',
+          practical: '傍晚开；排队取号。现金与卡以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '官网', url: 'https://www.thipsamai.com/' }, { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Thipsamai' }],
+          queueNote: '开门时段与深夜最松；高峰排 30–60 分钟。',
+        },
+        {
+          id: 'jay-fai', name: 'Jay Fai', nameEn: 'เจ๊ไฝ', neighborhood: '老城 Maha Chai 路',
+          location: { address: '327 Maha Chai Rd, Bangkok', areaId: 'old-city-river', connection: '与 Thipsamai 同一条街', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Jay+Fai+Bangkok' } },
+          order: ['蟹肉蛋包（crab omelette）', '醉汉面（drunken noodles）'],
+          whyLinger: '戴护目镜炒菜的传奇店——米其林一星街头店，蟹肉蛋包是真材实料。价格接近餐厅而非摊位。',
+          practical: '必须提前很久订位或现场取号碰运气；价格不低，当正餐体验。以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Jay+Fai+Bangkok' }],
+          queueNote: '无预约极难进；订位看官网／电邮渠道，现场写名等数小时是常态。',
+        },
+        {
+          id: 'or-tor-kor', name: 'Or Tor Kor 市场餐区', nameEn: 'Or Tor Kor Market', neighborhood: 'Kamphaeng Phet（乍都乍对面）',
+          location: { address: 'Kamphaeng Phet Rd, Chatuchak, Bangkok', connection: 'MRT Kamphaeng Phet 站直达', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Or+Tor+Kor+Market' } },
+          order: ['餐区各摊（咖喱饭、米粉、点心）', '热带水果一份'],
+          whyLinger: '乍都乍市场对面的高品质农产品市场——内侧餐区干净、地道、本地人多。逛完市场或没去成乍都乍时的正餐答案。',
+          practical: '市场营业时间内餐区开放；现金为主，部分摊收电子付。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Or+Tor+Kor+Market' }],
+        },
+      ],
+    },
+    {
+      id: 'chinatown', title: '唐人街夜排档',
+      intro: '耀华力路入夜变排档街：海鲜、粿汁、糖水。晚上走一遍是曼谷的高潮戏。',
+      restaurants: [
+        {
+          id: 't-k-seafood', name: 'T&K Seafood', nameEn: 'T&K Seafood', neighborhood: '耀华力路',
+          location: { address: '49-51 Phadung Dao Rd（耀华力）, Bangkok', areaId: 'siam-chinatown', connection: 'MRT Wat Mangkon 站步行约10分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=T%26K+Seafood+Bangkok' } },
+          order: ['咖喱蟹或蒜茸虾', '海鲜问时价再点'],
+          whyLinger: '耀华力最有名的海鲜排档之一——店外塑料椅坐满，大锅猛火的唐人街标配。',
+          practical: '海鲜按时价问清再下单；人多等位。现金与卡以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=T%26K+Seafood+Bangkok' }],
+        },
+        {
+          id: 'nai-ek', name: 'Nai Ek 粿汁', nameEn: 'ก๋วยจั๊บนายเอ็ก', neighborhood: '耀华力路',
+          location: { address: '442 Yaowarat Rd, Bangkok', areaId: 'siam-chinatown', connection: '耀华力主街步行', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=ก๋วยจั๊บนายเอ็ก' } },
+          order: ['招牌粿汁（猪杂卷粉汤）', '烧肉'],
+          whyLinger: '必比登推介的唐人街老店——胡椒味重的粿汁汤是曼谷夜排档的经典一碗。',
+          practical: '店外排队翻台快；现金。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=ก๋วยจั๊บนายเอ็ก' }],
+        },
+      ],
+    },
+    {
+      id: 'foodcourt', title: '商场食阁',
+      intro: '商场地下美食层是热天的正确答案：便宜、干净、有空调——先买储值卡再点餐，用不完可退。',
+      restaurants: [
+        {
+          id: 'pier-21', name: 'Pier 21 食阁', nameEn: 'Pier 21 Food Court', neighborhood: 'Terminal 21（Asok）',
+          location: { address: 'Terminal 21 商场 5 楼, Sukhumvit', areaId: 'sukhumvit', connection: 'BTS Asok／MRT Sukhumvit 直达商场', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Pier+21+Food+Court' } },
+          order: ['船面小碗多试', '芒果糯米饭', '储值卡先充再点'],
+          whyLinger: '曼谷最划算的食阁——价格接近街头但干净有空调。轨道站直连，热天中午的正确答案。',
+          practical: '柜台先买储值卡；余额当天可退。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Pier+21+Food+Court' }],
+        },
+      ],
+    },
+    {
+      id: 'boat-noodle', title: '船面与老汤',
+      intro: '船面小碗多碗是玩法：十几铢一碗一次点好几碗；老汤锅是另一种传奇。',
+      restaurants: [
+        {
+          id: 'boat-noodle-alley', name: '船面巷（胜利纪念碑）', nameEn: 'Boat Noodle Alley', neighborhood: '胜利纪念碑',
+          location: { address: 'Ratchawithi 路运河旁巷内', connection: 'BTS Victory Monument 站步行约5分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Boat+Noodle+Alley+Bangkok' } },
+          order: ['船面按碗点（牛肉／猪肉）', '一次点三四碗不同汤'],
+          whyLinger: '运河旁的一排船面店——十几铢一碗，按叠起的空碗计战果。午餐的玩法型一餐。',
+          practical: '巷内多家店任选；现金。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Boat+Noodle+Alley+Bangkok' }],
+        },
+        {
+          id: 'wattana-panich', name: '郭炎松', nameEn: 'Wattana Panich', neighborhood: 'Ekkamai',
+          location: { address: '336-338 Ekkamai Rd, Bangkok', areaId: 'sukhumvit', connection: 'BTS Ekkamai 站步行约10分钟', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Wattana+Panich' } },
+          order: ['牛肉锅（半筋半肉）', '配饭或面'],
+          whyLinger: '一锅老汤熬了几十年是招牌——店门口的巨锅值得看，牛肉炖到入口即化。',
+          practical: '午餐晚餐；现金与卡以现场为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Wattana+Panich' }],
+        },
+      ],
+    },
+    {
+      id: 'cafe', title: '咖啡与天台',
+      intro: '精品咖啡密度高；天台吧黄昏看城市是曼谷的仪式，但按饮品价付门票钱。',
+      restaurants: [
+        {
+          id: 'factory-coffee', name: 'Factory Coffee', nameEn: 'Factory Coffee', neighborhood: 'Phaya Thai',
+          location: { address: 'Phaya Thai 路一带', connection: 'BTS Phaya Thai 站步行可达', source: { label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Factory+Coffee+Bangkok' } },
+          order: ['Supreme（招牌奶咖）', '手冲单品'],
+          whyLinger: '曼谷最有代表性的精品咖啡馆——冠军团队，招牌特调值得排一次。',
+          practical: '常排队取号；下午去更松。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '地图检索', url: 'https://www.google.com/maps/search/?api=1&query=Factory+Coffee+Bangkok' }],
+        },
+        {
+          id: 'octave-bar', name: 'Octave Rooftop Bar', nameEn: 'Octave (Marriott Sukhumvit)', neighborhood: 'Thong Lo 方向',
+          location: { address: 'Bangkok Marriott Hotel Sukhumvit 顶楼', areaId: 'sukhumvit', connection: 'BTS Thong Lo 站步行可达', source: { label: '官网', url: 'https://www.marriott.com/' } },
+          order: ['黄昏时段一杯饮品', '有着装要求（勿拖鞋背心）'],
+          whyLinger: '天台吧里相对亲民的一个——360 度城景，一杯饮料换两小时黄昏。',
+          practical: '住店外客可进；黄昏时段人多。以酒店官网为准。',
+          verifiedAt: '2026-09-14',
+          sources: [{ label: '官网', url: 'https://www.marriott.com/' }],
+        },
+      ],
+    },
+  ],
+  howToOrder: [
+    '街头摊指着锅里的点；辣度说 mai pet（不辣）或 pet nit noi（微辣）。',
+    '食阁先买储值卡再摊前点餐，吃完退卡。',
+    '海鲜排档先问价再下单，按重量计价的问清单价。',
+    '出租车坚持 by meter；不打表换一辆。',
+  ],
+  avoid: [
+    '景区门口「今天大皇宫不开，我带你去...」是经典骗局——大皇宫极少临时关，别信拉客。',
+    '突突车「便宜带你逛几个店」是佣金套路，一律不进。',
+    '海鲜排档不问价就点，账单可能翻倍；先问清。',
+  ],
+  eatRhythm:
+    '早餐酒店附近摊或食阁；午餐走到哪吃哪；下午商场食阁或咖啡躲热；晚上一天一个主题（唐人街／夜市／河边）。',
+  allergies: [
+    '鱼露、虾酱无处不在；花生常撒在 Pad Thai 与凉拌菜上。',
+    '辣度高，忌口说 mai pet。',
+    '街头摊选现煮热摊；喝瓶装水。',
+  ],
+  guide: {
+    city: '曼谷',
+    checkedAt: '2026-09-14',
+    scope: '以轨道交通为主的首次曼谷行程；签证按本人证件另核官方要求',
+    intro: '曼谷住轨道沿线、早出晚归躲热。以下按 3–4 晚写。',
+    topics: [
+      thDocuments,
+      thMobile('素万那普／廊曼机场'),
+      thPayment,
+      thStay('BTS／MRT 沿线'),
+      {
+        id: 'arrival',
+        title: '机场 → 酒店',
+        summary: 'BKK 机场快线接 BTS 最稳；DMK 以出租车为主。',
+        stage: 'arrival',
+        recommendation: '素万那普落地：行李少走机场快线到 Phaya Thai 接 BTS；行李多或深夜到坐出租车（按表＋高速费＋机场附加费）。廊曼落地：出租车或机场巴士。',
+        steps: [
+          { title: '先定轨道还是车', body: '住处离 BTS／MRT 近且行李少→机场快线；否则出租车。深夜到达只有出租车选项。' },
+          { title: '出租车按流程走', body: 'BKK 出租车在到达层取号机排队；不打表的不坐，司机要价参照 Grab。' },
+          { title: '高峰避开路面', body: '工作日早晚高峰进城可堵一小时以上；能轨道就轨道。' },
+          { title: '到站最后一段', body: 'BTS 站到住处的巷子先查好；行李多叫 Grab 补一段。' },
+        ],
+        done: '到酒店，知道回程坐哪条线或怎么叫车。',
+        fallback: '出租排长队改机场快线＋Grab；深夜直接出租。',
+        sources: [{ label: '素万那普机场', url: 'https://suvarnabhumi.airportthai.co.th/' }, { label: '机场快线', url: 'https://www.srtet.co.th/' }],
+      },
+      {
+        id: 'transit',
+        title: '市内交通',
+        summary: 'BTS 与 MRT 两套系统，河船去老城。',
+        stage: 'during',
+        recommendation: 'BTS（高架）与 MRT（地铁）分属两家、票不互通——换乘要出闸重买。储值卡（Rabbit 等）或单程票按行程算。河船去老城最顺。',
+        steps: [
+          { title: '分清两套轨道', body: 'BTS 素坤逸／是隆两线，MRT 蓝紫等线；换乘点（Asok–Sukhumvit 等）出闸换系统。' },
+          { title: '出租车与突突车', body: '出租坚持打表；突突车先讲好总价再上，体验一次就够。' },
+          { title: '河船去老城', body: 'Sathorn 码头（BTS Saphan Taksin）换船；橙色旗船是本地通勤线。' },
+          { title: '记住靠左行', body: '泰国靠左行，过马路先看右；摩托从巷口冲出常见。' },
+        ],
+        done: '会坐 BTS／MRT、会坐船去老城、知道打表规则。',
+        fallback: '轨道不熟先坐一段练手；堵死时改河船或步行。',
+        sources: [{ label: 'BTS', url: 'https://www.bts.co.th/' }, { label: 'MRT', url: 'https://metro.bemplc.co.th/' }],
+      },
+    ],
+    checklist: [
+      { id: 'c-visa', text: '免签资格／签证已核实；TDAC 已填', topic: '证件与入境' },
+      { id: 'c-passport', text: '护照有效期覆盖行程；订单离线保存', topic: '证件与入境' },
+      { id: 'c-net', text: 'SIM／eSIM 方案明确；Grab 已装', topic: '上网与手机' },
+      { id: 'c-cash', text: '备小额泰铢；知道市区换汇点', topic: '支付与现金' },
+      { id: 'c-stay', text: '住处距 BTS／MRT 步行可达；晚到方案确认', topic: '住宿与入住' },
+      { id: 'c-arrival', text: '机场到酒店方案与下车站已截图', topic: '机场 → 酒店' },
+      { id: 'c-meter', text: '已知出租打表规则与河船坐法', topic: '市内交通' },
+    ],
+  },
+  itinerary: {
+    threeNights: {
+      title: '3 晚：寺庙一天，市场一天',
+      note: '住轨道沿线。寺庙赶早，下午室内。',
+      days: [
+        { day: '第一天', body: '抵达入住，住处附近晚饭早睡。', time: '按落地安排', start: 'BKK/DMK → 酒店', return: '住处附近', links: [{ label: '抵达步骤', href: '?tab=practical#guide-arrival' }] },
+        { day: '第二天', body: '早坐船去大皇宫 → 卧佛寺 → 轮渡郑王庙；中午回住处躲热，傍晚出门。', time: '早出、午后歇', start: '河船去老城', return: '轨道回住处', links: [{ label: '老城河畔', href: '?tab=places#area-old-city-river' }] },
+        { day: '第三天', body: '上午市场或商场（按周末与否选恰图恰或暹罗），午后去机场。', time: '半天、午后收尾', start: '按所选', return: '酒店 → 机场', links: [{ label: '看点', href: '?tab=places' }] },
+      ],
+    },
+    fiveNights: {
+      title: '5 晚：加夜市与留白',
+      note: '3 晚骨架上加恰图恰（周末）或阿里半天、唐人街晚饭与留白。',
+      days: [
+        { day: '第一天', body: '抵达入住早睡。', time: '按落地安排', start: 'BKK/DMK → 酒店', return: '住处附近', links: [{ label: '抵达步骤', href: '?tab=practical#guide-arrival' }] },
+        { day: '第二天', body: '寺庙日：大皇宫—卧佛寺—郑王庙，早出午回。', time: '早出、午后歇', start: '河船', return: '住处', links: [{ label: '老城河畔', href: '?tab=places#area-old-city-river' }] },
+        { day: '第三天', body: '暹罗商场日（热天正确选项）；晚上唐人街排档。', time: '白天室内、晚上外出', start: 'Siam', return: 'MRT 回', links: [{ label: '暹罗与唐人街', href: '?tab=places#area-siam-chinatown' }] },
+        { day: '第四天', body: '恰图恰（周末）或阿里街区半天；下午留白。', time: '半天外出、半天留白', start: '按所选', return: '住处', links: [{ label: '恰图恰与阿里', href: '?tab=places#area-chatuchak-ari' }] },
+        { day: '第五天', body: '住处附近慢走补买，按航班去机场。', time: '上午慢走、午后收尾', start: '住处附近', return: '酒店 → 机场', links: [{ label: '素坤逸', href: '?tab=places#area-sukhumvit' }] },
+      ],
+    },
+  },
+  safety: {
+    city: '曼谷',
+    checkedAt: '2026-09-14',
+    emergencyNote: '曼谷治安总体可，经典骗局与交通是主要风险。靠左行，过马路先看右。',
+    contacts: [
+      { name: '报警', number: '191', dial: '191', use: '盗窃、纠纷、交通事故', source: tat, urgent: true },
+      { name: '急救', number: '1669', dial: '1669', use: '医疗急救', source: tat, urgent: true },
+      { name: '旅游警察', number: '1155', dial: '1155', use: '游客纠纷与求助', source: touristPolice },
+      { name: '领事保护', number: '+86-10-12308', dial: '+861012308', use: consularUse, source: consularHotline },
+    ],
+    phrases: HELP_PHRASES,
+    preparation: [
+      '免签资格与 TDAC 确认截图离线保存。',
+      '泰国靠左行——过马路先看右。',
+      '记住经典骗局话术：「景点关了」「便宜带你逛店」一概不理。',
+      '境外医疗保险另存；不租无照机车。',
+      '记住 191／1669／1155。',
+      '雨季备雨具；街头摊看卫生状况。',
+    ],
+    alerts: [
+      { title: '经典骗局', body: '大皇宫附近「今天关了，我带你去玉佛寺／宝石店」是最老牌的骗局。景点开放状态以官方为准，不跟任何人走。', source: tat },
+      { title: '交通与过马路', body: '靠左行；摩托从巷口与车流缝隙冲出常见。出租坚持打表，突突车先讲价。', source: tat },
+      { title: '雨季积水', body: '6–10 月急雨可能路面积水；行程留弹性，地下通道看情况。', source: tat },
+      { title: '食品安全', body: '街头摊选人流量大的现煮摊；生海鲜与冰块看店况；备肠胃药。', source: tat },
+    ],
+    scenarios: [
+      { id: 'safety-documents', title: '护照丢了', steps: ['警局报失拿证明。', '联系中国驻泰国大使馆补办旅行证件。', '保留报失证明理赔。', '出境手续留足时间。'], sources: [consular, { label: '中国驻泰国大使馆', url: 'http://th.china-embassy.gov.cn/' }] },
+      { id: 'safety-medical', title: '需要就医', steps: ['紧急拨 1669。', '曼谷国际医院多（Bumrungrad 等）；请酒店协助。', '保留收据走保险；中暑先降温补水。'], sources: [tat] },
+      { id: 'safety-scam', title: '遇到骗局', steps: ['「景点关了」一律不理，自己走到入口核实。', '已被带进佣金店不强买，叫车离开。', '损失已发生拨 1155 旅游警察并留证。'], sources: [touristPolice, tat] },
+      { id: 'safety-fraud', title: '出租车或价格纠纷', steps: ['上车先说 by meter；不打表就换车。', '绕路疑云先开导航对照，下车留票投诉。', '纠纷拨 1155。'], sources: [touristPolice] },
+      { id: 'safety-transport', title: '坐错线或错过船', steps: ['BTS 与 MRT 换乘要出闸重买，别排错队。', '河船坐过站下船换向，码头都有图。', '深夜 Grab 或打表出租回。'], sources: [tat] },
+    ],
+  },
+  relatedGuides: [
+    '清迈城市页 → /places/thailand/chiang-mai',
+    '泰国国家页 → /places/thailand',
+    '槟城城市页 → /places/malaysia/penang',
+  ],
+  sourcesNote: [
+    '街区、看点与交通信息来自官方公开资料与通用旅行常识，核对日期见上。',
+    '店单按「可核实」标准收录：每家店留核实日期与来源；营业与排队信息以现场和官网为准。',
+    `官方入口：${city('bangkok').officialLinks.map((l) => l.label).join('、')}。`,
+  ],
+}

@@ -2,7 +2,7 @@ import { useLayoutEffect, type ReactNode } from 'react'
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { CityTabs } from './CityTabs'
-import { useCityTab, type CityTabId } from './cityTabs'
+import { useCityTab, useGuideAnchor, type CityTabId } from './cityNavigation'
 
 type Props = {
   hero: ReactNode
@@ -11,6 +11,7 @@ type Props = {
 
 export function CityPage({ hero, panels }: Props) {
   const tab = useCityTab()
+  useGuideAnchor()
 
   useLayoutEffect(() => {
     const nav = document.getElementById('city-tabs')

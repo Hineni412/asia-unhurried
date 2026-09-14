@@ -23,3 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 agent-tools/
+.playwright-cli/
+output/playwright/
+.playwright/
+shot-*.png
