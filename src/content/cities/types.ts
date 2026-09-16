@@ -8,6 +8,7 @@ import type {
 } from '../hongKong'
 import type { SafetyGuideData, TravelGuide } from '../travelGuide'
 import type { CityEntry } from '../directory'
+import type { StayGuide } from '../stay'
 
 export type ItineraryDay = {
   day: string
@@ -42,6 +43,8 @@ export type CityContent = {
     verifyReminders: string[]
   }
   neighborhoods: Neighborhood[]
+  /** 住哪一带的片区决策比较；未写的城市不渲染该栏目。 */
+  stay?: StayGuide
   dayTrips: DayTrip[]
   /** Caveat line under the 再远一点 day-trips heading. */
   dayTripNote: string

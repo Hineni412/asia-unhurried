@@ -3,6 +3,8 @@ import { CityHero } from '../components/CityHero'
 import { CityOverview } from '../components/CityOverview'
 import { CityPlacesPanel } from '../components/CityPlacesPanel'
 import { CityEatPanel } from '../components/CityEatPanel'
+import { CityStayPanel } from '../components/CityStayPanel'
+import { STAY_MAPS } from '../content/stayMap'
 import { PracticalNotes } from '../components/PracticalNotes'
 import { Itinerary } from '../components/Itinerary'
 import { SafetyGuide } from '../components/SafetyGuide'
@@ -39,8 +41,12 @@ export function DirectoryCityPage({ content }: { content: CityContent }) {
             restaurants={restaurants}
             dayTrips={content.dayTrips}
             dayTripNote={content.dayTripNote}
+            stay={content.stay}
           />
         ),
+        stay: content.stay ? (
+          <CityStayPanel stay={content.stay} neighborhoods={content.neighborhoods} map={STAY_MAPS[city.slug]} />
+        ) : undefined,
         eat: <CityEatPanel city={content} shopCount={shopCount} />,
         practical: <PracticalNotes guide={content.guide} />,
         itinerary: (

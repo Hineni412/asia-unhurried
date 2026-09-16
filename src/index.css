@@ -211,3 +211,101 @@ details > summary::-webkit-details-marker { display: none; }
   stroke-width: 4px;
   stroke-linejoin: round;
 }
+
+/* ——— 住：单屏 Leaflet 片区地图 ——— */
+/* 整页压缩为一屏：头部(4.5rem)+tab栏(≈2.9rem)之外的高度全给这一节；
+   标题/控制条/图例是自然高度，地图 flex-1 吃满剩余空间，页面无纵向滚动。 */
+.stay-screen {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 7.4rem);
+  padding-top: 1.25rem;
+  padding-bottom: 0.9rem;
+}
+.stay-screen .places-intro { margin-bottom: 0; }
+.stay-leaflet-host {
+  min-height: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: var(--color-sand);
+}
+@media (max-width: 768px) {
+  /* 移动端头部更矮（3.5rem），tab 栏同高 */
+  .stay-screen { height: calc(100dvh - 6.4rem); }
+}
+
+/* 常显文字标注（divIcon 无盒） */
+.stay-tag,
+.stay-zone-name,
+.stay-route-name {
+  background: none;
+  border: none;
+  box-shadow: none;
+  white-space: nowrap;
+  font-family: var(--font-zh), var(--font-serif);
+  text-shadow: 0 0 3px var(--color-paper), 0 0 7px var(--color-paper), 0 0 10px var(--color-paper);
+}
+.stay-tag { font-size: 11px; color: var(--color-ink); opacity: 0.55; }
+.stay-tag-line { font-size: 10.5px; color: var(--color-ink-faint); opacity: 0.7; }
+.stay-tag-water { letter-spacing: 0.25em; font-size: 11px; color: var(--color-ink-faint); opacity: 0.5; }
+.stay-zone-name { font-size: 14px; font-weight: 500; color: var(--color-ink); }
+.stay-route-name { font-size: 12px; font-weight: 600; color: var(--color-accent-deep); }
+
+/* 点位图形（divIcon 内嵌） */
+.stay-pin { display: block; width: 10px; height: 10px; }
+.stay-pin-spot { background: #1c1a17cc; transform: rotate(45deg); border: 1.2px solid var(--color-paper); }
+.stay-pin-hub { background: var(--color-sand-deep); border: 1.2px solid #1c1a1788; }
+
+/* 悬停价位提示 */
+.leaflet-tooltip.stay-tip {
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 0.45rem;
+  box-shadow: 0 3px 10px #1c1a1714;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  padding: 4px 9px;
+}
+.leaflet-tooltip.stay-tip::before { display: none; }
+
+/* 片区详情弹窗 */
+.stay-popup .leaflet-popup-content-wrapper {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+  border-radius: 0.8rem;
+  box-shadow: 0 10px 32px #1c1a1726;
+}
+.stay-popup .leaflet-popup-content { margin: 14px 16px; font-size: 13px; line-height: 1.65; }
+.stay-popup .leaflet-popup-tip { background: var(--color-paper); border: 1px solid var(--color-border); }
+.stay-popup .leaflet-popup-close-button { color: var(--color-ink-faint); top: 6px; right: 8px; }
+.stay-pop h3 { margin: 0 0 2px; font-family: var(--font-zh), var(--font-serif); font-size: 16.5px; font-weight: 600; }
+.stay-pop .stay-pop-band { margin: 0 0 6px; font-size: 12.5px; font-weight: 600; color: var(--color-accent-deep); }
+.stay-pop p { margin: 6px 0; }
+.stay-pop .stay-pop-skip { color: var(--color-accent-deep); }
+.stay-pop dl { margin: 8px 0 0; display: grid; gap: 6px; }
+.stay-pop dt { font-size: 11px; color: var(--color-ink-faint); }
+.stay-pop dd { margin: 1px 0 0; }
+.stay-pop-links { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px !important; }
+.stay-pop-links a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* 角落缩放滑块：竖向 range，贴在地图右上角 */
+.stay-zoom {
+  background: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: 0.55rem;
+  box-shadow: 0 3px 10px #1c1a1714;
+  padding: 10px 7px;
+  display: flex;
+}
+.stay-zoom-range {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 22px;
+  height: 110px;
+  margin: 0;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}

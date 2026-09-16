@@ -10,6 +10,7 @@ import type {
   MetaField,
   Neighborhood,
 } from './hongKong'
+import type { StayGuide } from './stay'
 
 export const penang = {
   slug: 'penang',
@@ -180,6 +181,54 @@ export const penang = {
       suited: "对不同宗教建筑和城市历史感兴趣的人。",
     },
   ] as Neighborhood[],
+
+  stay: {
+    checkedAt: '2026-09-14',
+    intro:
+      '槟城的答案几乎总是「住乔治市老城」。Batu Ferringhi 是海滩度假区，住那里意味着每天进城另排交通——那是另一趟旅行。老城住宿多是修复店屋：氛围足，但楼梯、隔音、接车点都要逐间核对。',
+    budgetNote:
+      '以 ¥700–800/晚为上限：在乔治市算充裕档，能住进修复店屋精品酒店或带泳池的馆。春节、屠妖节前后与学校假期上浮；老城房量少，看中的先订可取消。',
+    anchors: [
+      { title: '住老城步行圈内', body: '以 Armenian／Acheh 或 Kimberley／Cintra 为圆心：吃的基本靠走，午后能回酒店躲热。' },
+      { title: '店屋酒店核对三件事', body: '楼梯（很多无电梯）、临街噪声、车能否到门口接——巷子深处 Grab 常要走到路口。' },
+      { title: '别两头占', body: '「白天海滩、晚上老城」的结果是每天都在路上；这趟为店屋和吃来，就住老城。' },
+    ],
+    areas: [
+      {
+        id: 'armenian-acheh-stay',
+        title: '店屋核心（Armenian / Acheh）',
+        suitsIf: '第一次来乔治市、想把店屋巷和宗祠放在门口的人。',
+        budgetFeel: '充裕档：修复店屋改的精品酒店集中在这带。',
+        band: { low: 270, high: 540 },
+        transit: '老城步行圈；Grab 送到巷口。',
+        food: '本页多数店步行可达，茶室与巷口档口密。',
+        tradeoff: '店屋隔音一般、常无电梯；夜里巷子安静得早。',
+        neighborhoodIds: ['armenian-acheh', 'kapitan-keling'],
+      },
+      {
+        id: 'kimberley-cintra-stay',
+        title: '小贩巷（Kimberley / Cintra）',
+        suitsIf: '把吃放第一位、晚上想步行解决的人。',
+        budgetFeel: '同为充裕档，老店屋改的小酒店与民宿集中。',
+        band: { low: 200, high: 400 },
+        transit: '老城步行圈；近 Komtar 方向，机场巴士衔接方便。',
+        food: '汕头街夜市与巷口茶室最密，晚餐不用叫车。',
+        tradeoff: '临街房间噪声明显——看评价里关于夜市的描述。',
+        neighborhoodIds: ['kimberley-cintra'],
+      },
+      {
+        id: 'gurney-north',
+        title: 'Gurney / 北海岸方向',
+        suitsIf: '想要泳池、商场与新房，老城只作白天目的地的人。',
+        budgetFeel: '同预算房间更大更新，国际连锁选择多。',
+        band: { low: 300, high: 555 },
+        transit: '进老城靠 Grab／巴士，单程留 15–25 分钟。',
+        food: '商场与美食中心为主，不是巷子档口。',
+        tradeoff: '与老城氛围断开，早晚都要进出城。',
+        skipIf: '这趟是为店屋巷和小贩来的话，别选。',
+      },
+    ],
+  } satisfies StayGuide,
 
   dayTrips: [
     {

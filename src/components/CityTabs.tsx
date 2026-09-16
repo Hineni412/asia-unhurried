@@ -2,9 +2,9 @@ import { Link, useLocation } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
 import { CITY_TABS, cityTabSearch, type CityTabId } from './cityNavigation'
 
-type Props = { active: CityTabId }
+type Props = { active: CityTabId; tabs?: readonly { id: CityTabId; label: string }[] }
 
-export function CityTabs({ active }: Props) {
+export function CityTabs({ active, tabs = CITY_TABS }: Props) {
   const { pathname } = useLocation()
   const listRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -29,7 +29,7 @@ export function CityTabs({ active }: Props) {
         aria-orientation="horizontal"
         className="mx-auto flex site-shell gap-1 overflow-x-auto px-5 py-2.5 text-base whitespace-nowrap md:px-8"
       >
-        {CITY_TABS.map((t) => {
+        {tabs.map((t) => {
           const selected = active === t.id
           return (
             <Link

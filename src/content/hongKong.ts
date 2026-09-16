@@ -3,6 +3,7 @@
  */
 
 import { foodImages } from './cities/photoData'
+import type { StayGuide } from './stay'
 
 export type SourceLink = { label: string; url: string }
 
@@ -240,6 +241,78 @@ export const hongKong = {
       suited: "在香港住五晚左右，想抽一天看海、放慢节奏的人。",
     },
   ] as Neighborhood[],
+
+  stay: {
+    checkedAt: '2026-09-14',
+    intro:
+      '香港选房的第一题不是哪家酒店，是哪一岸：港岛与九龙是两种节奏，全程住一侧，不为了一顿饭换酒店。同价位房间普遍比内地小；旧楼宾馆看电梯与楼况，港岛片区还要看门口坡度。',
+    budgetNote:
+      '以 ¥700–800/晚为上限：多数日期够到中档商务酒店或位置好的老式酒店，房间紧凑是常态。会展季、年末与周末明显上浮，那段时间先订可取消的占位。',
+    anchors: [
+      { title: '先选岸，再选站', body: '看本站「吃」页想去的店在哪一岸：饮茶与旧城在港岛，街坊食肆在九龙。选定一侧后，住处离港铁站步行十分钟内——拖行李按十五分钟算。' },
+      { title: '看门口的坡与电梯', body: '港岛片区坡道多，「距地铁 300 米」可能是一段上坡台阶；旧楼宾馆逐条核对电梯是否到楼层、楼道与大门实况。' },
+      { title: '晚到看最后一段', body: '机场快线到香港站／九龙站后都还有一段接驳；晚到或早班机，比较「快线＋出租车」与直接出租车的总费用，不只看车程数字。' },
+    ],
+    areas: [
+      {
+        id: 'sheung-wan-sai-ying-pun',
+        title: '上环 – 西营盘',
+        suitsIf: '第一次来、想把饮茶和旧城散步放在门口的人。',
+        budgetFeel: '这档预算选择较多：老式酒店与新的小体量酒店都有，房间偏小。',
+        band: { low: 550, high: 1000 },
+        transit: '上环站／西营盘站 · 港岛线；机场快线香港站方向。',
+        food: '茶餐厅、茶楼、糖水铺密集，本页多家店步行可达。',
+        tradeoff: '坡道与楼梯多，拖行李不轻松；靠海一侧更贵。',
+        neighborhoodIds: ['central-sheung-wan', 'sai-ying-pun-kennedy'],
+        sources: [{ label: '香港政府持牌旅馆查询', url: 'https://www.hadla.gov.hk/sc/licensing_matters/hotels/search.php' }],
+      },
+      {
+        id: 'central-admiralty',
+        title: '中环 – 金钟',
+        suitsIf: '预算更松、想把通勤压到最短的人。',
+        budgetFeel: '这档预算基本够不到中档；以商务酒店与高端品牌为主。',
+        band: { low: 900, high: 1600 },
+        transit: '中环站／金钟站 · 港岛线、荃湾线交汇；机场快线香港站在此。',
+        food: '正餐与办公客餐饮多，街坊平价店比上环少。',
+        tradeoff: '方便是真方便，贵也是真贵；晚上街区很快安静下来。',
+        skipIf: '¥800 上限不必看这一带；想要街坊氛围也绕开。',
+        neighborhoodIds: ['central-sheung-wan'],
+      },
+      {
+        id: 'wan-chai-causeway',
+        title: '湾仔 – 铜锣湾',
+        suitsIf: '主要活动都在港岛东、为一顿烧鹅或糖水而来的人。',
+        budgetFeel: '商务与老牌酒店为主，这档预算能住但房间紧凑。',
+        band: { low: 650, high: 1250 },
+        transit: '湾仔站／铜锣湾站 · 港岛线。',
+        food: '烧腊、糖水与办公楼午餐都有，步行解决三餐没问题。',
+        tradeoff: '会展期间房价上浮明显；不必只为吃饭换到这一带。',
+        neighborhoodIds: ['wan-chai'],
+      },
+      {
+        id: 'yau-ma-tei-jordan-stay',
+        title: '油麻地 – 佐敦',
+        suitsIf: '把日常餐食放第一、同预算想要更多选择的人。',
+        budgetFeel: '同预算下选择最多，房间与价格都比港岛友好。',
+        band: { low: 450, high: 900 },
+        transit: '佐敦站／油麻地站 · 荃湾线；机场巴士方向经停多。',
+        food: '庙街、白加士街一带街坊食肆密度高，早晚都有得吃。',
+        tradeoff: '临街嘈杂、部分大厦楼道旧；订前看楼况与近期评价里的噪声。',
+        neighborhoodIds: ['yau-ma-tei-jordan'],
+      },
+      {
+        id: 'tsim-sha-tsui',
+        title: '尖沙咀',
+        suitsIf: '晚到、想要海港夜景、看重接驳选择多的人。',
+        budgetFeel: '这档预算多为老酒店的小房；海景房基本超支。',
+        band: { low: 650, high: 1200 },
+        transit: '尖沙咀站 · 荃湾线；天星码头、机场巴士都在旁。',
+        food: '游客餐饮多，街坊店要往北走一段。',
+        tradeoff: '人流与拉客最多，氛围最「景点」。',
+        skipIf: '想安静、想体验本地日常的话，别选。',
+      },
+    ],
+  } satisfies StayGuide,
 
   dayTrips: [
     {

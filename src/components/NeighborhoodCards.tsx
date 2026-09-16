@@ -1,15 +1,16 @@
 import { useLayoutEffect } from 'react'
 import { Link, useLocation, useNavigationType, useSearchParams } from 'react-router-dom'
 import type { Neighborhood, Restaurant } from '../content/hongKong'
+import type { StayGuide } from '../content/stay'
 import { attractions, attractionTypes, cityBase } from '../content/attractions'
 import { attractionPhotos } from '../content/attractionPhotos'
 import { shortNames } from '../content/neighborhoodNames'
 import { AttractionCard } from './AttractionCard'
 
-type Props = { neighborhoods: Neighborhood[]; restaurants: Restaurant[] }
+type Props = { neighborhoods: Neighborhood[]; restaurants: Restaurant[]; stay?: StayGuide }
 const readingPositions = new Map<string, number>()
 
-export function NeighborhoodCards({ neighborhoods, restaurants }: Props) {
+export function NeighborhoodCards({ neighborhoods, restaurants, stay }: Props) {
   const location = useLocation()
   const navigationType = useNavigationType()
   const [params, setParams] = useSearchParams()
@@ -44,7 +45,7 @@ export function NeighborhoodCards({ neighborhoods, restaurants }: Props) {
       {!filtered.length && <div className="filter-empty"><p className="text-body">这个区域暂时没有所选类型的看点。</p><button onClick={() => { const next=new URLSearchParams(params); next.delete('area');next.delete('type');setParams(next,{replace:true,preventScrollReset:true}) }} className="mt-4 text-accent underline underline-offset-4">查看全部看点</button></div>}
     </section>
     <section id="where-to-stay" className="stay-areas scroll-mt-40">
-      <div className="places-intro"><div><h2 className="font-zh text-3xl">住哪一带，怎么散步</h2><p className="mt-3 max-w-3xl text-small text-ink-muted">全程住稳一处。先比较区域，再展开感兴趣的那条路线。</p></div><Link to="?tab=practical#guide-stay" className="text-small text-accent underline underline-offset-4">订房前检查 →</Link></div>
+      <div className="places-intro"><div><h2 className="font-zh text-3xl">住哪一带，怎么散步</h2><p className="mt-3 max-w-3xl text-small text-ink-muted">全程住稳一处。先按预算与动线选片区，再展开这一带的散步路线。</p></div><div className="flex flex-wrap gap-x-6">{stay ? <Link to="?tab=stay" className="text-small text-accent underline underline-offset-4">片区比较与地图 →</Link> : null}<Link to="/stay" className="text-small text-accent underline underline-offset-4">选房方法 →</Link><Link to="?tab=practical#guide-stay" className="text-small text-accent underline underline-offset-4">订房前检查 →</Link></div></div>
       <div className="stay-area-list">{neighborhoods.map(n => {
         const picture = n.id === 'armenian-acheh' ? { ...n.image, src:attractionPhotos['armenian-street'][0].src, alt:attractionPhotos['armenian-street'][0].alt } : n.image
         return <details key={n.id} id={`area-${n.id}`} name="neighborhood-walk" className="stay-area scroll-mt-40">

@@ -3,6 +3,8 @@ import { CityHero } from '../components/CityHero'
 import { CityOverview } from '../components/CityOverview'
 import { CityPlacesPanel } from '../components/CityPlacesPanel'
 import { CityEatPanel } from '../components/CityEatPanel'
+import { CityStayPanel } from '../components/CityStayPanel'
+import { STAY_MAPS } from '../content/stayMap'
 import { PracticalNotes } from '../components/PracticalNotes'
 import { Itinerary } from '../components/Itinerary'
 import { SafetyGuide } from '../components/SafetyGuide'
@@ -46,7 +48,11 @@ export function HongKong() {
             restaurants={hk.categories.flatMap((c) => c.restaurants)}
             dayTrips={hk.dayTrips}
             dayTripNote="离岛和澳门受天气、船期影响；当天早上看公告。"
+            stay={hk.stay}
           />
+        ),
+        stay: (
+          <CityStayPanel stay={hk.stay} neighborhoods={hk.neighborhoods} map={STAY_MAPS['hong-kong']} />
         ),
         eat: <CityEatPanel city={hk} shopCount={shopCount} />,
         practical: (

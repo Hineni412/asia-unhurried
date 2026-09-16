@@ -27,7 +27,7 @@ npm run preview
 | 路径 | 页面 |
 | --- | --- |
 | `/` | 首页：米色矢量亚洲地图；香港、槟城与其余 15 城均为完整城市页 |
-| `/places/hong-kong` | 香港城市页（`?tab=` 切换总览 / 出行指南 / 街区与看点 / 吃 / 行程 / 安全与求助，默认总览） |
+| `/places/hong-kong` | 香港城市页（`?tab=` 切换总览 / 出行指南 / 街区与看点 / 住 / 吃 / 行程 / 安全与求助，默认总览） |
 | `/hong-kong` | 重定向到 `/places/hong-kong` |
 | `/places/malaysia` | 马来西亚国家页（槟城完整页；吉隆坡初版页） |
 | `/places/malaysia/penang` | 槟城城市页（住乔治市；同样用 `?tab=` 切换主面板） |
@@ -35,8 +35,9 @@ npm run preview
 | `/places/hong-kong/attractions/:attractionId` | 大馆、M+、香港故宫文化博物馆、香港公园的独立详情 |
 | `/places/malaysia/penang/attractions/:attractionId` | 侨生博物馆、邱公司、姓周桥、升旗山的独立详情 |
 | `/places/japan` `/places/south-korea` `/places/taiwan` `/places/vietnam` `/places/thailand` | 国家页：城市列表 |
-| `/places/japan/tokyo` `/places/japan/kyoto` `/places/japan/osaka` `/places/japan/fukuoka` `/places/south-korea/seoul` `/places/south-korea/jeju` `/places/south-korea/busan` `/places/taiwan/taipei` `/places/vietnam/hanoi` `/places/vietnam/hoi-an` `/places/thailand/chiang-mai` `/places/thailand/bangkok` `/places/malaysia/kuala-lumpur` `/places/macau` `/places/singapore` | 15 个完整城市页：与香港／槟城相同的六个 `?tab=` 分页（总览 / 出行指南 / 街区与看点 / 吃 / 行程 / 安全与求助），含店单、街区散步路线、行程与安全页 |
+| `/places/japan/tokyo` `/places/japan/kyoto` `/places/japan/osaka` `/places/japan/fukuoka` `/places/south-korea/seoul` `/places/south-korea/jeju` `/places/south-korea/busan` `/places/taiwan/taipei` `/places/vietnam/hanoi` `/places/vietnam/hoi-an` `/places/thailand/chiang-mai` `/places/thailand/bangkok` `/places/malaysia/kuala-lumpur` `/places/macau` `/places/singapore` | 15 个完整城市页：与香港／槟城相同的 `?tab=` 分页（总览 / 出行指南 / 街区与看点 / 吃 / 行程 / 安全与求助；已写「住」内容的城市另有「住」tab），含店单、街区散步路线、行程与安全页 |
 | `/places/*/attractions/:attractionId` | 15 城共 105 个景点的独立详情页（与香港／槟城同一 `AttractionPage`） |
+| `/stay` | 怎么选住处：四步选房方法 + 各城预算语境汇总 |
 
 地图来自 `asiaMapData.ts` 的品牌米色 SVG，不是 Leaflet / OSM。图上没有中国大陆钉点。国家与城市目录数据集中在 `src/content/directory.ts`（`COUNTRIES` / `CONTENT_CITIES`）。
 
@@ -87,3 +88,9 @@ npm run dev -- --host --port 43123
 8 个景点共用 `AttractionPage`，内容与照片记录分别位于 `src/content/attractions.ts`、`src/content/attractionPhotos.ts`。每处 5–6 张实拍，桌面拼接、手机滑动、相册逐图署名；43 张景点展示中复用一张已有升旗山远景，其余图片及街区封面存放在 `public/images/attractions/`。官方截图、临时关闭公告和未明确的预约条件按页面标注处理，未提交真实订单。
 
 布局复用 `.site-shell`，最大外框 1920px；1440px 窗口两侧约 48px，1920px 约 64px。窄屏保留 20px 边距，长段落限制行长，主要正文仍为手机 19px／桌面 20px。
+
+### 「住」的片区比较与选房方法（2026-09-14）
+
+首页精选卡改为 `src/content/featured.ts` 数据驱动（一行一座城，数组顺序即显示顺序），hero 快捷链接同样取自该列表。「住」是独立的 `?tab=stay` 分页，只在该城写了 `stay` 内容时出现（其余城市自动隐藏）：`src/content/stay.ts` 定义 `StayGuide`，城市内容的 `stay` 字段可选。每城写预算语境（¥700–800/晚上限在该城的定性档位与旺季提醒）、选房锚点与各片区的「适合谁／预算感受／交通锚点／吃饭半径／要接受的／别选」，不列具体酒店；片区可跳到对应散步路线，订房操作仍在「出行指南 · 住宿与入住」。`/stay` 页固化四步选房流程（定总价上限 → 用晚饭圈定片区 → 画十分钟步行圈 → 核对房型与规则），并自动汇总已写好比较的城市。17 城全部已写。
+
+「住」tab 顶部为真实地图（Leaflet + `src/content/stayMap.ts` 注册表，按城市 slug 索引；每城数据在 `src/content/stayMaps/<slug>.ts`）：底图用 OpenStreetMap 数据（HOT 瓦片，`{s}.tile.openstreetmap.fr`，免 key 但只宜小规模使用），其上叠加 canvas 价位热力层、收录餐厅／看点／枢纽点位与行程动线；香港另有 data.gov.hk 区界细线（`src/content/stayMapGeoHK.ts`，由 `scripts/gen-stay-map-hk.mjs` 生成）。热力层按各片区的价位锚点（`StayMapZone.heat`，如「海旁贵、内街廉」）做逐像素 IDW 插值，绿→黄→红映射到该城价位区间——同一片区内部也有价差渐变。锚点与 `band` 区间按 `research/hotel-prices-*.md` 的近一年公开数据（Kayak / BudgetYourTrip / JLL / DMO 京都 ADR / 澳门统计局等）校准，是量级示意而非实测房价。地图上方可选「出行月份」：`StayMapData.season`（全城默认）与 `StayMapZone.season`（单区覆盖，如釜山海滨暑期峰更陡）给出一套典型月度系数——樱季、凉季、黄金周、台风季等相对波动，选中月份后热力场、悬停价位与预算置灰全部按系数重算；节假日单周尖峰在月度均值中被摊薄，图注已注明非实时价。各片区的完整判断（适合谁／预算感受／交通锚点／吃饭半径／要接受的／别选）收进片区弹窗：悬停显示价位，点击（或移动端点按）打开详情，图下不再重复文案；弹窗内链接走 SPA 路由回街区散步、订房检查与外部来源。输入每晚预算上限后，热力场内插值价位超过上限的像素逐点置灰——同一片区会呈现「够得着的留色、够不着的变灰」的真实分界，片区边框另以实线/虚线标示整体是否在预算内。点位与动线为示意位置、不作导航级精确，价位区间以订房平台实时价为准。全部 17 城均有地图数据；无地图数据时回退为文字比较。上量后应换有正式配额的瓦片服务（如 CARTO / Mapbox / Thunderforest，均需 key）。

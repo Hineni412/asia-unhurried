@@ -5,6 +5,7 @@ import { Penang } from './pages/Penang'
 import { CountryPage } from './pages/CountryPage'
 import { DirectoryCityPage } from './pages/DirectoryCityPage'
 import { AttractionPage } from './pages/AttractionPage'
+import { StayMethod } from './pages/StayMethod'
 import { COUNTRIES, CONTENT_CITIES } from './content/directory'
 import { CITY_CONTENT } from './content/cities'
 
@@ -18,6 +19,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/stay" element={<StayMethod />} />
         <Route path="/places/hong-kong" element={<HongKong />} />
         <Route path="/places/hong-kong/attractions/:attractionId" element={<AttractionPage city="hong-kong" />} />
         <Route path="/hong-kong" element={<PreserveSearchRedirect to="/places/hong-kong" />} />

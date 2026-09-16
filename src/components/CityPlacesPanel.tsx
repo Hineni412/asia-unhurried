@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { NeighborhoodCards } from './NeighborhoodCards'
 import type { DayTrip, Neighborhood, Restaurant } from '../content/hongKong'
+import type { StayGuide } from '../content/stay'
 
 type Props = {
   neighborhoods: Neighborhood[]
@@ -8,13 +9,15 @@ type Props = {
   dayTrips: DayTrip[]
   /** Caveat line shown under the 再远一点 heading. */
   dayTripNote: string
+  /** 片区决策比较；未写的城市不渲染该栏目。 */
+  stay?: StayGuide
 }
 
 /** places tab: attraction browser + neighborhood walks + optional day trips. */
-export function CityPlacesPanel({ neighborhoods, restaurants, dayTrips, dayTripNote }: Props) {
+export function CityPlacesPanel({ neighborhoods, restaurants, dayTrips, dayTripNote, stay }: Props) {
   return (
     <>
-      <NeighborhoodCards neighborhoods={neighborhoods} restaurants={restaurants} />
+      <NeighborhoodCards neighborhoods={neighborhoods} restaurants={restaurants} stay={stay} />
       <details id="day-trips" className="mx-auto site-shell px-5 py-16 md:px-8 md:py-20">
         <summary className="flex cursor-pointer items-center justify-between gap-5">
           <h2 className="font-serif text-3xl tracking-tight text-ink md:text-4xl">再远一点</h2>

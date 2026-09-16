@@ -4,6 +4,7 @@ import { Footer } from '../components/Footer'
 import { AsiaMap } from '../components/AsiaMap'
 import { COUNTRIES, STANDALONE_CITIES } from '../content/directory'
 import { CITY_CONTENT } from '../content/cities'
+import { FEATURED_CITIES } from '../content/featured'
 
 type DirectoryEntry =
   | { kind: 'country'; country: (typeof COUNTRIES)[number] }
@@ -41,17 +42,22 @@ export function Home() {
                 全部目的地
                 <span aria-hidden="true">↓</span>
               </a>
+              {FEATURED_CITIES.slice(0, 2).map((c, i) => (
+                <Link
+                  key={c.slug}
+                  to={c.href}
+                  className={`text-small font-medium underline-offset-4 hover:underline ${
+                    i === 0 ? 'text-accent' : 'text-ink-muted'
+                  }`}
+                >
+                  {i === 0 ? `先看${c.nameZh}` : c.nameZh} →
+                </Link>
+              ))}
               <Link
-                to="/places/hong-kong"
-                className="text-small font-medium text-accent underline-offset-4 hover:underline"
-              >
-                先看香港 →
-              </Link>
-              <Link
-                to="/places/malaysia/penang"
+                to="/stay"
                 className="text-small font-medium text-ink-muted underline-offset-4 hover:underline"
               >
-                槟城 · 乔治市 →
+                怎么选住处 →
               </Link>
             </div>
           </div>
@@ -70,46 +76,37 @@ export function Home() {
           </div>
 
           <div className="grid gap-6 sm:grid-cols-2">
-            <article
-              className="group flex flex-col rounded-2xl border border-border bg-card p-6 no-underline transition hover:border-sand-deep sm:p-8"
-            >
-              <p className="eyebrow">东亚 · Wave 1</p>
-              <h3 className="mt-3 font-zh text-2xl text-ink md:text-3xl">
-                <Link to="/places/hong-kong" className="hover:text-accent">香港</Link>
-                <span className="ml-3 font-serif text-lg text-ink-faint md:text-xl">Hong Kong</span>
-              </h3>
-              <p className="mt-4 max-w-md text-body text-ink-muted">
-                选一侧住稳，用步行和渡轮代替追景点。
-              </p>
-              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-5 text-small">
-                <Link to="/places/hong-kong?tab=practical#guide-documents" className="font-medium text-accent underline underline-offset-4">香港出发前准备 →</Link>
-                <Link to="/places/hong-kong" className="text-ink-muted underline underline-offset-4">了解这座城 →</Link>
-              </div>
-              <p className="mt-3 text-note text-ink-faint">证件、上网、支付与机场接驳，逐步准备。</p>
-            </article>
-            <article
-              className="group flex flex-col rounded-2xl border border-border bg-card p-6 no-underline transition hover:border-sand-deep sm:p-8"
-            >
-              <p className="eyebrow">东南亚 · Wave 1</p>
-              <h3 className="mt-3 font-zh text-2xl text-ink md:text-3xl">
-                <Link to="/places/malaysia/penang" className="hover:text-accent">槟城</Link>
-                <span className="ml-3 font-serif text-lg text-ink-faint md:text-xl">Penang</span>
-              </h3>
-              <p className="mt-4 max-w-md text-body text-ink-muted">
-                住乔治市。吃，店屋巷，不要赶环岛。
-              </p>
-              <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-5 text-small">
-                <Link to="/places/malaysia/penang?tab=practical#guide-documents" className="font-medium text-accent underline underline-offset-4">槟城出发前准备 →</Link>
-                <Link to="/places/malaysia/penang" className="text-ink-muted underline underline-offset-4">了解这座城 →</Link>
-              </div>
-              <p className="mt-3 text-note text-ink-faint">护照、入境登记、上网与到酒店的路线。</p>
-            </article>
+            {FEATURED_CITIES.map((c) => (
+              <article
+                key={c.slug}
+                className="group flex flex-col rounded-2xl border border-border bg-card p-6 no-underline transition hover:border-sand-deep sm:p-8"
+              >
+                <p className="eyebrow">{c.region}</p>
+                <h3 className="mt-3 font-zh text-2xl text-ink md:text-3xl">
+                  <Link to={c.href} className="hover:text-accent">{c.nameZh}</Link>
+                  <span className="ml-3 font-serif text-lg text-ink-faint md:text-xl">{c.nameEn}</span>
+                </h3>
+                <p className="mt-4 max-w-md text-body text-ink-muted">{c.tagline}</p>
+                <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 border-t border-border pt-5 text-small">
+                  <Link
+                    to={`${c.href}?tab=practical#guide-documents`}
+                    className="font-medium text-accent underline underline-offset-4"
+                  >
+                    {c.nameZh}出发前准备 →
+                  </Link>
+                  <Link to={c.href} className="text-ink-muted underline underline-offset-4">
+                    了解这座城 →
+                  </Link>
+                </div>
+                <p className="mt-3 text-note text-ink-faint">{c.prepareNote}</p>
+              </article>
+            ))}
           </div>
 
           <div className="mt-14">
             <div className="flex flex-wrap items-baseline justify-between gap-3">
-              <h3 className="font-zh text-2xl text-ink">更多目的地</h3>
-              <p className="text-note text-ink-faint">与香港、槟城同一标准：店单、街区散步、行程与安全齐备</p>
+              <h3 className="font-zh text-2xl text-ink">全部目的地</h3>
+              <p className="text-note text-ink-faint">与精选同一标准：店单、街区散步、行程与安全齐备</p>
             </div>
             <ul className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {directoryEntries.map((entry) =>

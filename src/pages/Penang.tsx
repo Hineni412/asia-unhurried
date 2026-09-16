@@ -3,6 +3,8 @@ import { CityHero } from '../components/CityHero'
 import { CityOverview } from '../components/CityOverview'
 import { CityPlacesPanel } from '../components/CityPlacesPanel'
 import { CityEatPanel } from '../components/CityEatPanel'
+import { CityStayPanel } from '../components/CityStayPanel'
+import { STAY_MAPS } from '../content/stayMap'
 import { PracticalNotes } from '../components/PracticalNotes'
 import { Itinerary } from '../components/Itinerary'
 import { SafetyGuide } from '../components/SafetyGuide'
@@ -47,7 +49,11 @@ export function Penang() {
             restaurants={pg.categories.flatMap((c) => c.restaurants)}
             dayTrips={pg.dayTrips}
             dayTripNote="升旗山看天气和官网；巴士班次当天早上看。一趟只加一件，不要环岛打卡。"
+            stay={pg.stay}
           />
+        ),
+        stay: (
+          <CityStayPanel stay={pg.stay} neighborhoods={pg.neighborhoods} map={STAY_MAPS['penang']} />
         ),
         eat: <CityEatPanel city={pg} shopCount={shopCount} />,
         practical: (
