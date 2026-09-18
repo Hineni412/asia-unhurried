@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Img } from './Img'
 import { attractionPath, attractionTypes, photosFor, type Attraction } from '../content/attractions'
 
 export function AttractionCard({ place }: { place: Attraction }) {
@@ -14,7 +15,7 @@ export function AttractionCard({ place }: { place: Attraction }) {
       }
     }} className="attraction-card-link">
       {photos[0] ? (
-        <div className="attraction-card-photo"><img src={photos[0].src} alt={photos[0].alt} width={900} height={600} loading="lazy" /><span className="attraction-photo-count">{photos.length} 张实拍</span></div>
+        <div className="attraction-card-photo"><Img src={photos[0].src} alt={photos[0].alt} width={900} height={600} loading="lazy" /><span className="attraction-photo-count">{photos.length} 张实拍</span></div>
       ) : (
         <div className="attraction-card-photo attraction-card-photo--empty" aria-hidden="true" />
       )}

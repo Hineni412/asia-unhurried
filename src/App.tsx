@@ -6,6 +6,7 @@ import { CountryPage } from './pages/CountryPage'
 import { DirectoryCityPage } from './pages/DirectoryCityPage'
 import { AttractionPage } from './pages/AttractionPage'
 import { StayMethod } from './pages/StayMethod'
+import { NotFound } from './pages/NotFound'
 import { COUNTRIES, CONTENT_CITIES } from './content/directory'
 import { CITY_CONTENT } from './content/cities'
 
@@ -42,7 +43,7 @@ export default function App() {
             element={<AttractionPage city={c.slug} />}
           />
         ))}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )

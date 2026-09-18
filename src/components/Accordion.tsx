@@ -5,6 +5,8 @@ type Item = {
   id: string
   title: string
   description?: string
+  /** 卡片底部常显的小字摘要（如核对依据），纯文本——卡片本身是链接，不能内嵌链接。 */
+  note?: ReactNode
   children: ReactNode
   defaultOpen?: boolean
 }
@@ -47,6 +49,7 @@ export function Accordion({ items, variant = 'list' }: Props) {
         <span className="guide-topic-card-mark"><CardMark id={item.id} /></span>
         <span className="guide-topic-card-title font-serif text-xl text-ink">{item.title}</span>
         <span className="guide-topic-card-description text-small text-ink-muted">{item.description}</span>
+        {item.note ? <span className="guide-topic-card-sources">{item.note}</span> : null}
         <span className="guide-topic-card-footer text-note"><span>{openId === item.id ? '继续阅读' : '查看准备步骤'}</span><span aria-hidden="true">↗</span></span>
       </Link>
       <details

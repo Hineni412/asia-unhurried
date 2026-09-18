@@ -106,7 +106,6 @@ export const chiangMai: CityContent = {
     { label: '建议停留', value: '3–4 晚。古城走寺一天、集市与手作村一天、近郊（素贴山或大象营）一天。' },
     { label: '地区标签', value: '东南亚 · 泰北' },
     { label: '气质', value: '古城寺墙、夜市、山脚下的咖啡与手工艺' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {
@@ -530,7 +529,6 @@ export const bangkok: CityContent = {
     { label: '建议停留', value: '3–4 晚。轨道交通沿线住稳；大皇宫一线、市场、商场各一天。' },
     { label: '地区标签', value: '东南亚 · 泰国首都' },
     { label: '气质', value: '河与高架之间：寺庙、市场、商场与天台' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {

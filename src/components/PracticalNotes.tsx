@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { Img } from './Img'
 import { useEffect, useRef, useState } from 'react'
 import type { GuideTopic, TravelGuide } from '../content/travelGuide'
 import { Accordion } from './Accordion'
@@ -44,7 +45,7 @@ function TopicContent({ topic }: { topic: GuideTopic }) {
       </div>}
       {topic.images?.map((picture) => <figure key={picture.src} className="overflow-hidden rounded-xl border border-border bg-card">
         <a href={picture.src} target="_blank" rel="noreferrer" aria-label={`放大图片：${picture.alt}`} className="block cursor-zoom-in">
-          <img src={picture.src} width={picture.width} height={picture.height} alt={picture.alt} loading="lazy" className="max-h-[30rem] w-full object-contain" />
+          <Img src={picture.src} width={picture.width} height={picture.height} alt={picture.alt} loading="lazy" className="max-h-[30rem] w-full object-contain" />
         </a>
         <figcaption className="border-t border-border p-4 text-note text-ink-muted">{picture.caption} <span className="text-ink-faint">点击图片放大。截图：{picture.capturedAt} · </span><a href={picture.source.url} target="_blank" rel="noreferrer" className="underline underline-offset-4">{picture.source.label} ↗</a></figcaption>
       </figure>)}
@@ -155,7 +156,7 @@ export function PracticalNotes({ guide }: { guide: TravelGuide }) {
           {stages.map((stage, i) => <section key={stage.id} id={`stage-${stage.id}`} className="scroll-mt-36">
             <p className="eyebrow">{String(i + 1).padStart(2, '0')}</p><h3 className="mt-2 text-2xl">{stage.label}</h3>
             <p className="mb-6 mt-3 text-small text-ink-faint">{stage.note}</p>
-            <Accordion variant="cards" items={guide.topics.filter((t) => t.stage === stage.id).map((topic) => ({ id: `guide-${topic.id}`, title: topic.title, description: topic.summary, children: <TopicContent topic={topic} /> }))} />
+            <Accordion variant="cards" items={guide.topics.filter((t) => t.stage === stage.id).map((topic) => ({ id: `guide-${topic.id}`, title: topic.title, description: topic.summary, note: topic.sources.length ? <>核对依据：{topic.sources.map((s) => s.label).join(' · ')}</> : undefined, children: <TopicContent topic={topic} /> }))} />
           </section>)}
           <VerifyTable items={guide.checklist} />
         </div>

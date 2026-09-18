@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode } from 'react'
+import { Img } from './Img'
 import { Link } from 'react-router-dom'
 
 type HeroMeta = {
@@ -153,7 +154,7 @@ export function CityHero({
 
         {imageSrc ? (
           <div className="rounded-2xl bg-sand p-2 sm:p-2.5 md:rounded-[1.75rem] md:p-3">
-            <img
+            <Img
               src={imageSrc}
               alt={imageAlt}
               className="aspect-[5/4] w-full rounded-xl object-cover md:rounded-2xl"

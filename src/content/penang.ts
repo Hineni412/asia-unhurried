@@ -35,7 +35,6 @@ export const penang = {
       value: '东南亚 · 马来西亚 · Wave 1',
     },
     { label: '气质', value: '乔治市店屋巷、小贩档、姓氏桥；不住海滩度假区' },
-    { label: '核实日期', value: '2026-09-12' },
   ] as MetaField[],
 
   essentials: [
@@ -203,6 +202,9 @@ export const penang = {
         transit: '老城步行圈；Grab 送到巷口。',
         food: '本页多数店步行可达，茶室与巷口档口密。',
         tradeoff: '店屋隔音一般、常无电梯；夜里巷子安静得早。',
+        walk: '老城步行圈核心，店屋巷全靠走；Grab 多数送到巷口。',
+        noise: '夜里巷子安静得早；临街店屋隔音一般。',
+        slope: '平地；修复店屋常无电梯、上下靠楼梯。',
         neighborhoodIds: ['armenian-acheh', 'kapitan-keling'],
       },
       {
@@ -214,6 +216,9 @@ export const penang = {
         transit: '老城步行圈；近 Komtar 方向，机场巴士衔接方便。',
         food: '汕头街夜市与巷口茶室最密，晚餐不用叫车。',
         tradeoff: '临街房间噪声明显——看评价里关于夜市的描述。',
+        walk: '老城步行圈，夜市就在门口。',
+        noise: '临街房间夜市噪声明显，选内巷或背街房。',
+        slope: '平地；老店屋多楼梯、少有电梯。',
         neighborhoodIds: ['kimberley-cintra'],
       },
       {
@@ -225,6 +230,9 @@ export const penang = {
         transit: '进老城靠 Grab／巴士，单程留 15–25 分钟。',
         food: '商场与美食中心为主，不是巷子档口。',
         tradeoff: '与老城氛围断开，早晚都要进出城。',
+        walk: '进老城靠 Grab／巴士单程 15–25 分钟，不适合步行进城。',
+        noise: '高层酒店较安静，商场与主干道一段车流多。',
+        slope: '平地；新楼有电梯。',
         skipIf: '这趟是为店屋巷和小贩来的话，别选。',
       },
     ],
@@ -885,13 +893,6 @@ export const penang = {
     '槟城：只住乔治市的五日停法（待写）',
     '升旗山缆车：当天如何核班次（待写）',
     '吉隆坡城市页 → /places/malaysia/kuala-lumpur',
-  ],
-
-  startHere: [
-    { label: '签证与入境 · 马来西亚', href: '/start/visas', status: '待写；先读移民局与 MDAC' },
-    { label: '支付 · 马来西亚', href: '/start/paying', status: '待写' },
-    { label: '上网 · 马来西亚', href: '/start/online', status: '待写' },
-    { label: '交通 · 槟城', href: '/start/transport', status: '待写；先读 Rapid Penang' },
   ],
 
   sourcesNote: [

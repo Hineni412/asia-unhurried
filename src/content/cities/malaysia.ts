@@ -24,7 +24,6 @@ export const kualaLumpur: CityContent = {
     { label: '建议停留', value: '2–3 晚。城市适合作为进出马来西亚的枢纽，不把它当度假目的地硬撑。' },
     { label: '地区标签', value: '东南亚 · 马来西亚首都' },
     { label: '气质', value: '高楼、巴刹与多元族裔的日常混居' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {

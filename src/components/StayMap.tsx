@@ -206,7 +206,10 @@ export function StayMap({ map, stay, neighborhoods }: Props) {
         <dl>
           <div><dt>预算感受</dt><dd>${a.budgetFeel}</dd></div>
           <div><dt>交通锚点</dt><dd>${a.transit}</dd></div>
-          <div><dt>吃饭半径</dt><dd>${a.food}</dd></div>
+          <div><dt>晚饭圈</dt><dd>${a.food}</dd></div>
+          ${a.walk ? `<div><dt>步行</dt><dd>${a.walk}</dd></div>` : ''}
+          ${a.noise ? `<div><dt>噪声</dt><dd>${a.noise}</dd></div>` : ''}
+          ${a.slope ? `<div><dt>坡度</dt><dd>${a.slope}</dd></div>` : ''}
           <div><dt>要接受的</dt><dd>${a.tradeoff}</dd></div>
         </dl>
         <p class="stay-pop-links">${links.join('')}</p>
@@ -364,14 +367,22 @@ export function StayMap({ map, stay, neighborhoods }: Props) {
       labels.set(z.areaId, label)
     })
 
-    // 点位：餐厅圆点、看点菱形、枢纽方块
+    // 点位：餐厅圆点、看点菱形、枢纽方块。
+    // 单击只弹出小卡（名字 + 显式「进入」链接），不直接跳走——避免点片区时误进景点/店页。
+    const pinPopup = (p: (typeof map.pins)[number]) => {
+      const kind = p.kind === 'restaurant' ? '收录店' : p.kind === 'attraction' ? '看点' : '枢纽'
+      const link = p.href
+        ? `<a data-nav href="${p.href}">${p.kind === 'restaurant' ? '去「吃」页看这家店' : '看景点详情'} →</a>`
+        : ''
+      return `<div class="stay-pinpop"><span class="stay-pinpop-kind">${kind}</span><strong>${p.label}</strong>${link}</div>`
+    }
     map.pins.forEach((p) => {
       const at: L.LatLngTuple = [p.at[1], p.at[0]]
       if (p.kind === 'restaurant') {
         L.circleMarker(at, { radius: 5.5, color: '#f5f0e7', weight: 1.6, fillColor: '#c23a2b', fillOpacity: 0.95 })
           .addTo(m)
           .bindTooltip(p.label, { direction: 'top', offset: [0, -8], className: 'stay-tip' })
-          .on('click', () => p.href && navigate(p.href))
+          .bindPopup(() => pinPopup(p), { className: 'stay-popup', offset: [0, -4] })
       } else {
         const cls = p.kind === 'attraction' ? 'stay-pin stay-pin-spot' : 'stay-pin stay-pin-hub'
         L.marker(at, {
@@ -380,7 +391,7 @@ export function StayMap({ map, stay, neighborhoods }: Props) {
         })
           .addTo(m)
           .bindTooltip(p.label, { direction: 'top', offset: [0, -8], className: 'stay-tip' })
-          .on('click', () => p.href && navigate(p.href))
+          .bindPopup(() => pinPopup(p), { className: 'stay-popup', offset: [0, -4] })
       }
     })
 
@@ -566,6 +577,32 @@ export function StayMap({ map, stay, neighborhoods }: Props) {
         <span className="basis-full text-note leading-snug sm:basis-auto sm:flex-1 sm:text-right">
           示意插值＋季节系数，非实时价；常见区间核实 {map.checkedAt}，以订房平台为准 · 底图 © OSM（HOT）
         </span>
+      </div>
+
+      {/* 片区对比卡条：同屏横排速览；点卡稳定打开该片区的住宿判断弹窗。 */}
+      <div className="stay-area-strip" role="list">
+        {stay.areas.map((a) => {
+          const b = bandOf(zoneById.get(a.id))
+          return (
+            <button
+              key={a.id}
+              type="button"
+              role="listitem"
+              className="stay-area-card"
+              onClick={() => {
+                const poly = zonePolys.current.get(a.id)
+                if (poly) poly.openPopup()
+              }}
+            >
+              <span className="stay-area-card-head">
+                <span className="stay-area-card-title">{a.title}</span>
+                {b ? <span className="stay-area-card-band">¥{b.low}–{b.high}/晚</span> : null}
+              </span>
+              <span className="stay-area-card-suits">{a.suitsIf}</span>
+              <span className="stay-area-card-cta">看判断 →</span>
+            </button>
+          )
+        })}
       </div>
     </div>
   )

@@ -20,6 +20,7 @@ export function Penang() {
 
   return (
     <CityPage
+      checkedAt={pg.verifiedAt}
       hero={
         <CityHero
           nameEn={pg.nameEn}

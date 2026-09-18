@@ -21,6 +21,7 @@ export function DirectoryCityPage({ content }: { content: CityContent }) {
 
   return (
     <CityPage
+      checkedAt={content.checkedAt}
       hero={
         <CityHero
           nameEn={city.nameEn}

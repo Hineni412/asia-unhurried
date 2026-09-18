@@ -136,7 +136,6 @@ export const tokyo: CityContent = {
     { label: '建议停留', value: '4–6 晚。3 晚只够两三个片区；按片区住稳比跨城打卡有用。' },
     { label: '地区标签', value: '东亚' },
     { label: '气质', value: '片区制大都市：下町、丸之内、山手西侧各有节奏' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {
@@ -621,7 +620,6 @@ export const kyoto: CityContent = {
     { label: '建议停留', value: '3–4 晚。古都内容密度高但片区集中，不必排满每天。' },
     { label: '地区标签', value: '东亚' },
     { label: '气质', value: '寺院、町家、鸭川；早起比多排一个景点有用' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {
@@ -1070,7 +1068,6 @@ export const osaka: CityContent = {
     { label: '建议停留', value: '2–4 晚。2 晚走南（难波—新世界）加城公园；4 晚加中之岛与一顿认真吃的正餐。' },
     { label: '地区标签', value: '东亚 · 关西' },
     { label: '气质', value: '吃比逛重要，下町与商场之间' },
-    { label: '核实日期', value: '2026-09-15' },
   ],
   essentials: [
     {
@@ -1491,7 +1488,6 @@ export const fukuoka: CityContent = {
     { label: '建议停留', value: '2–3 晚。市区一天半，太宰府半天，剩下的留给吃。' },
     { label: '地区标签', value: '东亚 · 九州' },
     { label: '气质', value: '机场贴城的港町，拉面与屋台' },
-    { label: '核实日期', value: '2026-09-15' },
   ],
   essentials: [
     {

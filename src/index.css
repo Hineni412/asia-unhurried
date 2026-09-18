@@ -143,6 +143,7 @@ details > summary::-webkit-details-marker { display: none; }
 .guide-topic-card-mark svg { width: 2rem; height: 2rem; }
 .guide-topic-card-title { position: relative; display: block; line-height: 1.35; }
 .guide-topic-card-description { display: block; margin-top: 0.65rem; }
+.guide-topic-card-sources { display: block; margin-top: 0.8rem; font-size: 12px; line-height: 1.5; color: var(--color-ink-faint); }
 .guide-topic-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1.1rem; margin-top: auto; color: var(--color-accent); }
 .guide-topic-card--documents { background: #faf7f0; }
 .guide-topic-card--documents .guide-topic-card-mark { border-bottom: 1px solid #c23a2b55; height: 2.5rem; padding-bottom: 0.5rem; color: var(--color-accent); }
@@ -292,8 +293,20 @@ details > summary::-webkit-details-marker { display: none; }
 .stay-pop-links a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
 
 /* 角落缩放滑块：竖向 range，贴在地图右上角 */
-.stay-zoom {
-  background: var(--color-paper);
+/* 片区对比卡条：地图下方横排，点卡打开对应住宿判断弹窗 */
+.stay-area-strip { display: flex; gap: 0.6rem; margin-top: 0.55rem; overflow-x: auto; padding-bottom: 0.15rem; scrollbar-width: thin; }
+.stay-area-card { flex: 0 0 12rem; display: flex; flex-direction: column; gap: 0.25rem; border: 1px solid var(--color-border); border-radius: 0.7rem; background: var(--color-card); padding: 0.55rem 0.7rem; text-align: left; cursor: pointer; transition: border-color 140ms ease; }
+.stay-area-card:hover, .stay-area-card:focus-visible { border-color: var(--color-accent); }
+.stay-area-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; }
+.stay-area-card-title { font-family: var(--font-zh), var(--font-serif); font-size: 13.5px; font-weight: 600; color: var(--color-ink); line-height: 1.3; }
+.stay-area-card-band { flex-shrink: 0; font-size: 11.5px; font-weight: 600; color: var(--color-accent-deep); }
+.stay-area-card-suits { font-size: 11.5px; line-height: 1.45; color: var(--color-ink-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.stay-area-card-cta { margin-top: auto; font-size: 11px; color: var(--color-accent); }
+.stay-pinpop { font-size: 12.5px; line-height: 1.55; }
+.stay-pinpop-kind { display: inline-block; margin-right: 0.4rem; font-size: 11px; color: var(--color-ink-faint); }
+.stay-pinpop a { display: inline-block; margin-top: 0.35rem; color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+
+.stay-zoom {  background: var(--color-paper);
   border: 1px solid var(--color-border);
   border-radius: 0.55rem;
   box-shadow: 0 3px 10px #1c1a1714;

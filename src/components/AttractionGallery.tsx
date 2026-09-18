@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Img } from './Img'
 import type { AttractionPhoto } from '../content/attractions'
 
 export function AttractionGallery({ photos, name }: { photos: AttractionPhoto[]; name: string }) {
@@ -47,7 +48,7 @@ export function AttractionGallery({ photos, name }: { photos: AttractionPhoto[];
       if (strip.scrollWidth > strip.clientWidth + 5) setStripIndex(Math.min(photos.length - 1, Math.round(strip.scrollLeft / (strip.clientWidth + 8))))
     }}>
       {photos.map((image, i) => <button type="button" key={image.src} className="gallery-tile" onClick={() => { setIndex(i); setOpen(true) }} aria-label={`放大第 ${i + 1} 张：${image.caption}`}>
-        <img src={image.src} alt={image.alt} width={1200} height={800} loading={i < 5 ? 'eager' : 'lazy'} />
+        <Img src={image.src} alt={image.alt} width={1200} height={800} loading={i < 5 ? 'eager' : 'lazy'} />
         {i === 4 && <span className="gallery-all">查看全部 {photos.length} 张</span>}
       </button>)}
     </div>
@@ -59,7 +60,7 @@ export function AttractionGallery({ photos, name }: { photos: AttractionPhoto[];
       <div className="photo-dialog-inner">
         <div className="photo-dialog-toolbar"><p>{name} <span className="text-note">{index + 1} / {photos.length}</span></p><button autoFocus type="button" onClick={closeGallery} aria-label="关闭相册">关闭 ×</button></div>
         <div className="photo-dialog-stage" onTouchStart={event => { touchX.current = event.touches[0].clientX }} onTouchEnd={event => { const difference = event.changedTouches[0].clientX - touchX.current; if (Math.abs(difference) > 50) step(difference < 0 ? 1 : -1) }}>
-          <button className="photo-previous" onClick={() => step(-1)} aria-label="上一张">←</button><img src={photo.src} alt={photo.alt} /><button className="photo-next" onClick={() => step(1)} aria-label="下一张">→</button>
+          <button className="photo-previous" onClick={() => step(-1)} aria-label="上一张">←</button><Img src={photo.src} alt={photo.alt} /><button className="photo-next" onClick={() => step(1)} aria-label="下一张">→</button>
         </div>
         <p className="mt-4 text-small">{photo.caption}</p>
         <p className="mt-2 text-note text-ink-faint">摄影：{photo.author} · <a href={photo.source} target="_blank" rel="noreferrer" className="underline">原图来源</a> · <a href={photo.licenseUrl} target="_blank" rel="noreferrer" className="underline">{photo.license}</a></p>

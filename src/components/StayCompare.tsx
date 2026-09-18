@@ -69,18 +69,23 @@ export function StayCompare({ stay, neighborhoods }: Props) {
                 [
                   ['预算感受', a.budgetFeel, a.band ? `常见约 ¥${a.band.low}–${a.band.high}/晚 · ` : ''],
                   ['交通锚点', a.transit, ''],
-                  ['吃饭半径', a.food, ''],
+                  ['晚饭圈', a.food, ''],
+                  ['步行', a.walk, ''],
+                  ['噪声', a.noise, ''],
+                  ['坡度', a.slope, ''],
                   ['要接受的', a.tradeoff, ''],
                 ] as const
-              ).map(([label, value, prefix]) => (
-                <div key={label}>
-                  <dt className="text-note text-ink-faint">{label}</dt>
-                  <dd className="mt-1.5 text-small leading-relaxed text-ink-muted">
-                    {prefix ? <span className="text-ink">{prefix}</span> : null}
-                    {value}
-                  </dd>
-                </div>
-              ))}
+              )
+                .filter(([, value]) => Boolean(value))
+                .map(([label, value, prefix]) => (
+                  <div key={label}>
+                    <dt className="text-note text-ink-faint">{label}</dt>
+                    <dd className="mt-1.5 text-small leading-relaxed text-ink-muted">
+                      {prefix ? <span className="text-ink">{prefix}</span> : null}
+                      {value}
+                    </dd>
+                  </div>
+                ))}
             </dl>
           </article>
         ))}

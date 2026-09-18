@@ -20,6 +20,7 @@ export function HongKong() {
 
   return (
     <CityPage
+      checkedAt={hk.verifiedAt}
       hero={
         <CityHero
           nameEn={hk.nameEn}

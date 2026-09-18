@@ -85,7 +85,6 @@ export const hongKong = {
       value: '东亚 · 独立目的地（不含中国大陆） · Wave 1',
     },
     { label: '气质', value: '港岛坡道与海港、九龙街市、离岛慢线' },
-    { label: '核实日期', value: '2026-09-11' },
   ] as MetaField[],
 
   essentials: [
@@ -263,6 +262,9 @@ export const hongKong = {
         transit: '上环站／西营盘站 · 港岛线；机场快线香港站方向。',
         food: '茶餐厅、茶楼、糖水铺密集，本页多家店步行可达。',
         tradeoff: '坡道与楼梯多，拖行李不轻松；靠海一侧更贵。',
+        walk: '港铁站步行圈内；拖行李按十五分钟算，先确认酒店门口一段是不是上坡。',
+        noise: '夜里街区安静；旧楼宾馆隔音差异大，看近期评价。',
+        slope: '坡道与台阶多，「距地铁 300 米」可能是一段上坡；店屋式宾馆常无电梯。',
         neighborhoodIds: ['central-sheung-wan', 'sai-ying-pun-kennedy'],
         sources: [{ label: '香港政府持牌旅馆查询', url: 'https://www.hadla.gov.hk/sc/licensing_matters/hotels/search.php' }],
       },
@@ -275,6 +277,9 @@ export const hongKong = {
         transit: '中环站／金钟站 · 港岛线、荃湾线交汇；机场快线香港站在此。',
         food: '正餐与办公客餐饮多，街坊平价店比上环少。',
         tradeoff: '方便是真方便，贵也是真贵；晚上街区很快安静下来。',
+        walk: '站内连通多，步行以天桥与地下街为主，拖行李也顺。',
+        noise: '商务片区，入夜后很快安静下来。',
+        slope: '有坡但天桥、电梯衔接多，实际爬坡少。',
         skipIf: '¥800 上限不必看这一带；想要街坊氛围也绕开。',
         neighborhoodIds: ['central-sheung-wan'],
       },
@@ -287,6 +292,9 @@ export const hongKong = {
         transit: '湾仔站／铜锣湾站 · 港岛线。',
         food: '烧腊、糖水与办公楼午餐都有，步行解决三餐没问题。',
         tradeoff: '会展期间房价上浮明显；不必只为吃饭换到这一带。',
+        walk: '港铁站步行可达，街区平，拖行李轻松。',
+        noise: '闹市到晚上，会展与主干道一侧车流声明显。',
+        slope: '平地为主。',
         neighborhoodIds: ['wan-chai'],
       },
       {
@@ -298,6 +306,9 @@ export const hongKong = {
         transit: '佐敦站／油麻地站 · 荃湾线；机场巴士方向经停多。',
         food: '庙街、白加士街一带街坊食肆密度高，早晚都有得吃。',
         tradeoff: '临街嘈杂、部分大厦楼道旧；订前看楼况与近期评价里的噪声。',
+        walk: '佐敦／油麻地站步行圈内，街平好走。',
+        noise: '庙街与临街房夜里嘈杂，选内街或高层房。',
+        slope: '平地为主；旧大厦电梯窄、到楼层情况要逐间核。',
         neighborhoodIds: ['yau-ma-tei-jordan'],
       },
       {
@@ -309,6 +320,9 @@ export const hongKong = {
         transit: '尖沙咀站 · 荃湾线；天星码头、机场巴士都在旁。',
         food: '游客餐饮多，街坊店要往北走一段。',
         tradeoff: '人流与拉客最多，氛围最「景点」。',
+        walk: '站与天星码头都近，就是人多拥挤。',
+        noise: '人流与拉客最多，临街房间偏吵。',
+        slope: '平地为主。',
         skipIf: '想安静、想体验本地日常的话，别选。',
       },
     ],
@@ -1040,17 +1054,6 @@ export const hongKong = {
     '渡轮与离岛：当城市太密时的出口（待写）',
     '香港 → 澳门一日或过夜：怎么走、怎么不赶（待写）',
     '澳门城市页 → /places/macau',
-  ],
-
-  startHere: [
-    { label: '签证与入境 · 香港', href: '/start/visas/hong-kong', status: '待写；先读 /start/visas' },
-    { label: '支付 · 香港', href: '/start/paying/hong-kong', status: '待写；先读 /start/paying' },
-    { label: '上网 · 香港', href: '/start/online/hong-kong', status: '待写；先读 /start/online' },
-    {
-      label: '交通 · 香港',
-      href: '/start/transport/hong-kong',
-      status: '待写；先读 /start/transport',
-    },
   ],
 
   sourcesNote: [

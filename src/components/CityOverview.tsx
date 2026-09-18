@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Img } from './Img'
 import type {
   EatCategory,
   Essential,
@@ -134,7 +135,7 @@ export function CityOverview({ city, spots, shopCount }: Props) {
             >
               <span className="block h-16 w-20 overflow-hidden rounded-lg bg-sand sm:h-[4.5rem] sm:w-28">
                 {n.image && (
-                  <img
+                  <Img
                     src={n.image.src}
                     alt={n.image.alt}
                     width={280}
@@ -242,7 +243,7 @@ export function CityOverview({ city, spots, shopCount }: Props) {
       </section>
 
       <section className="mx-auto site-shell px-5 pt-4 pb-14 md:px-8">
-        <details className="group border-y border-border">
+        <details className="group border-y border-border" open>
           <summary className="flex items-center justify-between py-5">
             <span className="font-serif text-xl text-ink md:text-2xl">相关与来源</span>
             <span className="text-small text-ink-faint group-open:hidden">+</span>

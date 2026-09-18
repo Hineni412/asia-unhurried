@@ -130,7 +130,6 @@ export const hanoi: CityContent = {
     { label: '建议停留', value: '3–4 晚。老城与还剑湖住稳，每天一个片区；去下龙湾或宁平加一天。' },
     { label: '地区标签', value: '东南亚 · 越南首都' },
     { label: '气质', value: '老街三十六行、还剑湖晨练、法式旧楼' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {
@@ -558,7 +557,6 @@ export const hoiAn: CityContent = {
     { label: '建议停留', value: '2–3 晚。古城一天、海滩或乡野半天、留白；比想象中小，别排满。' },
     { label: '地区标签', value: '东南亚 · 古城' },
     { label: '气质', value: '灯笼古城、裁缝店与河边早市' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {

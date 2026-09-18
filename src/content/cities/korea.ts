@@ -23,7 +23,6 @@ export const seoul: CityContent = {
     { label: '建议停留', value: '3–5 晚。宫殿与市场半天一处，山坡住宅区留一个下午。' },
     { label: '地区标签', value: '东亚 · 半岛城市' },
     { label: '气质', value: '宫殿与高楼之间，市场与山坡住宅区' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {
@@ -525,7 +524,6 @@ export const jeju: CityContent = {
     { label: '建议停留', value: '3–4 晚。岛比想象大：济州市、东岸（城山）、南岸（西归浦）各留一天，汉拿山看天气。' },
     { label: '地区标签', value: '东亚 · 海岛' },
     { label: '气质', value: '火山岛、海女与黑猪肉，风比城市多' },
-    { label: '核实日期', value: '2026-09-15' },
   ],
   essentials: [
     {
@@ -961,7 +959,6 @@ export const busan: CityContent = {
     { label: '建议停留', value: '2–3 晚。港区市集一天、海云台与海岸一天，山坡村落半天。' },
     { label: '地区标签', value: '东亚 · 港口城市' },
     { label: '气质', value: '鱼市、山坡村与海滩，比首尔松' },
-    { label: '核实日期', value: '2026-09-15' },
   ],
   essentials: [
     {

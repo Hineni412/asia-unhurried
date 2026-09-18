@@ -25,7 +25,6 @@ export const singapore: CityContent = {
     { label: '建议停留', value: '3–4 晚。城市小、轨道密；食阁、街区与滨海湾各留半天。' },
     { label: '地区标签', value: '东南亚 · 城市国家' },
     { label: '气质', value: '秩序感与食阁烟火并存的热带城市' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {
@@ -517,7 +516,6 @@ export const macau: CityContent = {
     { label: '建议停留', value: '2–3 晚。澳门小，历史城区一天、路氹一天、留白；比香港松。' },
     { label: '地区标签', value: '东亚 · 特别行政区' },
     { label: '气质', value: '历史城区、葡式石板路与赌场的并置' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {

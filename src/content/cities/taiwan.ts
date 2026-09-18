@@ -22,7 +22,6 @@ export const taipei: CityContent = {
     { label: '建议停留', value: '3–4 晚。城市不大，住稳一处每天一个方向；夜市留到晚上慢慢吃。' },
     { label: '地区标签', value: '东亚 · 岛屿城市' },
     { label: '气质', value: '夜市、眷村味、捷运沿线的慢生活' },
-    { label: '核实日期', value: '2026-09-14' },
   ],
   essentials: [
     {

@@ -1,4 +1,5 @@
 import type { EatCategory } from '../content/hongKong'
+import { Img } from './Img'
 import { RestaurantCard } from './RestaurantCard'
 
 type Props = { category: EatCategory }
@@ -9,7 +10,7 @@ export function CategorySection({ category }: Props) {
       <div className={`food-category-heading ${category.image ? '' : 'food-category-heading--text'}`}>
       {category.image ? (
         <figure className="food-category-picture">
-          <img
+          <Img
             src={category.image.src}
             alt={category.image.alt}
             className="aspect-[4/3] w-full rounded-xl object-cover md:aspect-[3/2]"

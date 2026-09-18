@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Img } from './Img'
 import { NeighborhoodCards } from './NeighborhoodCards'
 import type { DayTrip, Neighborhood, Restaurant } from '../content/hongKong'
 import type { StayGuide } from '../content/stay'
@@ -29,7 +30,7 @@ export function CityPlacesPanel({ neighborhoods, restaurants, dayTrips, dayTripN
             <article key={d.direction} className="overflow-hidden rounded-2xl bg-sand/35">
               {d.image ? (
                 <figure>
-                  <img
+                  <Img
                     src={d.image.src}
                     alt={d.image.alt}
                     className="aspect-[16/10] w-full object-cover"

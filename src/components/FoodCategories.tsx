@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
+import { Img } from './Img'
 import { Link, useLocation } from 'react-router-dom'
 import type { EatCategory } from '../content/hongKong'
 import { CategorySection } from './CategorySection'
@@ -53,7 +54,7 @@ export function FoodCategories({ categories }: { categories: EatCategory[] }) {
     <div className="food-floating-slot">
       <nav ref={navRef} className="food-floating-nav" aria-label="当前美食品类" aria-hidden={!visible} data-visible={visible}>
         <Link key={category.id} to={{ pathname, search, hash: `#${category.id}` }} tabIndex={visible ? 0 : -1} className="food-floating-content" title={`查看${category.title}的完整介绍`}>
-          {category.image && <img src={category.image.src} alt={category.image.alt} width={96} height={64} className="food-floating-image" />}
+          {category.image && <Img src={category.image.src} alt={category.image.alt} width={96} height={64} className="food-floating-image" />}
           <span className="food-floating-copy">
             <span className="food-floating-title font-zh text-xl text-ink">{category.title}</span>
             <span className="food-floating-intro text-small text-ink-muted">{category.intro}</span>
